@@ -1,0 +1,1496 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nhật ký giao dịch</title>
+<meta name="description" content="Sổ nhật ký giao dịch: nhập phí, lợi nhuận, ghi chú hằng ngày và xem thống kê lãi lỗ theo ngày, tuần, tháng.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Nhật ký GD">
+<meta name="theme-color" content="#EEF1F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1316" media="(prefers-color-scheme: dark)">
+<style>
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; }
+</style>
+</head>
+<body>
+<style>
+  :root {
+    --bg: #EEF1F3;
+    --surface: #FFFFFF;
+    --surface-2: #F4F7F9;
+    --surface-3: #E9EEF1;
+    --ink: #0F1518;
+    --ink-2: #33424A;
+    --muted: #5C6A71;
+    --faint: #8A979D;
+    --line: #DCE3E6;
+    --line-2: #C4CFD4;
+    --accent: #8A5B0E;
+    --accent-ink: #FFFFFF;
+    --accent-soft: rgba(138, 91, 14, .10);
+    --pos: #0C7B56;
+    --neg: #B02C3C;
+    --pos-soft: rgba(12, 123, 86, .12);
+    --neg-soft: rgba(176, 44, 60, .12);
+    --grid: rgba(15, 21, 24, .07);
+    --shadow-1: 0 1px 2px rgba(15, 21, 24, .05);
+    --shadow-2: 0 1px 2px rgba(15, 21, 24, .05), 0 12px 28px -18px rgba(15, 21, 24, .55);
+    --shadow-3: 0 10px 24px -8px rgba(138, 91, 14, .45);
+    --serif: ui-serif, "New York", Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E1316;
+      --surface: #161C20;
+      --surface-2: #1C242A;
+      --surface-3: #222C32;
+      --ink: #E9EFF1;
+      --ink-2: #BCC8CD;
+      --muted: #8B989F;
+      --faint: #6C7B82;
+      --line: #253036;
+      --line-2: #35424A;
+      --accent: #E2A63F;
+      --accent-ink: #16110A;
+      --accent-soft: rgba(226, 166, 63, .14);
+      --pos: #3DCB94;
+      --neg: #FF7080;
+      --pos-soft: rgba(61, 203, 148, .14);
+      --neg-soft: rgba(255, 112, 128, .14);
+      --grid: rgba(233, 239, 241, .08);
+      --shadow-1: 0 1px 2px rgba(0, 0, 0, .5);
+      --shadow-2: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 32px -22px rgba(0, 0, 0, 1);
+      --shadow-3: 0 10px 24px -8px rgba(0, 0, 0, .8);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0E1316;
+    --surface: #161C20;
+    --surface-2: #1C242A;
+    --surface-3: #222C32;
+    --ink: #E9EFF1;
+    --ink-2: #BCC8CD;
+    --muted: #8B989F;
+    --faint: #6C7B82;
+    --line: #253036;
+    --line-2: #35424A;
+    --accent: #E2A63F;
+    --accent-ink: #16110A;
+    --accent-soft: rgba(226, 166, 63, .14);
+    --pos: #3DCB94;
+    --neg: #FF7080;
+    --pos-soft: rgba(61, 203, 148, .14);
+    --neg-soft: rgba(255, 112, 128, .14);
+    --grid: rgba(233, 239, 241, .08);
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, .5);
+    --shadow-2: 0 1px 2px rgba(0, 0, 0, .5), 0 16px 32px -22px rgba(0, 0, 0, 1);
+    --shadow-3: 0 10px 24px -8px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.45;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .app { max-width: 920px; margin: 0 auto; padding: 0 14px calc(108px + env(safe-area-inset-bottom)); }
+
+  /* ---------- Header ---------- */
+  .top {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: calc(14px + env(safe-area-inset-top)) 0 10px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .mark {
+    width: 32px; height: 32px; flex: 0 0 auto;
+    border-radius: 9px;
+    background: var(--accent); color: var(--accent-ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif); font-size: 16px; font-weight: 700;
+    box-shadow: var(--shadow-1);
+  }
+  .brand h1 { font-family: var(--serif); font-size: 19px; font-weight: 600; letter-spacing: -.01em; margin: 0; white-space: nowrap; }
+  .brand .sub { font-size: 11px; color: var(--faint); font-variant-numeric: tabular-nums; margin-top: -2px; }
+  .icon-btn {
+    width: 38px; height: 38px; flex: 0 0 auto; padding: 0; min-height: 0;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2);
+  }
+  .icon-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- Range bar ---------- */
+  .rangebar {
+    position: sticky; top: 0; z-index: 15;
+    margin: 0 -14px 14px; padding: 8px 14px 10px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(1.8) blur(14px);
+    -webkit-backdrop-filter: saturate(1.8) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .segwrap { overflow-x: auto; scrollbar-width: none; margin: 0 -2px; padding: 0 2px; }
+  .segwrap::-webkit-scrollbar { display: none; }
+  .segs {
+    display: inline-flex; gap: 2px; padding: 3px;
+    background: var(--surface-3); border-radius: 11px; border: 1px solid var(--line);
+  }
+  .seg {
+    flex: 0 0 auto; font: inherit; font-size: 13px; font-weight: 600;
+    color: var(--muted); background: transparent; border: 0;
+    border-radius: 8px; padding: 6px 12px; min-height: 32px;
+    white-space: nowrap; cursor: pointer; transition: color .15s, background .15s;
+  }
+  .seg[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-1); }
+  .rangemeta { font-size: 11.5px; color: var(--faint); font-variant-numeric: tabular-nums; margin-top: 8px; display: flex; gap: 8px; align-items: center; }
+  .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--line-2); flex: 0 0 auto; }
+
+  /* ---------- Cards ---------- */
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-2); padding: 16px; }
+  .stack { display: flex; flex-direction: column; gap: 13px; }
+  .eyebrow { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); font-weight: 700; }
+  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .pos { color: var(--pos); }
+  .neg { color: var(--neg); }
+  .flat { color: var(--muted); }
+  .small { font-size: 12px; color: var(--muted); }
+  .sep { height: 1px; background: var(--line); margin: 14px 0; }
+
+  .headline {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(30px, 9vw, 40px); letter-spacing: -.025em;
+    font-variant-numeric: tabular-nums; line-height: 1.05;
+  }
+  .pill {
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+    background: var(--surface-3); color: var(--muted);
+  }
+  .pill.up { background: var(--pos-soft); color: var(--pos); }
+  .pill.down { background: var(--neg-soft); color: var(--neg); }
+
+  .hero-line { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .spark { margin: 12px 0 2px; height: 44px; }
+  .spark svg { display: block; width: 100%; height: 44px; }
+
+  .minis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border-radius: 12px; overflow: hidden; margin-top: 12px; }
+  .mini { background: var(--surface); padding: 10px 11px; }
+  .mini .k { font-size: 10.5px; color: var(--faint); letter-spacing: .04em; text-transform: uppercase; font-weight: 600; }
+  .mini .v { font-family: var(--mono); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 2px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border-radius: 12px; overflow: hidden; }
+  .kpis.three { grid-template-columns: repeat(3, 1fr); }
+  .kpi { background: var(--surface); padding: 11px 12px; }
+  .kpi .k { font-size: 11px; color: var(--faint); }
+  .kpi .v { font-family: var(--mono); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 2px; }
+
+  /* win-rate meter */
+  .meter { display: flex; height: 8px; border-radius: 999px; overflow: hidden; background: var(--surface-3); margin-top: 10px; }
+  .meter i { display: block; height: 100%; }
+  .meter-legend { display: flex; gap: 14px; margin-top: 8px; font-size: 11.5px; color: var(--muted); }
+  .meter-legend span { display: flex; align-items: center; gap: 5px; }
+  .swatch { width: 8px; height: 8px; border-radius: 3px; flex: 0 0 auto; }
+
+  /* ---------- Spreadsheet ---------- */
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .sheet-wrap {
+    overflow: auto; -webkit-overflow-scrolling: touch;
+    max-height: 64vh;
+    border: 1px solid var(--line); border-radius: 14px;
+    background: var(--surface); box-shadow: var(--shadow-2);
+  }
+  table.sheet { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; }
+  .sheet th, .sheet td {
+    height: 46px; padding: 0; background: var(--surface);
+    border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  .sheet tbody tr:nth-child(even) td { background: var(--surface-2); }
+  .sheet tbody tr.is-today td { background: var(--accent-soft); }
+  .sheet th {
+    position: sticky; top: 0; z-index: 3; background: var(--surface-3);
+    font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--faint); font-weight: 700; text-align: left;
+    padding: 0 10px; white-space: nowrap; cursor: default;
+  }
+  .sheet th.sortable { cursor: pointer; }
+  .sheet th.sortable:hover { color: var(--ink); }
+  .sheet th.on { color: var(--accent); }
+  .sheet th.r, .sheet td.r { text-align: right; }
+  .sheet .c-date { position: sticky; left: 0; z-index: 2; box-shadow: 1px 0 0 var(--line); }
+  .sheet th.c-date { z-index: 5; }
+  .sheet tfoot td { position: sticky; bottom: 0; z-index: 3; background: var(--surface-3); border-bottom: 0; border-top: 1px solid var(--line-2); }
+  .sheet tfoot td.c-date { z-index: 4; }
+  .sheet td.calc { padding: 0 10px; font-family: var(--mono); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sheet td.wd { padding: 0 8px; font-family: var(--mono); font-size: 12px; color: var(--faint); }
+  .sheet tfoot td.lab { padding: 0 10px; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); font-weight: 700; }
+  .sheet tfoot td.calc { font-size: 13px; font-weight: 700; }
+
+  .cell-in {
+    display: block; width: 100%; height: 45px;
+    border: 0; background: transparent; color: inherit;
+    font: inherit; font-size: 16px; padding: 0 10px; border-radius: 0; appearance: none;
+  }
+  .cell-in.n { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+  .cell-in.d { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 15px; }
+  .cell-in::placeholder { color: color-mix(in srgb, var(--faint) 60%, transparent); }
+  .cell-in:focus { outline: 2px solid var(--accent); outline-offset: -2px; background: var(--accent-soft); }
+  .kill { width: 100%; height: 45px; min-height: 0; border: 0; background: transparent; color: var(--faint); font-size: 18px; line-height: 1; cursor: pointer; padding: 0; }
+  .kill:hover { color: var(--neg); }
+  .sheet-empty { text-align: center; color: var(--muted); font-size: 14px; padding: 30px 14px; }
+  .sheet-empty b { display: block; color: var(--ink); font-size: 15px; margin-bottom: 4px; }
+
+  .fab {
+    position: fixed; right: 16px; bottom: calc(80px + env(safe-area-inset-bottom));
+    width: 54px; height: 54px; padding: 0; min-height: 0;
+    border-radius: 50%; border: 0;
+    background: var(--accent); color: var(--accent-ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 27px; line-height: 1; font-weight: 400;
+    box-shadow: var(--shadow-3); z-index: 25;
+  }
+  .fab[hidden] { display: none; }
+
+  /* ---------- Stat table ---------- */
+  .stbl { width: 100%; border-collapse: collapse; }
+  .stbl th, .stbl td { padding: 10px 6px; border-bottom: 1px solid var(--line); font-size: 13px; text-align: right; white-space: nowrap; }
+  .stbl th { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); font-weight: 700; }
+  .stbl th:first-child, .stbl td:first-child { text-align: left; }
+  .stbl td { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .stbl tbody tr:last-child td { border-bottom: 0; }
+  .stbl .bar { display: block; height: 5px; border-radius: 3px; min-width: 3px; margin-top: 5px; }
+  .tbl-scroll { overflow-x: auto; }
+
+  /* ---------- Charts ---------- */
+  .readout { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
+  .chart { width: 100%; overflow: hidden; }
+  .chart svg { display: block; width: 100%; }
+  .bar-g { cursor: pointer; }
+  .bar-g rect.hit { fill: transparent; }
+
+  /* ---------- Calendar ---------- */
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+  .cal-h { font-size: 10px; color: var(--faint); text-align: center; letter-spacing: .06em; font-weight: 600; }
+  .cal-cell {
+    aspect-ratio: 1 / 1; border-radius: 9px;
+    border: 1px solid var(--line); background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    color: var(--faint); padding: 0; min-height: 0; cursor: default;
+  }
+  .cal-cell.void { border-color: transparent; background: transparent; }
+  .cal-cell.has { color: var(--ink); border-color: transparent; cursor: pointer; }
+  .cal-cell.today { box-shadow: inset 0 0 0 2px var(--accent); }
+  .navrow { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .navrow .m { font-family: var(--serif); font-size: 19px; font-weight: 600; }
+  .navrow button { width: 40px; height: 40px; min-height: 0; padding: 0; border-radius: 10px; font-size: 17px; }
+
+  /* ---------- Note rows ---------- */
+  .rows { display: flex; flex-direction: column; }
+  .rowline { display: grid; grid-template-columns: 44px 1fr auto; gap: 11px; align-items: center; padding: 11px 2px; border-top: 1px solid var(--line); }
+  .rows .rowline:first-child { border-top: 0; }
+  .rowline .d { font-family: var(--mono); font-size: 11px; color: var(--faint); line-height: 1.2; }
+  .rowline .d b { display: block; font-size: 15px; color: var(--ink); font-weight: 600; }
+  .rowline .note { font-size: 13px; color: var(--ink-2); word-break: break-word; }
+  .rowline .amt { font-family: var(--mono); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  .empty { color: var(--muted); font-size: 14px; text-align: center; padding: 22px 8px; }
+
+  /* ---------- Buttons ---------- */
+  button {
+    font: inherit; font-weight: 600; border-radius: 11px;
+    border: 1px solid var(--line); padding: 10px 14px; min-height: 42px;
+    cursor: pointer; background: var(--surface); color: var(--ink);
+    transition: background .15s, border-color .15s;
+  }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  button.ghost { background: var(--surface-2); }
+  button.danger { background: transparent; color: var(--neg); }
+  button:active { transform: translateY(1px); }
+  .btn-row { display: flex; gap: 9px; flex-wrap: wrap; }
+  .btn-row > button { flex: 1 1 auto; }
+  .link { background: none; border: 0; color: var(--accent); font-size: 13px; font-weight: 600; padding: 4px 0; min-height: 0; text-decoration: underline; text-underline-offset: 3px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-size: 13px; padding: 8px 14px; min-height: 0; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); }
+  .chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  input[type="date"], input[type="text"] {
+    width: 100%; font: inherit; font-size: 16px; color: var(--ink);
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; appearance: none;
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- Tab bar ---------- */
+  .tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    background: color-mix(in srgb, var(--surface) 86%, transparent);
+    backdrop-filter: saturate(1.8) blur(16px);
+    -webkit-backdrop-filter: saturate(1.8) blur(16px);
+    border-top: 1px solid var(--line); z-index: 20;
+  }
+  .tab {
+    background: none; border: 0; border-radius: 11px; color: var(--faint);
+    font-size: 11px; font-weight: 600;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 6px 2px; min-height: 46px;
+  }
+  .tab svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .tab[aria-selected="true"] { color: var(--accent); background: var(--accent-soft); }
+
+  .view { display: none; }
+  .view.on { display: block; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: calc(88px + env(safe-area-inset-bottom));
+    transform: translate(-50%, 12px);
+    display: flex; align-items: center; gap: 14px;
+    background: var(--ink); color: var(--bg);
+    font-size: 13px; font-weight: 600; padding: 10px 16px; border-radius: 999px;
+    opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s;
+    z-index: 40; box-shadow: var(--shadow-2); max-width: calc(100vw - 32px);
+  }
+  .toast.on { opacity: 1; transform: translate(-50%, 0); }
+  .toast.act { pointer-events: auto; }
+  .toast button { background: none; border: 0; padding: 0; min-height: 0; color: var(--accent); font-size: 13px; font-weight: 700; }
+  @media (prefers-reduced-motion: reduce) { button:active { transform: none; } .toast, .seg { transition: none; } }
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">N</span>
+      <span>
+        <h1>Nhật ký giao dịch</h1>
+        <div class="sub" id="todayLabel"></div>
+      </span>
+    </div>
+    <button type="button" class="icon-btn" id="themeBtn" aria-label="Đổi giao diện sáng/tối"></button>
+  </header>
+
+  <div class="rangebar" id="rangebar">
+    <div class="segwrap">
+      <div class="segs" role="group" aria-label="Khoảng thời gian">
+        <button type="button" class="seg" data-range="7">7 ngày</button>
+        <button type="button" class="seg" data-range="30" aria-pressed="true">30 ngày</button>
+        <button type="button" class="seg" data-range="tm">Tháng này</button>
+        <button type="button" class="seg" data-range="lm">Tháng trước</button>
+        <button type="button" class="seg" data-range="all">Tất cả</button>
+      </div>
+    </div>
+    <div class="rangemeta" id="rangeMeta"></div>
+  </div>
+
+  <!-- ============ BẢNG ============ -->
+  <section class="view on" id="v-sheet" aria-label="Bảng nhập liệu">
+    <div class="stack">
+      <div class="card">
+        <div class="hero-line">
+          <div style="min-width:0">
+            <span class="eyebrow" id="sheetHeroLabel">Lãi ròng</span>
+            <div class="headline num" id="sheetNet">—</div>
+          </div>
+          <span class="pill" id="sheetDelta"></span>
+        </div>
+        <div class="spark" id="sheetSpark"></div>
+        <div class="minis">
+          <div class="mini"><div class="k">Lợi nhuận</div><div class="v num" id="sheetGross">—</div></div>
+          <div class="mini"><div class="k">Phí</div><div class="v num" id="sheetFee">—</div></div>
+          <div class="mini"><div class="k">Số dòng</div><div class="v num" id="sheetCount">0</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="toolbar">
+          <button type="button" class="ghost" id="addRow">+ Thêm dòng</button>
+          <span class="small num" id="sortInfo"></span>
+        </div>
+        <div class="sheet-wrap" id="sheetWrap">
+          <table class="sheet" id="sheet">
+            <colgroup>
+              <col style="width:124px"><col style="width:40px"><col style="width:126px">
+              <col style="width:114px"><col style="width:128px"><col style="width:240px"><col style="width:44px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="c-date sortable" data-sort="date">Ngày</th>
+                <th>Thứ</th>
+                <th class="r sortable" data-sort="profit">Lợi nhuận</th>
+                <th class="r sortable" data-sort="fee">Phí</th>
+                <th class="r sortable" data-sort="net">Lãi ròng</th>
+                <th>Ghi chú</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="sheetBody"></tbody>
+            <tfoot id="sheetFoot"></tfoot>
+          </table>
+        </div>
+        <p class="small" style="margin:10px 2px 0">Gõ thẳng vào ô, tự lưu. Nhập <b>3,5</b> = 3,5 · <b>1.250</b> = 1250 · <b>2k</b> = 2000 · số âm là lỗ. Vuốt ngang để xem hết cột.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THỐNG KÊ ============ -->
+  <section class="view" id="v-stats" aria-label="Thống kê">
+    <div class="stack">
+      <div class="card">
+        <div class="hero-line">
+          <div style="min-width:0">
+            <span class="eyebrow" id="statTitle">Lãi ròng</span>
+            <div class="headline num" id="stNet">—</div>
+            <div class="small num" id="stRange"></div>
+          </div>
+          <span class="pill" id="stDelta"></span>
+        </div>
+        <div class="spark" id="stSpark"></div>
+        <div class="minis">
+          <div class="mini"><div class="k">Lợi nhuận</div><div class="v num" id="stGross">—</div></div>
+          <div class="mini"><div class="k">Phí</div><div class="v num" id="stFee">—</div></div>
+          <div class="mini"><div class="k">TB / ngày</div><div class="v num" id="stAvg">—</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="eyebrow">Tỷ lệ ngày lãi</span>
+          <span class="pill num" id="stWin">—</span>
+        </div>
+        <div class="meter" id="stMeter"></div>
+        <div class="meter-legend" id="stLegend"></div>
+        <div class="sep"></div>
+        <div class="kpis">
+          <div class="kpi"><div class="k">Ngày lãi cao nhất</div><div class="v num" id="stBest">—</div></div>
+          <div class="kpi"><div class="k">Ngày lỗ nặng nhất</div><div class="v num" id="stWorst">—</div></div>
+        </div>
+        <div class="small" id="stFeeRatio" style="margin-top:12px"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="eyebrow" id="barTitle">Lãi ròng theo ngày</span>
+          <span class="readout" id="barReadout">Chạm vào cột</span>
+        </div>
+        <div class="chart" id="chartBars"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="eyebrow">Luỹ kế</span>
+          <span class="readout num" id="cumReadout"></span>
+        </div>
+        <div class="chart" id="chartCum"></div>
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">Thống kê theo tháng</span>
+        <div class="tbl-scroll" style="margin-top:10px">
+          <table class="stbl" id="monthTable">
+            <thead>
+              <tr><th>Tháng</th><th>Lợi nhuận</th><th>Phí</th><th>Lãi ròng</th><th>Ngày lãi</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">Ngày biến động mạnh nhất</span>
+        <div class="rows" id="topDays" style="margin-top:6px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LỊCH ============ -->
+  <section class="view" id="v-cal" aria-label="Lịch theo tháng">
+    <div class="stack">
+      <div class="card">
+        <div class="navrow" style="margin-bottom:14px">
+          <button type="button" id="prevMonth" aria-label="Tháng trước">‹</button>
+          <span class="m" id="monthLabel">—</span>
+          <button type="button" id="nextMonth" aria-label="Tháng sau">›</button>
+        </div>
+        <span class="eyebrow">Lãi ròng trong tháng</span>
+        <div class="headline num" id="mNet">—</div>
+        <div class="minis">
+          <div class="mini"><div class="k">Lợi nhuận</div><div class="v num" id="mGross">—</div></div>
+          <div class="mini"><div class="k">Phí</div><div class="v num" id="mFee">—</div></div>
+          <div class="mini"><div class="k">Lãi / lỗ</div><div class="v num" id="mWL">—</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="eyebrow">Lịch lãi lỗ</span>
+          <span class="readout" id="calReadout">Chạm vào ngày</span>
+        </div>
+        <div class="cal" id="calHead"></div>
+        <div class="cal" id="calGrid" style="margin-top:5px"></div>
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">Ghi chú trong tháng</span>
+        <div class="rows" id="monthNotes" style="margin-top:6px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DỮ LIỆU ============ -->
+  <section class="view" id="v-data" aria-label="Dữ liệu và cài đặt">
+    <div class="stack">
+      <div class="card">
+        <span class="eyebrow">Đơn vị tiền</span>
+        <div class="chips" style="margin-top:10px">
+          <button type="button" class="chip" data-cur="USD">USD $</button>
+          <button type="button" class="chip" data-cur="VND">VND ₫</button>
+        </div>
+        <p class="small" style="margin:12px 0 0">USD hiển thị 2 số lẻ (nhập <b>3,5</b> ra <b>$3,50</b>). VND làm tròn về số nguyên. Đổi đơn vị không quy đổi tỷ giá.</p>
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">Sao lưu</span>
+        <p class="small" style="margin:8px 0 12px">Dữ liệu nằm trong trình duyệt của máy này. Xoá dữ liệu website của Safari sẽ mất — nên xuất file định kỳ.</p>
+        <div class="btn-row">
+          <button type="button" class="ghost" id="exportBtn">Xuất JSON</button>
+          <button type="button" class="ghost" id="csvBtn">Xuất CSV</button>
+          <button type="button" class="ghost" id="copyBtn">Sao chép</button>
+        </div>
+        <div style="margin-top:10px">
+          <label class="link" for="importFile" style="display:inline-block;cursor:pointer">Nhập từ file JSON…</label>
+          <input type="file" id="importFile" accept="application/json,.json" style="display:none">
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">Kho dữ liệu</span>
+        <div class="kpis" style="margin-top:10px">
+          <div class="kpi"><div class="k">Số dòng</div><div class="v num" id="dCount">0</div></div>
+          <div class="kpi"><div class="k">Tổng lãi ròng</div><div class="v num" id="dNet">—</div></div>
+          <div class="kpi"><div class="k">Dòng đầu tiên</div><div class="v num" id="dFirst">—</div></div>
+          <div class="kpi"><div class="k">Số tháng có dữ liệu</div><div class="v num" id="dMonths">0</div></div>
+        </div>
+        <div class="sep"></div>
+        <div class="btn-row">
+          <button type="button" class="ghost" id="demoBtn">Tạo dữ liệu mẫu</button>
+          <button type="button" class="danger" id="wipeBtn">Xoá toàn bộ</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">Cài lên màn hình chính</span>
+        <p class="small" style="margin:8px 0 0">Safari: nút Chia sẻ → <b>Thêm vào MH chính</b>. App mở toàn màn hình và dùng chung dữ liệu này.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<button type="button" class="fab" id="fab" aria-label="Thêm dòng mới">+</button>
+
+<nav class="tabbar" role="tablist" aria-label="Điều hướng">
+  <button class="tab" role="tab" data-view="sheet" aria-selected="true">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14.5h18M9 4v16"/></svg><span>Bảng</span>
+  </button>
+  <button class="tab" role="tab" data-view="stats" aria-selected="false">
+    <svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg><span>Thống kê</span>
+  </button>
+  <button class="tab" role="tab" data-view="cal" aria-selected="false">
+    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Lịch</span>
+  </button>
+  <button class="tab" role="tab" data-view="data" aria-selected="false">
+    <svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span>Dữ liệu</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------------- iOS chrome ---------------- */
+  (function meta() {
+    var head = document.head;
+    var vp = head.querySelector('meta[name="viewport"]');
+    if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1, viewport-fit=cover');
+    else { var m = document.createElement('meta'); m.name = 'viewport'; m.content = 'width=device-width, initial-scale=1, viewport-fit=cover'; head.appendChild(m); }
+    [['apple-mobile-web-app-capable', 'yes'], ['mobile-web-app-capable', 'yes'],
+     ['apple-mobile-web-app-status-bar-style', 'default'], ['apple-mobile-web-app-title', 'Nhật ký GD']]
+      .forEach(function (p) {
+        if (head.querySelector('meta[name="' + p[0] + '"]')) return;
+        var el = document.createElement('meta'); el.name = p[0]; el.content = p[1]; head.appendChild(el);
+      });
+  })();
+
+  /* ---------------- State ---------------- */
+  var KEY = 'tj.entries.v1', SKEY = 'tj.settings.v1';
+  var entries = [];
+  var settings = { currency: 'USD', range: '30', theme: 'auto', v: 3 };
+  var sortState = { key: 'date', dir: -1 };
+  var view = 'sheet';
+  var monthCursor = null;
+  var lastDeleted = null;
+
+  function load() {
+    try { var raw = localStorage.getItem(KEY); entries = raw ? JSON.parse(raw) : []; if (!Array.isArray(entries)) entries = []; }
+    catch (e) { entries = []; }
+    try {
+      var s = localStorage.getItem(SKEY);
+      if (s) {
+        var parsed = JSON.parse(s);
+        settings = Object.assign(settings, parsed);
+        if (!parsed.v || parsed.v < 3) { settings.currency = 'USD'; settings.v = 3; saveSettings(); }
+      }
+    } catch (e) {}
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(entries)); }
+    catch (e) { toast('Không lưu được — bộ nhớ đã đầy'); }
+  }
+  function saveSettings() { try { localStorage.setItem(SKEY, JSON.stringify(settings)); } catch (e) {} }
+
+  /* ---------------- Helpers ---------------- */
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function today() { return iso(new Date()); }
+  function parseISO(s) { var p = String(s).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+  function dayDiff(a, b) { return Math.round((parseISO(b) - parseISO(a)) / 86400000); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function ddmm(s) { var p = s.split('-'); return p[2] + '/' + p[1]; }
+  function ddmmyy(s) { return ddmm(s) + '/' + s.slice(2, 4); }
+  var WD = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+  function weekdayVN(s) { return WD[parseISO(s).getDay()]; }
+  function monthKey(s) { return s.slice(0, 7); }
+  function netOf(e) { return (+e.profit || 0) - (+e.fee || 0); }
+  function cls(n) { return n > 0 ? 'pos' : (n < 0 ? 'neg' : 'flat'); }
+
+  // "3,5" -> 3.5 · "1.250" -> 1250 · "2k" -> 2000 · "1,5tr" -> 1500000
+  function parseAmount(input) {
+    if (input == null) return 0;
+    var s = String(input).trim().toLowerCase().replace(/\s|₫|đ|\$|usd/g, '');
+    if (!s) return 0;
+    var mult = 1;
+    if (/(tr|m|triệu|trieu)$/.test(s)) { mult = 1e6; s = s.replace(/(tr|m|triệu|trieu)$/, ''); }
+    else if (/(tỷ|ty|b)$/.test(s)) { mult = 1e9; s = s.replace(/(tỷ|ty|b)$/, ''); }
+    else if (/k$/.test(s)) { mult = 1e3; s = s.replace(/k$/, ''); }
+    var neg = /^-/.test(s);
+    s = s.replace(/[^0-9.,]/g, '');
+    if (!s) return 0;
+    var lastDot = s.lastIndexOf('.'), lastCom = s.lastIndexOf(',');
+    var dec = -1;
+    if (lastDot > -1 && lastCom > -1) dec = Math.max(lastDot, lastCom);
+    else if (lastDot > -1 || lastCom > -1) {
+      var p = Math.max(lastDot, lastCom), ch = s[p];
+      var count = s.split(ch).length - 1, after = s.length - p - 1;
+      if (count === 1 && after !== 3) dec = p;
+    }
+    var ip, fp = '';
+    if (dec > -1) { ip = s.slice(0, dec); fp = s.slice(dec + 1); } else ip = s;
+    ip = ip.replace(/[.,]/g, ''); fp = fp.replace(/[.,]/g, '');
+    var n = parseFloat((ip || '0') + (fp ? '.' + fp : ''));
+    if (!isFinite(n)) return 0;
+    n = n * mult;
+    return neg ? -n : n;
+  }
+
+  function isUSD() { return settings.currency === 'USD'; }
+  function nfmt(n, min, max) {
+    return new Intl.NumberFormat('vi-VN', { minimumFractionDigits: min, maximumFractionDigits: max }).format(n);
+  }
+  function fmt(n, opts) {
+    opts = opts || {}; n = +n || 0;
+    var body = isUSD() ? nfmt(Math.abs(n), 2, 2) : nfmt(Math.abs(n), 0, 0);
+    var sign = n < 0 ? '−' : (opts.signed && n > 0 ? '+' : '');
+    return sign + (isUSD() ? '$' + body : body + ' ₫');
+  }
+  function fmtPlain(n) {
+    if (!n) return '';
+    return (n < 0 ? '-' : '') + (isUSD() ? nfmt(Math.abs(n), 2, 2) : nfmt(Math.abs(n), 0, 0));
+  }
+  function fmtShort(n) {
+    n = +n || 0;
+    var a = Math.abs(n), s = n < 0 ? '−' : '';
+    if (isUSD()) {
+      if (a >= 1e6) return s + '$' + nfmt(a / 1e6, 0, 1) + 'M';
+      if (a >= 1e4) return s + '$' + nfmt(a / 1e3, 0, 1) + 'K';
+      return s + '$' + nfmt(a, 0, a < 100 ? 2 : 0);
+    }
+    if (a >= 1e9) return s + nfmt(a / 1e9, 0, 1) + ' tỷ';
+    if (a >= 1e6) return s + nfmt(a / 1e6, 0, 1) + ' tr';
+    if (a >= 1e3) return s + nfmt(a / 1e3, 0, 1) + 'k';
+    return s + Math.round(a);
+  }
+
+  var toastTimer;
+  function toast(msg, actionLabel, action) {
+    var t = $('#toast');
+    t.innerHTML = '<span>' + esc(msg) + '</span>';
+    t.classList.toggle('act', !!action);
+    if (action) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = actionLabel;
+      b.addEventListener('click', function () { t.classList.remove('on', 'act'); action(); });
+      t.appendChild(b);
+    }
+    t.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('on', 'act'); }, action ? 5200 : 1900);
+  }
+
+  /* ---------------- Range ---------------- */
+  var RANGE_NAME = { '7': '7 ngày gần nhất', '30': '30 ngày gần nhất', tm: 'Tháng này', lm: 'Tháng trước', all: 'Tất cả' };
+
+  function bounds(which) {
+    var t = new Date(); t.setHours(0, 0, 0, 0);
+    var r = settings.range, prev = which === 'prev';
+    if (r === '7' || r === '30') {
+      var len = r === '7' ? 7 : 30;
+      var to = prev ? addDays(t, -len) : t;
+      return { from: iso(addDays(to, -(len - 1))), to: iso(to), daily: true };
+    }
+    if (r === 'tm' || r === 'lm') {
+      var back = (r === 'lm' ? 1 : 0) + (prev ? 1 : 0);
+      var y = t.getFullYear(), m = t.getMonth() - back;
+      while (m < 0) { m += 12; y--; }
+      return { from: iso(new Date(y, m, 1)), to: iso(new Date(y, m + 1, 0)), daily: true };
+    }
+    if (prev) return null;
+    var ds = entries.map(function (e) { return e.date; }).sort();
+    var from = ds.length ? ds[0] : iso(t);
+    var last = ds.length ? ds[ds.length - 1] : iso(t);
+    var to = last > iso(t) ? last : iso(t);
+    return { from: from, to: to, daily: dayDiff(from, to) + 1 <= 92 };
+  }
+
+  function entriesIn(b) {
+    if (!b) return [];
+    return entries.filter(function (e) { return e.date >= b.from && e.date <= b.to; });
+  }
+  function rangeEntries() { return entriesIn(bounds()); }
+
+  function sumOf(list) {
+    return list.reduce(function (a, e) {
+      a.fee += +e.fee || 0; a.profit += +e.profit || 0; a.net += netOf(e); a.n++; return a;
+    }, { fee: 0, profit: 0, net: 0, n: 0 });
+  }
+
+  function dayMap(list) {
+    var map = {};
+    list.forEach(function (e) {
+      var d = map[e.date] || (map[e.date] = { date: e.date, fee: 0, profit: 0, net: 0, n: 0, notes: [] });
+      d.fee += +e.fee || 0; d.profit += +e.profit || 0; d.net += netOf(e); d.n++;
+      if (e.note) d.notes.push(e.note);
+    });
+    return map;
+  }
+
+  function seriesDaily(b, list) {
+    var map = dayMap(list), out = [], cur = parseISO(b.from), end = parseISO(b.to), guard = 0;
+    while (cur <= end && guard++ < 4000) {
+      var k = iso(cur);
+      out.push(map[k] || { date: k, fee: 0, profit: 0, net: 0, n: 0, notes: [] });
+      cur = addDays(cur, 1);
+    }
+    return out;
+  }
+
+  function seriesMonthly(list) {
+    var m = {};
+    list.forEach(function (e) {
+      var k = monthKey(e.date);
+      var o = m[k] || (m[k] = { date: k + '-01', label: 'T' + (+k.slice(5)) + '/' + k.slice(2, 4), fee: 0, profit: 0, net: 0, n: 0, notes: [] });
+      o.fee += +e.fee || 0; o.profit += +e.profit || 0; o.net += netOf(e); o.n++;
+    });
+    return Object.keys(m).sort().map(function (k) { return m[k]; });
+  }
+
+  function deltaInfo() {
+    var pb = bounds('prev');
+    if (!pb) return null;
+    var cur = sumOf(rangeEntries()).net;
+    var prev = sumOf(entriesIn(pb)).net;
+    if (!entriesIn(pb).length) return null;
+    var diff = cur - prev;
+    var pct = prev !== 0 ? diff / Math.abs(prev) * 100 : null;
+    return { cur: cur, prev: prev, diff: diff, pct: pct };
+  }
+
+  function paintDelta(el, d) {
+    if (!d) { el.textContent = ''; el.className = 'pill'; el.hidden = true; return; }
+    el.hidden = false;
+    var up = d.diff >= 0;
+    el.className = 'pill ' + (up ? 'up' : 'down');
+    el.textContent = (up ? '▲ ' : '▼ ') + (d.pct == null ? fmtShort(Math.abs(d.diff)) : nfmt(Math.abs(d.pct), 0, 1) + '%');
+    el.title = 'Kỳ trước: ' + fmt(d.prev, { signed: true });
+  }
+
+  /* ---------------- SVG ---------------- */
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+  var gradSeq = 0;
+
+  function renderSpark(host, pts) {
+    host.innerHTML = '';
+    if (!pts.length) return;
+    var w = Math.max(220, host.clientWidth || 300), h = 44, padY = 5;
+    var svg = svgEl('svg', { viewBox: '0 0 ' + w + ' ' + h, height: h, 'aria-hidden': 'true' });
+    var run = 0, cum = pts.map(function (d) { run += d.net; return run; });
+    var lo = Math.min(0, Math.min.apply(null, cum)), hi = Math.max(0, Math.max.apply(null, cum));
+    if (hi === lo) hi = lo + 1;
+    function Y(v) { return padY + (h - padY * 2) * (1 - (v - lo) / (hi - lo)); }
+    var stepX = cum.length > 1 ? w / (cum.length - 1) : w;
+    var end = cum[cum.length - 1];
+    var color = end >= 0 ? 'var(--pos)' : 'var(--neg)';
+    var id = 'sp' + (++gradSeq);
+    var defs = svgEl('defs', {});
+    var lg = svgEl('linearGradient', { id: id, x1: '0', y1: '0', x2: '0', y2: '1' });
+    lg.appendChild(svgEl('stop', { offset: '0%', 'stop-color': color, 'stop-opacity': '.28' }));
+    lg.appendChild(svgEl('stop', { offset: '100%', 'stop-color': color, 'stop-opacity': '0' }));
+    defs.appendChild(lg); svg.appendChild(defs);
+
+    var coords = cum.map(function (v, i) { return (stepX * i).toFixed(1) + ',' + Y(v).toFixed(1); });
+    svg.appendChild(svgEl('path', { d: 'M0,' + h + ' L' + coords.join(' L') + ' L' + (stepX * (cum.length - 1)).toFixed(1) + ',' + h + ' Z', fill: 'url(#' + id + ')' }));
+    svg.appendChild(svgEl('polyline', { points: coords.join(' '), fill: 'none', stroke: color, 'stroke-width': 1.8, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+    svg.appendChild(svgEl('circle', { cx: stepX * (cum.length - 1), cy: Y(end), r: 3, fill: color, stroke: 'var(--surface)', 'stroke-width': 2 }));
+    host.appendChild(svg);
+  }
+
+  function renderBars(host, pts, onPick) {
+    host.innerHTML = '';
+    if (!pts.length) { host.innerHTML = '<p class="empty">Không có dữ liệu.</p>'; return; }
+    var w = Math.max(260, host.clientWidth || 320), h = 168, padT = 20, padB = 18;
+    var svg = svgEl('svg', { viewBox: '0 0 ' + w + ' ' + h, height: h, role: 'img', 'aria-label': 'Biểu đồ lãi ròng' });
+    var vals = pts.map(function (d) { return d.net; });
+    var maxP = Math.max(0, Math.max.apply(null, vals.concat([0])));
+    var maxN = Math.max(0, -Math.min.apply(null, vals.concat([0])));
+    var span = maxP + maxN, plotH = h - padT - padB;
+    var zeroY = span === 0 ? padT + plotH / 2 : padT + plotH * (maxP / span);
+
+    if (maxP > 0) svg.appendChild(svgEl('line', { x1: 0, y1: padT, x2: w, y2: padT, stroke: 'var(--grid)', 'stroke-width': 1 }));
+    if (maxN > 0) svg.appendChild(svgEl('line', { x1: 0, y1: h - padB, x2: w, y2: h - padB, stroke: 'var(--grid)', 'stroke-width': 1 }));
+    svg.appendChild(svgEl('line', { x1: 0, y1: zeroY, x2: w, y2: zeroY, stroke: 'var(--line-2)', 'stroke-width': 1 }));
+
+    var slot = w / pts.length, bw = Math.max(3, Math.min(slot - 2, 22));
+    pts.forEach(function (d, i) {
+      var cx = slot * i + slot / 2;
+      var hgt = span === 0 ? 0 : Math.abs(d.net) / span * plotH;
+      if (hgt > 0 && hgt < 2) hgt = 2;
+      var g = svgEl('g', { class: 'bar-g' });
+      g.appendChild(svgEl('rect', {
+        x: cx - bw / 2, y: d.net >= 0 ? zeroY - hgt : zeroY, width: bw, height: Math.max(hgt, d.net === 0 ? 0 : 2), rx: Math.min(3, bw / 2),
+        fill: d.net > 0 ? 'var(--pos)' : (d.net < 0 ? 'var(--neg)' : 'var(--line-2)'),
+        opacity: d.n ? 1 : .3
+      }));
+      g.appendChild(svgEl('rect', { class: 'hit', x: slot * i, y: 0, width: slot, height: h }));
+      g.addEventListener('click', function () { onPick(d); });
+      svg.appendChild(g);
+    });
+
+    function txt(s, x, y, anchor, fill) {
+      var t = svgEl('text', { x: x, y: y, fill: fill || 'var(--faint)', 'font-size': 10, 'font-family': 'var(--mono)', 'text-anchor': anchor });
+      t.textContent = s; return t;
+    }
+    if (maxP > 0) svg.appendChild(txt(fmtShort(maxP), 0, padT - 6, 'start', 'var(--pos)'));
+    if (maxN > 0) svg.appendChild(txt(fmtShort(-maxN), w, padT - 6, 'end', 'var(--neg)'));
+    var f = pts[0], l = pts[pts.length - 1];
+    svg.appendChild(txt(f.label || ddmm(f.date), 0, h - 4, 'start'));
+    if (pts.length > 1) svg.appendChild(txt(l.label || ddmm(l.date), w, h - 4, 'end'));
+    host.appendChild(svg);
+  }
+
+  function renderCum(host, pts) {
+    host.innerHTML = '';
+    if (!pts.length) { host.innerHTML = '<p class="empty">Không có dữ liệu.</p>'; return; }
+    var w = Math.max(260, host.clientWidth || 320), h = 140, padT = 16, padB = 16;
+    var svg = svgEl('svg', { viewBox: '0 0 ' + w + ' ' + h, height: h, role: 'img', 'aria-label': 'Luỹ kế' });
+    var run = 0, cum = pts.map(function (d) { run += d.net; return run; });
+    var lo = Math.min(0, Math.min.apply(null, cum)), hi = Math.max(0, Math.max.apply(null, cum));
+    if (hi === lo) hi = lo + 1;
+    var plotH = h - padT - padB;
+    function Y(v) { return padT + plotH * (1 - (v - lo) / (hi - lo)); }
+    var stepX = cum.length > 1 ? w / (cum.length - 1) : w;
+    var end = cum[cum.length - 1];
+    var color = end >= 0 ? 'var(--pos)' : 'var(--neg)';
+    var id = 'cu' + (++gradSeq);
+    var defs = svgEl('defs', {});
+    var lg = svgEl('linearGradient', { id: id, x1: '0', y1: '0', x2: '0', y2: '1' });
+    lg.appendChild(svgEl('stop', { offset: '0%', 'stop-color': color, 'stop-opacity': '.30' }));
+    lg.appendChild(svgEl('stop', { offset: '100%', 'stop-color': color, 'stop-opacity': '.02' }));
+    defs.appendChild(lg); svg.appendChild(defs);
+
+    var zeroY = Y(0);
+    svg.appendChild(svgEl('line', { x1: 0, y1: zeroY, x2: w, y2: zeroY, stroke: 'var(--grid)', 'stroke-width': 1, 'stroke-dasharray': '3 4' }));
+    var coords = cum.map(function (v, i) { return (stepX * i).toFixed(1) + ',' + Y(v).toFixed(1); });
+    var lastX = (stepX * (cum.length - 1)).toFixed(1);
+    svg.appendChild(svgEl('path', { d: 'M0,' + zeroY.toFixed(1) + ' L' + coords.join(' L') + ' L' + lastX + ',' + zeroY.toFixed(1) + ' Z', fill: 'url(#' + id + ')' }));
+    svg.appendChild(svgEl('polyline', { points: coords.join(' '), fill: 'none', stroke: color, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+    var ex = +lastX, ey = Y(end);
+    svg.appendChild(svgEl('circle', { cx: ex, cy: ey, r: 3.5, fill: color, stroke: 'var(--surface)', 'stroke-width': 2 }));
+    var lbl = svgEl('text', { x: Math.min(ex, w - 2), y: Math.max(11, ey - 9), 'text-anchor': 'end', fill: color, 'font-size': 11, 'font-weight': 700, 'font-family': 'var(--mono)' });
+    lbl.textContent = fmtShort(end);
+    svg.appendChild(lbl);
+    host.appendChild(svg);
+  }
+
+  /* ---------------- Spreadsheet ---------------- */
+  function sortedRows() {
+    var list = rangeEntries().slice(), k = sortState.key, dir = sortState.dir;
+    list.sort(function (a, b) {
+      var va, vb;
+      if (k === 'date') { if (a.date === b.date) return (b.ts || 0) - (a.ts || 0); return a.date < b.date ? -dir : dir; }
+      if (k === 'net') { va = netOf(a); vb = netOf(b); }
+      else { va = +a[k] || 0; vb = +b[k] || 0; }
+      if (va === vb) return a.date < b.date ? 1 : -1;
+      return va < vb ? -dir : dir;
+    });
+    return list;
+  }
+
+  function renderSheet() {
+    var rows = sortedRows(), t = today();
+    var body = $('#sheetBody');
+
+    if (!rows.length) {
+      body.innerHTML = '<tr><td colspan="7" class="sheet-empty"><b>Chưa có dòng nào</b>Bấm nút <b style="display:inline">+</b> để thêm giao dịch đầu tiên trong khoảng này.</td></tr>';
+    } else {
+      body.innerHTML = rows.map(function (e) {
+        var net = netOf(e);
+        return '<tr data-id="' + esc(e.id) + '"' + (e.date === t ? ' class="is-today"' : '') + '>' +
+          '<td class="c-date"><input class="cell-in d" type="date" value="' + esc(e.date) + '" data-f="date" aria-label="Ngày"></td>' +
+          '<td class="wd">' + weekdayVN(e.date) + '</td>' +
+          '<td><input class="cell-in n" type="text" inputmode="decimal" value="' + esc(fmtPlain(e.profit)) + '" data-f="profit" placeholder="—" aria-label="Lợi nhuận"></td>' +
+          '<td><input class="cell-in n" type="text" inputmode="decimal" value="' + esc(fmtPlain(e.fee)) + '" data-f="fee" placeholder="—" aria-label="Phí"></td>' +
+          '<td class="calc r ' + cls(net) + '" data-net>' + (e.profit || e.fee ? fmt(net, { signed: true }) : '') + '</td>' +
+          '<td><input class="cell-in" type="text" value="' + esc(e.note || '') + '" data-f="note" placeholder="Ghi chú…" aria-label="Ghi chú"></td>' +
+          '<td style="text-align:center"><button type="button" class="kill" data-kill aria-label="Xoá dòng">✕</button></td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    var s = sumOf(rows);
+    $('#sheetFoot').innerHTML = '<tr>' +
+      '<td class="c-date lab">Tổng</td>' +
+      '<td class="lab" style="text-align:center">' + rows.length + '</td>' +
+      '<td class="calc r">' + (s.profit ? fmt(s.profit) : '—') + '</td>' +
+      '<td class="calc r">' + (s.fee ? fmt(s.fee) : '—') + '</td>' +
+      '<td class="calc r ' + cls(s.net) + '">' + (rows.length ? fmt(s.net, { signed: true }) : '—') + '</td>' +
+      '<td class="lab">' + RANGE_NAME[settings.range] + '</td><td></td>' +
+    '</tr>';
+
+    var names = { date: 'Ngày', profit: 'Lợi nhuận', fee: 'Phí', net: 'Lãi ròng' };
+    $('#sortInfo').textContent = names[sortState.key] + (sortState.dir < 0 ? ' ↓' : ' ↑');
+    $$('.sheet th.sortable').forEach(function (th) {
+      var k = th.getAttribute('data-sort'), on = k === sortState.key;
+      th.textContent = names[k] + (on ? (sortState.dir < 0 ? ' ↓' : ' ↑') : '');
+      th.classList.toggle('on', on);
+    });
+
+    refreshSummary(rows, s);
+  }
+
+  function refreshSummary(rows, s) {
+    rows = rows || sortedRows();
+    s = s || sumOf(rows);
+    $('#sheetHeroLabel').textContent = 'Lãi ròng · ' + RANGE_NAME[settings.range];
+    $('#sheetNet').textContent = rows.length ? fmt(s.net, { signed: true }) : '—';
+    $('#sheetNet').className = 'headline num ' + cls(s.net);
+    $('#sheetGross').textContent = s.profit ? fmt(s.profit) : '—';
+    $('#sheetFee').textContent = s.fee ? fmt(s.fee) : '—';
+    $('#sheetCount').textContent = rows.length;
+    paintDelta($('#sheetDelta'), deltaInfo());
+    var b = bounds();
+    renderSpark($('#sheetSpark'), b.daily ? seriesDaily(b, rows) : seriesMonthly(rows));
+  }
+
+  function findEntry(id) { for (var i = 0; i < entries.length; i++) if (entries[i].id === id) return entries[i]; return null; }
+
+  function rowNetRefresh(tr) {
+    var p = parseAmount($('input[data-f="profit"]', tr).value);
+    var f = parseAmount($('input[data-f="fee"]', tr).value);
+    var cell = $('[data-net]', tr), net = p - f;
+    cell.textContent = (p || f) ? fmt(net, { signed: true }) : '';
+    cell.className = 'calc r ' + cls(net);
+  }
+
+  function refreshFoot() {
+    var rows = sortedRows(), s = sumOf(rows), foot = $('#sheetFoot tr');
+    if (foot) {
+      var td = foot.children;
+      td[1].textContent = rows.length;
+      td[2].textContent = s.profit ? fmt(s.profit) : '—';
+      td[3].textContent = s.fee ? fmt(s.fee) : '—';
+      td[4].textContent = rows.length ? fmt(s.net, { signed: true }) : '—';
+      td[4].className = 'calc r ' + cls(s.net);
+    }
+    refreshSummary(rows, s);
+  }
+
+  $('#sheetBody').addEventListener('input', function (ev) {
+    var f = ev.target.getAttribute && ev.target.getAttribute('data-f');
+    if (f === 'profit' || f === 'fee') rowNetRefresh(ev.target.closest('tr'));
+  });
+
+  $('#sheetBody').addEventListener('change', function (ev) {
+    var el = ev.target, f = el.getAttribute && el.getAttribute('data-f');
+    if (!f) return;
+    var tr = el.closest('tr'), e = findEntry(tr.getAttribute('data-id'));
+    if (!e) return;
+    if (f === 'date') {
+      if (!el.value) { el.value = e.date; return; }
+      e.date = el.value;
+      $('.wd', tr).textContent = weekdayVN(e.date);
+      tr.classList.toggle('is-today', e.date === today());
+    } else if (f === 'note') {
+      e.note = el.value.trim();
+    } else {
+      var v = parseAmount(el.value);
+      e[f] = v;
+      el.value = fmtPlain(v);
+    }
+    save();
+    rowNetRefresh(tr);
+    refreshFoot();
+  });
+
+  $('#sheetBody').addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Enter') return;
+    var f = ev.target.getAttribute && ev.target.getAttribute('data-f');
+    if (!f) return;
+    ev.target.blur();
+    if (f === 'note') addRow();
+  });
+
+  $('#sheetBody').addEventListener('click', function (ev) {
+    var btn = ev.target.closest && ev.target.closest('[data-kill]');
+    if (!btn) return;
+    var tr = btn.closest('tr'), e = findEntry(tr.getAttribute('data-id'));
+    if (!e) return;
+    lastDeleted = e;
+    entries = entries.filter(function (x) { return x.id !== e.id; });
+    save();
+    renderSheet();
+    toast('Đã xoá dòng ' + ddmm(e.date), 'Hoàn tác', function () {
+      entries.push(lastDeleted);
+      save();
+      renderSheet();
+      toast('Đã khôi phục');
+    });
+  });
+
+  function defaultDate() {
+    var b = bounds(), t = today();
+    return (t >= b.from && t <= b.to) ? t : b.to;
+  }
+
+  function addRow() {
+    var e = { id: 'e' + Date.now() + Math.random().toString(36).slice(2, 7), date: defaultDate(), profit: 0, fee: 0, note: '', ts: Date.now() };
+    entries.push(e);
+    save();
+    renderSheet();
+    var tr = $('#sheetBody tr[data-id="' + e.id + '"]');
+    if (tr) {
+      tr.scrollIntoView({ block: 'nearest' });
+      var inp = $('input[data-f="profit"]', tr);
+      if (inp) inp.focus();
+    }
+  }
+  $('#addRow').addEventListener('click', addRow);
+  $('#fab').addEventListener('click', addRow);
+
+  $$('.sheet th.sortable').forEach(function (th) {
+    th.addEventListener('click', function () {
+      var k = th.getAttribute('data-sort');
+      if (sortState.key === k) sortState.dir *= -1;
+      else { sortState.key = k; sortState.dir = -1; }
+      renderSheet();
+    });
+  });
+
+  /* ---------------- Stats ---------------- */
+  function renderStats() {
+    var b = bounds(), list = rangeEntries(), s = sumOf(list);
+    var pts = b.daily ? seriesDaily(b, list) : seriesMonthly(list);
+    var days = dayMap(list);
+    var arr = Object.keys(days).map(function (k) { return days[k]; });
+    var wins = arr.filter(function (d) { return d.net > 0; }).length;
+    var losses = arr.filter(function (d) { return d.net < 0; }).length;
+    var flats = arr.length - wins - losses;
+
+    $('#statTitle').textContent = 'Lãi ròng · ' + RANGE_NAME[settings.range];
+    $('#stNet').textContent = list.length ? fmt(s.net, { signed: true }) : '—';
+    $('#stNet').className = 'headline num ' + cls(s.net);
+    $('#stRange').textContent = ddmmyy(b.from) + ' → ' + ddmmyy(b.to) + ' · ' + arr.length + ' ngày giao dịch';
+    $('#stGross').textContent = s.profit ? fmt(s.profit) : '—';
+    $('#stFee').textContent = s.fee ? fmt(s.fee) : '—';
+    $('#stAvg').textContent = arr.length ? fmt(s.net / arr.length, { signed: true }) : '—';
+    $('#stAvg').className = 'v num ' + (arr.length ? cls(s.net) : '');
+    paintDelta($('#stDelta'), deltaInfo());
+    renderSpark($('#stSpark'), pts);
+
+    var winPct = arr.length ? Math.round(wins / arr.length * 100) : 0;
+    $('#stWin').textContent = arr.length ? winPct + '%' : '—';
+    $('#stWin').className = 'pill num ' + (arr.length ? (winPct >= 50 ? 'up' : 'down') : '');
+    $('#stMeter').innerHTML = arr.length
+      ? '<i style="width:' + (wins / arr.length * 100) + '%;background:var(--pos)"></i>' +
+        '<i style="width:' + (losses / arr.length * 100) + '%;background:var(--neg)"></i>' +
+        '<i style="width:' + (flats / arr.length * 100) + '%;background:var(--line-2)"></i>'
+      : '';
+    $('#stLegend').innerHTML = arr.length
+      ? '<span><i class="swatch" style="background:var(--pos)"></i>' + wins + ' ngày lãi</span>' +
+        '<span><i class="swatch" style="background:var(--neg)"></i>' + losses + ' ngày lỗ</span>' +
+        (flats ? '<span><i class="swatch" style="background:var(--line-2)"></i>' + flats + ' hoà</span>' : '')
+      : '<span class="flat">Chưa có ngày giao dịch nào.</span>';
+
+    var best = null, worst = null;
+    arr.forEach(function (d) {
+      if (!best || d.net > best.net) best = d;
+      if (!worst || d.net < worst.net) worst = d;
+    });
+    $('#stBest').textContent = best ? fmtShort(best.net) + ' · ' + ddmm(best.date) : '—';
+    $('#stBest').className = 'v num ' + (best ? cls(best.net) : '');
+    $('#stWorst').textContent = worst ? fmtShort(worst.net) + ' · ' + ddmm(worst.date) : '—';
+    $('#stWorst').className = 'v num ' + (worst ? cls(worst.net) : '');
+
+    var ratio = s.profit > 0 ? (s.fee / s.profit * 100) : null;
+    $('#stFeeRatio').innerHTML = ratio == null
+      ? 'Chưa đủ dữ liệu để tính tỷ trọng phí.'
+      : 'Phí chiếm <b class="num">' + nfmt(ratio, 0, 1) + '%</b> lợi nhuận gộp — tương đương ' + fmt(s.fee) + ' đã trả cho broker.';
+
+    $('#barTitle').textContent = b.daily ? 'Lãi ròng theo ngày' : 'Lãi ròng theo tháng';
+    renderBars($('#chartBars'), pts, function (d) {
+      var r = $('#barReadout');
+      var name = d.label || (ddmm(d.date) + ' ' + weekdayVN(d.date));
+      if (!d.n) { r.innerHTML = name + ' · <span class="flat">không giao dịch</span>'; return; }
+      r.innerHTML = name + ' · <b class="' + cls(d.net) + '">' + fmt(d.net, { signed: true }) + '</b> · phí ' + fmtShort(d.fee);
+    });
+    $('#barReadout').textContent = 'Chạm vào cột';
+    renderCum($('#chartCum'), pts);
+    $('#cumReadout').textContent = list.length ? 'Kết thúc ' + fmt(s.net, { signed: true }) : '';
+
+    var mrows = seriesMonthly(list).reverse(), mmax = 1;
+    mrows.forEach(function (m) { mmax = Math.max(mmax, Math.abs(m.net)); });
+    var mdays = {};
+    arr.forEach(function (d) {
+      var k = monthKey(d.date), o = mdays[k] || (mdays[k] = { w: 0, t: 0 });
+      o.t++; if (d.net > 0) o.w++;
+    });
+    $('#monthTable tbody').innerHTML = mrows.length ? mrows.map(function (m) {
+      var o = mdays[monthKey(m.date)] || { w: 0, t: 0 };
+      var p = Math.max(4, Math.abs(m.net) / mmax * 100);
+      return '<tr>' +
+        '<td>' + m.label + '<span class="bar" style="width:' + p + '%;background:' + (m.net >= 0 ? 'var(--pos)' : 'var(--neg)') + '"></span></td>' +
+        '<td>' + fmtShort(m.profit) + '</td>' +
+        '<td>' + fmtShort(m.fee) + '</td>' +
+        '<td class="' + cls(m.net) + '"><b>' + fmtShort(m.net) + '</b></td>' +
+        '<td>' + o.w + '/' + o.t + '</td>' +
+      '</tr>';
+    }).join('') : '<tr><td colspan="5" class="empty">Không có dữ liệu.</td></tr>';
+
+    var top = arr.slice().sort(function (a, c) { return Math.abs(c.net) - Math.abs(a.net); }).slice(0, 6);
+    $('#topDays').innerHTML = top.length ? top.map(function (d) {
+      return '<div class="rowline">' +
+        '<span class="d"><b>' + ddmm(d.date) + '</b>' + weekdayVN(d.date) + '</span>' +
+        '<span class="note">' + (d.notes.length ? esc(d.notes.join(' · ')) : '<span class="flat">' + d.n + ' lệnh</span>') + '</span>' +
+        '<span class="amt ' + cls(d.net) + '">' + fmt(d.net, { signed: true }) + '</span>' +
+      '</div>';
+    }).join('') : '<p class="empty">Không có dữ liệu.</p>';
+  }
+
+  /* ---------------- Calendar ---------------- */
+  function ensureCursor() {
+    if (monthCursor) return;
+    var d = new Date();
+    monthCursor = { y: d.getFullYear(), m: d.getMonth() };
+  }
+
+  function renderCal() {
+    ensureCursor();
+    var y = monthCursor.y, m = monthCursor.m, key = y + '-' + pad(m + 1);
+    $('#monthLabel').textContent = 'Tháng ' + (m + 1) + ' / ' + y;
+
+    var list = entries.filter(function (e) { return monthKey(e.date) === key; });
+    var s = sumOf(list);
+    $('#mNet').textContent = list.length ? fmt(s.net, { signed: true }) : '—';
+    $('#mNet').className = 'headline num ' + cls(s.net);
+    $('#mGross').textContent = s.profit ? fmt(s.profit) : '—';
+    $('#mFee').textContent = s.fee ? fmt(s.fee) : '—';
+
+    var map = dayMap(list), dim = new Date(y, m + 1, 0).getDate();
+    var wins = 0, losses = 0, maxAbs = 1;
+    Object.keys(map).forEach(function (k) {
+      var d = map[k];
+      if (d.net > 0) wins++; else if (d.net < 0) losses++;
+      maxAbs = Math.max(maxAbs, Math.abs(d.net));
+    });
+    $('#mWL').innerHTML = '<span class="pos">' + wins + '</span> <span class="flat">/</span> <span class="neg">' + losses + '</span>';
+
+    $('#calHead').innerHTML = [1, 2, 3, 4, 5, 6, 0].map(function (w) { return '<div class="cal-h">' + WD[w] + '</div>'; }).join('');
+
+    var lead = (new Date(y, m, 1).getDay() + 6) % 7, cells = [], t = today();
+    for (var l = 0; l < lead; l++) cells.push('<div class="cal-cell void"></div>');
+    for (var day = 1; day <= dim; day++) {
+      var dk = key + '-' + pad(day), d = map[dk], isToday = dk === t ? ' today' : '';
+      if (!d) { cells.push('<div class="cal-cell' + isToday + '">' + day + '</div>'); continue; }
+      var alpha = Math.round((0.2 + Math.min(1, Math.abs(d.net) / maxAbs) * 0.6) * 100);
+      var bg = d.net > 0 ? 'color-mix(in srgb, var(--pos) ' + alpha + '%, transparent)'
+             : d.net < 0 ? 'color-mix(in srgb, var(--neg) ' + alpha + '%, transparent)'
+             : 'var(--line)';
+      cells.push('<button type="button" class="cal-cell has' + isToday + '" data-date="' + dk + '" style="background:' + bg + '">' + day + '</button>');
+    }
+    var grid = $('#calGrid');
+    grid.innerHTML = cells.join('');
+    $$('.cal-cell[data-date]', grid).forEach(function (c) {
+      c.addEventListener('click', function () {
+        var d2 = map[c.getAttribute('data-date')];
+        $('#calReadout').innerHTML = ddmm(d2.date) + ' · <b class="' + cls(d2.net) + '">' + fmt(d2.net, { signed: true }) + '</b> · ' + d2.n + ' lệnh · phí ' + fmtShort(d2.fee);
+      });
+    });
+    $('#calReadout').textContent = 'Chạm vào ngày';
+
+    var noted = list.filter(function (e) { return e.note; }).sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    $('#monthNotes').innerHTML = noted.length ? noted.map(function (e) {
+      var net = netOf(e);
+      return '<div class="rowline">' +
+        '<span class="d"><b>' + ddmm(e.date) + '</b>' + weekdayVN(e.date) + '</span>' +
+        '<span class="note">' + esc(e.note) + '</span>' +
+        '<span class="amt ' + cls(net) + '">' + fmt(net, { signed: true }) + '</span>' +
+      '</div>';
+    }).join('') : '<p class="empty">Không có ghi chú trong tháng này.</p>';
+  }
+
+  /* ---------------- Data ---------------- */
+  function renderData() {
+    $$('.chip[data-cur]').forEach(function (c) {
+      c.setAttribute('aria-pressed', c.getAttribute('data-cur') === settings.currency ? 'true' : 'false');
+    });
+    var s = sumOf(entries);
+    $('#dCount').textContent = entries.length;
+    $('#dNet').textContent = entries.length ? fmt(s.net, { signed: true }) : '—';
+    $('#dNet').className = 'v num ' + cls(s.net);
+    var ds = entries.map(function (e) { return e.date; }).sort();
+    $('#dFirst').textContent = ds.length ? ddmmyy(ds[0]) : '—';
+    var ms = {};
+    entries.forEach(function (e) { ms[monthKey(e.date)] = 1; });
+    $('#dMonths').textContent = Object.keys(ms).length;
+  }
+
+  /* ---------------- Theme ---------------- */
+  var SUN = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>';
+  var MOON = '<svg viewBox="0 0 24 24"><path d="M20 14.5A8.2 8.2 0 0 1 9.5 4 8.3 8.3 0 1 0 20 14.5z"/></svg>';
+
+  function effectiveDark() {
+    if (settings.theme === 'dark') return true;
+    if (settings.theme === 'light') return false;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function applyTheme() {
+    if (settings.theme === 'auto') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', settings.theme);
+    $('#themeBtn').innerHTML = effectiveDark() ? SUN : MOON;
+  }
+  $('#themeBtn').addEventListener('click', function () {
+    settings.theme = effectiveDark() ? 'light' : 'dark';
+    saveSettings();
+    applyTheme();
+    render();
+  });
+
+  /* ---------------- Dispatch ---------------- */
+  function renderRangeMeta() {
+    var b = bounds(), n = rangeEntries().length;
+    $('#rangeMeta').innerHTML = '<span>' + ddmmyy(b.from) + ' → ' + ddmmyy(b.to) + '</span><i class="dot"></i><span>' + n + ' dòng</span>';
+    $$('.seg').forEach(function (s) { s.setAttribute('aria-pressed', s.getAttribute('data-range') === settings.range ? 'true' : 'false'); });
+  }
+
+  function render() {
+    var d = new Date();
+    $('#todayLabel').textContent = d.toLocaleDateString('vi-VN', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' });
+    $('#rangebar').hidden = (view === 'cal' || view === 'data');
+    $('#fab').hidden = (view !== 'sheet');
+    renderRangeMeta();
+    if (view === 'sheet') renderSheet();
+    else if (view === 'stats') renderStats();
+    else if (view === 'cal') renderCal();
+    else renderData();
+  }
+
+  function switchView(v) {
+    view = v;
+    $$('.view').forEach(function (s) { s.classList.remove('on'); });
+    $('#v-' + v).classList.add('on');
+    $$('.tab').forEach(function (t) { t.setAttribute('aria-selected', t.getAttribute('data-view') === v ? 'true' : 'false'); });
+    render();
+  }
+
+  $$('.tab').forEach(function (t) {
+    t.addEventListener('click', function () { switchView(t.getAttribute('data-view')); });
+  });
+
+  $('#prevMonth').addEventListener('click', function () {
+    ensureCursor();
+    monthCursor.m--; if (monthCursor.m < 0) { monthCursor.m = 11; monthCursor.y--; }
+    renderCal();
+  });
+  $('#nextMonth').addEventListener('click', function () {
+    ensureCursor();
+    monthCursor.m++; if (monthCursor.m > 11) { monthCursor.m = 0; monthCursor.y++; }
+    renderCal();
+  });
+
+  $$('.seg').forEach(function (s) {
+    s.addEventListener('click', function () {
+      settings.range = s.getAttribute('data-range');
+      saveSettings();
+      render();
+    });
+  });
+
+  $$('.chip[data-cur]').forEach(function (c) {
+    c.addEventListener('click', function () {
+      settings.currency = c.getAttribute('data-cur');
+      saveSettings();
+      render();
+      toast('Hiển thị theo ' + settings.currency);
+    });
+  });
+
+  /* ---------------- Backup ---------------- */
+  function payload() {
+    return JSON.stringify({ app: 'nhat-ky-giao-dich', version: 3, exportedAt: new Date().toISOString(), settings: settings, entries: entries }, null, 2);
+  }
+  function download(name, text, mime) {
+    var blob = new Blob([text], { type: mime }), url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  $('#exportBtn').addEventListener('click', function () {
+    download('nhat-ky-giao-dich-' + today() + '.json', payload(), 'application/json');
+    toast('Đang xuất JSON…');
+  });
+
+  $('#csvBtn').addEventListener('click', function () {
+    var rows = entries.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    var lines = ['Ngay;Thu;Loi nhuan;Phi;Lai rong;Ghi chu'];
+    rows.forEach(function (e) {
+      lines.push([e.date, weekdayVN(e.date), e.profit || 0, e.fee || 0, netOf(e), '"' + String(e.note || '').replace(/"/g, '""') + '"'].join(';'));
+    });
+    download('nhat-ky-giao-dich-' + today() + '.csv', '﻿' + lines.join('\r\n'), 'text/csv;charset=utf-8');
+    toast('Đang xuất CSV…');
+  });
+
+  $('#copyBtn').addEventListener('click', function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(payload()).then(
+        function () { toast('Đã sao chép JSON'); },
+        function () { toast('Không sao chép được'); }
+      );
+    } else toast('Trình duyệt không hỗ trợ sao chép');
+  });
+
+  $('#importFile').addEventListener('change', function (ev) {
+    var file = ev.target.files && ev.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var data = JSON.parse(reader.result);
+        var incoming = Array.isArray(data) ? data : data.entries;
+        if (!Array.isArray(incoming)) throw new Error('bad');
+        var have = {}, added = 0;
+        entries.forEach(function (e) { have[e.id] = 1; });
+        incoming.forEach(function (e) {
+          if (!e || !e.date) return;
+          var id = e.id || ('i' + Math.random().toString(36).slice(2, 9));
+          if (have[id]) return;
+          entries.push({ id: id, date: e.date, profit: +e.profit || 0, fee: +e.fee || 0, note: e.note || '', ts: e.ts || Date.now() });
+          have[id] = 1; added++;
+        });
+        save(); render();
+        toast('Đã nhập ' + added + ' dòng');
+      } catch (err) { toast('File không đúng định dạng'); }
+      ev.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  $('#demoBtn').addEventListener('click', function () {
+    if (entries.length && !confirm('Thêm 60 ngày dữ liệu mẫu vào dữ liệu hiện có?')) return;
+    var notes = ['XAUUSD theo trend H1', 'BTC scalp, vào sớm', 'Cắt lỗ đúng kế hoạch', 'Gồng lãi tốt', 'Vào lệnh trả thù — cần bỏ', 'EURUSD sideway, đứng ngoài', 'Tin NFP, giảm khối lượng'];
+    var base = new Date(); base.setHours(0, 0, 0, 0);
+    var unit = isUSD() ? 100 : 1e6;
+    for (var i = 59; i >= 0; i--) {
+      if (Math.random() < 0.24) continue;
+      entries.push({
+        id: 'demo' + i + Math.random().toString(36).slice(2, 6),
+        date: iso(addDays(base, -i)),
+        profit: Math.round((Math.random() * 6 - 2.2) * unit * 100) / 100,
+        fee: Math.round(Math.random() * 0.4 * unit * 100) / 100,
+        note: Math.random() < 0.5 ? notes[Math.floor(Math.random() * notes.length)] : '',
+        ts: Date.now() - i * 86400000
+      });
+    }
+    save(); render();
+    toast('Đã tạo dữ liệu mẫu');
+  });
+
+  $('#wipeBtn').addEventListener('click', function () {
+    if (!entries.length) { toast('Chưa có dữ liệu'); return; }
+    if (!confirm('Xoá toàn bộ ' + entries.length + ' dòng? Không thể hoàn tác.')) return;
+    entries = []; save(); render();
+    toast('Đã xoá toàn bộ');
+  });
+
+  var rt;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () { render(); }, 160);
+  });
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', function () { if (settings.theme === 'auto') applyTheme(); });
+  }
+
+  /* ---------------- Boot ---------------- */
+  load();
+  applyTheme();
+  render();
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  });
+}
+</script>
+</body>
+</html>
