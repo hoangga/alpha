@@ -155,6 +155,7 @@ class GameState extends ChangeNotifier {
     final gain = secs <= 60 ? 0.0 : secs * idleRate;
     coins += gain;
     pendingOfflineEarnings = gain;
+    lastSeen = DateTime.now(); // otherwise every resume re-credits the same time
     return gain;
   }
 

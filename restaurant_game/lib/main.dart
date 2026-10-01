@@ -87,23 +87,28 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        Positioned.fill(child: GameWidget(game: game)),
-        SafeArea(
-          child: ListenableBuilder(
-            listenable: widget.state,
-            builder: (_, _) => Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(children: [
-                _Chip('🪙 ${widget.state.coins.floor()}'),
-                const SizedBox(width: 6),
-                _Chip('⭐ ${widget.state.rating.toStringAsFixed(1)}'),
-                const SizedBox(width: 6),
-                _Chip('🍽️ ${widget.state.served}'),
-              ]),
+      body: Column(children: [
+        Container(
+          color: const Color(0xFF5B3920),
+          child: SafeArea(
+            bottom: false,
+            child: ListenableBuilder(
+              listenable: widget.state,
+              builder: (_, _) => Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(children: [
+                  _Chip('🪙 ${widget.state.coins.floor()}'),
+                  const SizedBox(width: 6),
+                  _Chip('⭐ ${widget.state.rating.toStringAsFixed(1)}'),
+                  const SizedBox(width: 6),
+                  _Chip('🍽️ ${widget.state.served}'),
+                ]),
+              ),
             ),
           ),
         ),
+        Expanded(child: GameWidget(game: game)),
+        const SizedBox(height: 80), // keeps the shop button off the bottom tables
       ]),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _openShop,

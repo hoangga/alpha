@@ -35,6 +35,15 @@ void main() {
     expect(capped, closeTo(maxOfflineSeconds * s.idleRate, 0.001));
   });
 
+  test('offline time is credited only once', () {
+    final s = GameState()
+      ..coins = 0
+      ..waiterLevel = 1;
+    final first = s.applyOffline(const Duration(hours: 1));
+    expect(first, greaterThan(0));
+    expect(DateTime.now().difference(s.lastSeen).inSeconds, lessThan(2));
+  });
+
   test('save round-trips', () {
     final a = GameState()
       ..coins = 77
