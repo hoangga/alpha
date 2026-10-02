@@ -144,6 +144,17 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 .area .tx b{display:block;font-size:15px}
 .area .tx small{display:block;font-size:12px;color:#7a5a3a;line-height:1.3}
 .area.done .ban{background:linear-gradient(135deg,#d6f5e3,#e3fbf8)}
+/* who-is-who: info card + legend */
+#info{position:absolute;left:8px;right:62px;bottom:8px;z-index:5;background:var(--cream);border-radius:16px;box-shadow:0 4px 0 #c9a77a,0 8px 18px rgba(0,0,0,.2);padding:8px 10px;display:flex;gap:10px;align-items:center;border-left:8px solid var(--c,#8a6a48)}
+#info .por{width:50px;height:50px;flex:0 0 50px;border-radius:12px;overflow:hidden;background:radial-gradient(circle at 50% 35%,#fff6e6,#ffd9a8);display:grid;place-items:center;font-size:28px}
+#info .por img{width:100%;height:100%;object-fit:cover}
+#info b{font-size:15px}#info small{display:block;font-size:12px;color:#5a4030;line-height:1.3}
+#info .tag{display:inline-block;color:#fff;border-radius:8px;padding:0 7px;font-size:11px;font-weight:800;margin-left:4px;background:var(--c,#8a6a48)}
+#legend{position:absolute;right:62px;top:8px;z-index:5;width:min(230px,62%);background:var(--cream);border-radius:16px;box-shadow:0 4px 0 #c9a77a,0 8px 18px rgba(0,0,0,.2);padding:8px 10px;font-size:12.5px}
+#legend b{display:block;font-size:14px;margin-bottom:4px;color:var(--brown)}
+#legend .lr{display:flex;align-items:center;gap:8px;padding:3px 0;border-top:1px dashed #e3c99b}
+#legend .dot{width:20px;height:20px;border-radius:50%;border:4px solid var(--c);flex:0 0 20px;box-sizing:border-box}
+#legend .lr small{display:block;color:#7a5a3a;font-size:11px;line-height:1.2}
 /* merge market */
 .mg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:#e8cfa2;padding:8px;border-radius:14px}
 .cell{aspect-ratio:1;border:0;border-radius:12px;background:#fff7e8;box-shadow:inset 0 -3px 0 #e3c99b;font-size:26px;display:grid;place-items:center;position:relative;padding:0}
@@ -176,9 +187,12 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
       <button class="rb" data-v="kitchen" aria-label="Bếp">🍣<small>Bếp</small></button>
       <button class="rb" data-v="patio" aria-label="Vườn">🌸<small>Vườn</small></button>
       <button class="rb" data-v="street" aria-label="Đường phố">🚕<small>Phố</small></button>
+      <button class="rb" id="nLegend" aria-label="Chú thích">👥<small>Ai là ai</small></button>
       <button class="rb" id="nSpeed" aria-label="Tốc độ">⏩<small id="spd">x1</small></button>
     </div>
     <div id="fly"></div>
+    <div id="info" hidden></div>
+    <div id="legend" hidden></div>
   </div>
   <nav class="nav">
     <button class="nb" id="nMenu"><span>🍜</span>Thực đơn</button>
@@ -240,19 +254,19 @@ const DISHES=[
 // staff roster: role, stars (rarity), cost in coins (c) or gems (g), level required
 const STAFF=[
   {id:'ono',name:'Ono Ryota',role:'chef',stars:4,start:1,look:{skin:'#f9d3b0',hair:'#d8d8d8',eye:'#4a2e1a',style:'short',outfit:'chef',beard:true}},
-  {id:'hana',name:'Hana',role:'waiter',stars:2,start:1,look:{skin:'#ffe3cc',hair:'#2b1b12',eye:'#4a2e1a',style:'bun',outfit:'kimono',kimono:'#c0392b',female:true}},
+  {id:'hana',name:'Hana',role:'waiter',stars:2,start:1,look:{skin:'#ffe3cc',hair:'#2b1b12',eye:'#4a2e1a',style:'bun',outfit:'kimono',kimono:'#2c4a8a',female:true}},
   {id:'yuki',name:'Yuki',role:'waiter',stars:2,start:1,look:{skin:'#f9d3b0',hair:'#1a1a2e',eye:'#2d4a7a',style:'bun',outfit:'kimono',kimono:'#2c4a8a',female:true}},
   {id:'takeshi',name:'Takeshi',role:'chef',stars:3,c:600,lv:2,look:{skin:'#e8b48a',hair:'#1a1a2e',eye:'#2a2a2a',style:'spiky',outfit:'chef'}},
   {id:'mei',name:'Mei',role:'greeter',stars:3,c:500,lv:2,look:{skin:'#ffe3cc',hair:'#f08aa8',eye:'#6a3a2a',style:'twin',outfit:'kimono',kimono:'#ff8fc8',female:true}},
-  {id:'mai',name:'Mai',role:'waiter',stars:3,c:450,lv:2,look:{skin:'#f9d3b0',hair:'#5a3820',eye:'#3a6a3a',style:'bun',outfit:'kimono',kimono:'#2a8a6a',female:true}},
+  {id:'mai',name:'Mai',role:'waiter',stars:3,c:450,lv:2,look:{skin:'#f9d3b0',hair:'#5a3820',eye:'#3a6a3a',style:'bun',outfit:'kimono',kimono:'#2c4a8a',female:true}},
   {id:'haru',name:'Haru',role:'musician',stars:4,c:900,lv:3,look:{skin:'#f9d3b0',hair:'#3d2a1e',eye:'#4a2e1a',style:'short',outfit:'kimonoV',color:'#2c4a8a'}},
-  {id:'sora',name:'Sora',role:'waiter',stars:3,c:900,lv:3,look:{skin:'#e8b48a',hair:'#e8c066',eye:'#2d4a7a',style:'pony',outfit:'kimono',kimono:'#8a3a8a',female:true}},
+  {id:'sora',name:'Sora',role:'waiter',stars:3,c:900,lv:3,look:{skin:'#e8b48a',hair:'#e8c066',eye:'#2d4a7a',style:'pony',outfit:'kimono',kimono:'#2c4a8a',female:true}},
   {id:'kenji',name:'Kenji',role:'manager',stars:4,g:12,lv:2,look:{skin:'#f9d3b0',hair:'#2b1b12',eye:'#2a2a2a',style:'short',outfit:'office',glasses:true}},
   {id:'ren',name:'Ren',role:'vendor',stars:3,c:700,lv:4,look:{skin:'#ffe3cc',hair:'#c0392b',eye:'#6a3a2a',style:'spiky',outfit:'hoodie',color:'#ff9f1c'}},
   {id:'aiko',name:'Aiko',role:'chef',stars:5,g:15,lv:4,look:{skin:'#ffe3cc',hair:'#6d4c9f',eye:'#6d4c9f',style:'long',outfit:'chef',female:true}},
-  {id:'kaito',name:'Kaito',role:'waiter',stars:5,g:15,lv:5,look:{skin:'#c48a60',hair:'#1a1a1a',eye:'#2a2a2a',style:'spiky',outfit:'kimono',kimono:'#1e1e24'}},
+  {id:'kaito',name:'Kaito',role:'waiter',stars:5,g:15,lv:5,look:{skin:'#c48a60',hair:'#1a1a1a',eye:'#2a2a2a',style:'spiky',outfit:'kimono',kimono:'#2c4a8a'}},
 ];
-const ROLE={chef:{n:'Đầu bếp',e:'👨‍🍳'},waiter:{n:'Phục vụ',e:'👘'},greeter:{n:'Lễ tân',e:'🙇'},musician:{n:'Nhạc công',e:'🪕'},manager:{n:'Quản lý',e:'🕴️'},vendor:{n:'Bán mang về',e:'🏪'}};
+const ROLE={chef:{n:'Đầu bếp',e:'👨‍🍳',c:'#f07c1b'},waiter:{n:'Phục vụ',e:'👘',c:'#1f9d92'},greeter:{n:'Lễ tân',e:'🙇',c:'#e0457b'},musician:{n:'Nhạc công',e:'🪕',c:'#7a4fd0'},manager:{n:'Quản lý',e:'🕴️',c:'#2c4a8a'},vendor:{n:'Bán mang về',e:'🏪',c:'#d99a00'}};
 // catalogue: c = coins, g = gems, b = beauty; zone: kitchen | patio | inside
 const T={
   table:{n:'Bàn gỗ',e:'🪵',c:60,cat:'ban'},
@@ -384,7 +398,7 @@ let customers=[],waiters=[],orders=[],fx=[],events=[];
 const SKIN=['#ffe3cc','#f9d3b0','#e8b48a','#c48a60','#9a6440'];
 const HAIRC=['#2b1b12','#3d2a1e','#5a3820','#e8c066','#c0392b','#1a1a2e','#6d4c9f','#f08aa8','#8a8a8a'];
 const EYEC=['#4a2e1a','#2d4a7a','#3a6a3a','#6a3a2a','#2a2a2a'];
-const OUTFITS=['office','student','casual','casual','elder','hoodie'];
+const OUTFITS=['student','casual','casual','elder','hoodie','casual'];
 const pick=a=>a[Math.random()*a.length|0];
 function mkWaiter(st){return{x:5.5+Math.random(),y:8.4,path:[],task:null,carry:null,role:'w',sid:st.id,name:st.name,speed:2.4*(1+.06*staffPow(st)),look:st.look}}
 function syncWaiters(){for(const st of hired('waiter'))if(!waiters.some(w=>w.sid==st.id))waiters.push(mkWaiter(st));for(const w of waiters){const st=STAFF.find(s=>s.id==w.sid);w.speed=2.4*(1+.06*staffPow(st))}}
@@ -398,9 +412,9 @@ function spawn(){
   const chair=pick(pool),path=bfs(DOOR,[[chair.x,chair.y]]);if(!path)return;
   const z0=Math.random()<.5?-8:H+8;
   customers.push({x:W+.5,y:z0+.5,path:[[W,DOOR[1]],DOOR,...path],chair,table:tableOf(chair),kind:kindOf(chair),st:'in',dish:Math.random()<.35&&u.includes(S.hot)?S.hot:pick(u),pat:1,t:0,vip,pri:false,a:0,role:'c',look:randomLook(vip)})}
-function randomLook(vip){const female=Math.random()<.5,outfit=vip?'kimonoV':pick(OUTFITS);
+function randomLook(vip){const female=Math.random()<.5,outfit=pick(OUTFITS);
   return{skin:pick(SKIN),hair:outfit=='elder'?'#d8d8d8':pick(HAIRC),eye:pick(EYEC),female,style:female?pick(['long','twin','bob','bun','pony']):pick(['short','spiky','short','cap']),outfit,
-    color:pick(['#ff7b7b','#5fb8ff','#7ed67e','#ffb84d','#b58cff','#ff8fc8','#4fd1c5']),glasses:outfit=='elder'||Math.random()<.15,crown:vip,kid:!vip&&Math.random()<.12}}
+    color:vip?'#7a3cc0':pick(['#ff7b7b','#5fb8ff','#7ed67e','#ffb84d','#b58cff','#ff8fc8','#4fd1c5']),glasses:outfit=='elder'||Math.random()<.15,crown:vip,kid:!vip&&Math.random()<.12}}
 const PAT_WAIT=c=>(c.vip?24:34)*(1+greetBonus()), PAT_FOOD=c=>(c.vip?38:52)*(1+greetBonus());
 const patSecs=c=>Math.max(0,c.pat*(c.st=='wait'?PAT_WAIT(c):PAT_FOOD(c)));
 function leave(c,angry){
@@ -654,7 +668,7 @@ function buildItem(o){
     const pan=new THREE.Group();pan.position.set(-.18,.93,0);cyl(.19,.08,'#33373c',0,0,0,pan,18,.16);box(.3,.03,.05,DARK,.32,.03,0,pan);p.add(pan);u.pan=pan;
     cyl(.12,.18,'#c7d0d6',.22,.98,-.1,p,14);
     const idx=stoves().indexOf(o),cs=hired('chef')[idx];u.chefId=cs?cs.id:'helper';
-    const chef=mkAvatar(Object.assign({role:'chef',name:cs?cs.name:'Phụ bếp'},cs?cs.look:{skin:'#f9d3b0',hair:'#5a3820',eye:'#4a2e1a',style:'short',outfit:'chef'}));chef.parent.remove(chef);chef.position.set(-.05,0,.86);chef.rotation.y=Math.PI;g.add(chef);u.chef=chef;
+    const chef=mkAvatar(Object.assign({role:'chef',staffRole:'chef',name:cs?cs.name:'Phụ bếp'},cs?cs.look:{skin:'#f9d3b0',hair:'#5a3820',eye:'#4a2e1a',style:'short',outfit:'chef'}));chef.parent.remove(chef);chef.position.set(-.05,0,.86);chef.rotation.y=Math.PI;g.add(chef);u.chef=chef;
     const b=bubbleCanvas();const bs=sprite(b.tex,.95,7);bs.scale.set(.85,1.06,1);bs.position.set(0,2.1,.2);bs.visible=false;g.add(bs);u.b=b;u.bs=bs;u.steam=0;break}
   case'stall':{g.rotation.y=Math.PI/2;rbox(.96,.8,.6,'#a0683c',0,.4,.15,p,.04);rbox(1,.06,.66,'#d8b07a',0,.82,.15,p,.02);
     [-.45,.45].forEach(x=>cyl(.04,1.6,DARK,x,.8,-.25,p,6));const r=M(new THREE.BoxGeometry(1.2,.06,.9),mat('#c0392b'),0,1.65,.05,p);r.rotation.x=.25;
@@ -736,7 +750,7 @@ function syncItems(time,now){
       while(u.plates.length>eaters.length)g.remove(u.plates.pop());
       const top=o.type=='lowtable'?.34:.55;eaters.forEach((c,i)=>{const pg=u.plates[i],dx=c.chair.x-o.x,dz=c.chair.y-o.y;pg.position.set(dx*.26,top,dz*.26);pg.userData.s.material.map=emojiTex(DISHES[c.dish].e)})}
     else if(o.type=='stall'){const vh=hired('vendor')[0],key=vh?vh.id:'gen';if(u.vendorKey!==key){if(u.vendor)u.vp.remove(u.vendor);
-        const v=mkAvatar(Object.assign({role:'w',name:vh?vh.name:''},vh?vh.look:{skin:'#f9d3b0',hair:'#2b1b12',eye:'#4a2e1a',style:'short',outfit:'casual',color:'#ff9f1c'}));v.parent.remove(v);v.position.set(0,0,-.35);u.vp.add(v);u.vendor=v;u.vendorKey=key}
+        const v=mkAvatar(Object.assign({role:'w',staffRole:'vendor',name:vh?vh.name:'Bán hàng'},vh?vh.look:{skin:'#f9d3b0',hair:'#2b1b12',eye:'#4a2e1a',style:'short',outfit:'casual',color:'#ff9f1c'}));v.parent.remove(v);v.position.set(0,0,-.35);u.vp.add(v);u.vendor=v;u.vendorKey=key}
       pose(u.vendor.userData,{t:time});blink(u.vendor.userData,1/60)}
     else if(o.type=='belt'&&u.plates)u.plates.forEach((pg,i)=>{const[x,z]=beltPos(time*.035+i/12);pg.position.set(x,.97,z)});
     else if(o.type=='pond'&&u.koi)u.koi.forEach((k,i)=>{const a=time*(.5+i*.15)+i*2.1;k.position.x=Math.cos(a)*.5;k.position.z=Math.sin(a)*.4;k.rotation.y=-a});
@@ -747,6 +761,14 @@ const puffs=[];const puffTex=canvasTex(64,64,(x)=>{const gr=x.createRadialGradie
 function puff(x,y,z){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:puffTex,transparent:true,depthWrite:false}));s.position.set(x+rnd(-.08,.08),y,z+rnd(-.08,.08));s.scale.setScalar(.2);s.userData.a=0;scene.add(s);puffs.push(s)}
 function syncPuffs(dt){for(let i=puffs.length-1;i>=0;i--){const s=puffs[i];s.userData.a+=dt;s.position.y+=dt*.6;s.scale.setScalar(.2+s.userData.a*.5);s.material.opacity=Math.max(0,.8-s.userData.a*.7);if(s.userData.a>1.1){scene.remove(s);s.material.dispose();puffs.splice(i,1)}}}
 // ================= ANIME CHIBI CHARACTERS =================
+// staff badge: rounded pill in the role colour with name and role, so staff never look like guests
+function badgeTex(name,role,col){const k='BG'+name+role+col;if(texCache.has(k))return texCache.get(k);
+  const c=document.createElement('canvas');c.width=360;c.height=112;const x=c.getContext('2d');
+  const pill=(X,Y,w,h,r)=>{x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath()};
+  x.fillStyle='rgba(0,0,0,.25)';pill(6,10,348,96,48);x.fill();x.fillStyle=col;pill(4,4,348,94,47);x.fill();
+  x.strokeStyle='#ffffff';x.lineWidth=6;x.stroke();x.textAlign='center';x.fillStyle='#ffffff';
+  x.font='800 40px "Baloo 2",system-ui,sans-serif';x.fillText(name,178,50);x.font='700 26px "Baloo 2",system-ui,sans-serif';x.fillStyle='rgba(255,255,255,.88)';x.fillText(role,178,84);
+  const t=new THREE.CanvasTexture(c);texCache.set(k,t);return t}
 // big head (~45% of height), large glossy eyes, layered bangs, outfits per role; joints for poses
 function hairPiece(r,c,x,y,z,sx,sy,sz,p){const b=ball(r,c,x,y,z,p,10);b.scale.set(sx,sy,sz);return b}
 function mkAvatar(L){
@@ -811,7 +833,10 @@ function mkAvatar(L){
   if(L.crown){const c=cyl(.11,.08,'#ffc93c',0,.3,0,head,6,.13);c.material=basic('#ffd34d');for(let i=0;i<5;i++)M(new THREE.ConeGeometry(.03,.07,4),basic('#ffd34d'),Math.cos(i*1.256)*.1,.37,Math.sin(i*1.256)*.1,head)}
   u.tray=new THREE.Group();cyl(.16,.02,'#4a2c17',0,0,0,u.tray,16);u.tray.position.set(0,.5,.3);u.tray.visible=false;body.add(u.tray);
   u.carry=sprite(emojiTex('🍣'),.36,6);u.carry.position.set(0,.66,.3);u.carry.visible=false;body.add(u.carry);
-  if(L.name){const t=sprite(textTex(L.name,'#fff3c4',44),.7,6);t.scale.set(.8,.3,1);t.position.set(0,1.32,0);g.add(t)}
+  if(L.staffRole){const R=ROLE[L.staffRole];
+    const ring=new THREE.Mesh(new THREE.RingGeometry(.27,.36,28),new THREE.MeshBasicMaterial({color:R.c,transparent:true,opacity:.9,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.y=.025;ring.renderOrder=2;g.add(ring);u.ring=ring;
+    const b=sprite(badgeTex(R.e+' '+(L.name||R.n),R.n,R.c),1,8);b.scale.set(1.15,.36,1);b.position.set(0,1.42,0);g.add(b);u.badge=b;
+    const act=sprite(emojiTex('💬'),.34,9);act.position.set(.42,1.15,0);act.visible=false;g.add(act);u.act=act}
   if(L.lite)g.traverse(o=>{o.castShadow=false});
   g.scale.setScalar(L.kid?.8:1.05);scene.add(g);return g}
 function setFace(u,m){if(u.face===m)return;u.face=m;
@@ -831,7 +856,7 @@ function animChef(g,t,cooking){const u=g.userData;if(u.seed==null)u.seed=Math.ra
 const avMap=new Map();
 function syncAv(e,time,dt){
   let a=avMap.get(e);
-  if(!a){const g=mkAvatar(Object.assign({role:e.role,name:e.name},e.look));a={g};g.userData.seed=Math.random()*6;
+  if(!a){const g=mkAvatar(Object.assign({role:e.role,name:e.name,staffRole:e.role=='w'?'waiter':null},e.look));a={g};g.userData.seed=Math.random()*6;
     if(e.role=='c'){a.b=bubbleCanvas();a.bs=sprite(a.b.tex,.9,7);a.bs.scale.set(.82,1.03,1);a.bs.position.set(0,1.66,0);g.add(a.bs)}
     avMap.set(e,a)}
   const g=a.g,u=g.userData,moving=e.path&&e.path.length>0,seated=e.role=='c'&&e.sit&&e.st!='out';
@@ -842,7 +867,8 @@ function syncAv(e,time,dt){
     const s=Math.sin(time*12+u.seed);pose(u,{s,carry:e.carry!=null,t:time});u.body.position.y=Math.abs(s)*.045}
   else{pose(u,{carry:e.carry!=null,t:time});u.body.position.y=Math.sin(time*2+u.seed)*.008}
   blink(u,dt);
-  if(e.role=='w'){const c=e.carry!=null;u.carry.visible=u.tray.visible=c;if(c)u.carry.material.map=emojiTex(DISHES[e.carry].e);setFace(u,'happy')}
+  if(e.role=='w'){const c=e.carry!=null;u.carry.visible=u.tray.visible=c;if(c)u.carry.material.map=emojiTex(DISHES[e.carry].e);setFace(u,'happy');
+    const k=e.task&&e.task.k,ic={take:'📝',pick:'🏃',give:'🍽️',clean:'🧹'}[k];u.act.visible=!!ic;if(ic&&u.actK!==ic){u.actK=ic;u.act.material.map=emojiTex(ic)}u.act.position.y=1.15+Math.sin(time*5)*.03}
   if(e.role=='c'){
     setFace(u,e.st=='out'?(e.angry?'angry':'happy'):e.st=='eat'?'happy':e.pat<.3?'angry':e.pat<.6?'ok':'happy');
     const show=e.st=='wait'||e.st=='food';a.bs.visible=show;
@@ -950,13 +976,24 @@ function syncPeds(dt,t){
 let greeterAv=null,musicianAv=null,musicKey='';
 function syncStaffExtras(t,dt){
   const gr=hired('greeter')[0];
-  if(gr&&!greeterAv){greeterAv=mkAvatar(Object.assign({role:'w',name:gr.name},gr.look));greeterAv.position.set(11.45,0,10.35);greeterAv.rotation.y=-Math.PI*.75}
+  if(gr&&!greeterAv){greeterAv=mkAvatar(Object.assign({role:'w',staffRole:'greeter',name:gr.name},gr.look));greeterAv.userData.sid=gr.id;greeterAv.position.set(11.45,0,10.35);greeterAv.rotation.y=-Math.PI*.75}
   if(greeterAv){const u=greeterAv.userData;pose(u,{t});blink(u,dt);const near=customers.some(c=>c.st=='in'&&Math.hypot(c.x-11.5,c.y-11.5)<1.6);
     u.bow=(u.bow||0)+((near?1:0)-(u.bow||0))*Math.min(1,dt*6);u.body.rotation.x=u.bow*.5;u.aL.s.rotation.x=u.aR.s.rotation.x=-.3*u.bow;setFace(u,'happy')}
   const mu=hired('musician')[0];
-  if(mu&&!musicianAv){const st=S.items.find(o=>o.type=='stage');if(st){musicianAv=mkAvatar(Object.assign({role:'w',name:mu.name},mu.look));musicianAv.position.set(st.x+.5,.12,st.y+.5);musicianAv.rotation.y=Math.PI/2;musicianAv.userData.stage=st}}
-  if(musicianAv){const u=musicianAv.userData;pose(u,{sit:1,t});u.aR.s.rotation.x=-.9+Math.sin(t*10)*.25;u.aL.s.rotation.x=-1.1;u.aL.s.rotation.z=.5;u.head.rotation.z=Math.sin(t*2)*.12;blink(u,dt);setFace(u,'happy');
+  if(mu&&!musicianAv){const st=S.items.find(o=>o.type=='stage');if(st){musicianAv=mkAvatar(Object.assign({role:'w',staffRole:'musician',name:mu.name},mu.look));musicianAv.userData.sid=mu.id;musicianAv.position.set(st.x+.5,.12,st.y+.5);musicianAv.rotation.y=Math.PI/2;musicianAv.userData.stage=st}}
+  if(greeterAv){greeterAv.userData.act.visible=true;if(greeterAv.userData.actK!=='🙇'){greeterAv.userData.actK='🙇';greeterAv.userData.act.material.map=emojiTex('🙇')}}
+  if(musicianAv){const u=musicianAv.userData;u.act.visible=true;if(u.actK!=='🎵'){u.actK='🎵';u.act.material.map=emojiTex('🎵')}pose(u,{sit:1,t});u.aR.s.rotation.x=-.9+Math.sin(t*10)*.25;u.aL.s.rotation.x=-1.1;u.aL.s.rotation.z=.5;u.head.rotation.z=Math.sin(t*2)*.12;blink(u,dt);setFace(u,'happy');
     if(Math.random()<dt*1.2)fx.push({x:musicianAv.position.x+rnd(-.3,.3),y:musicianAv.position.z,t:pick(['🎵','🎶']),k:'emo'})}}
+// manager walks between the tables, picking up tips
+let managerAv=null,mgr=null;
+function syncManager(t,dt){const m=hired('manager')[0];if(!m)return;
+  if(!managerAv){managerAv=mkAvatar(Object.assign({role:'w',staffRole:'manager',name:m.name},m.look));managerAv.userData.sid=m.id;mgr={x:6.5,y:8.5,path:[]}}
+  const u=managerAv.userData;
+  if(!mgr.path.length){const tip=S.items.find(o=>o.tip&&o.tipT>1);const tgt=tip?(tableOf(tip)?freeN(tableOf(tip)):freeN(tip)):[[Math.floor(rnd(1,8)),Math.floor(rnd(5,9))]];
+    const p=tgt.length&&bfs([mgr.x,mgr.y],tgt);if(p)mgr.path=p;u.idle=rnd(1,3)}
+  if(mgr.path.length&&(u.idle-=dt)<=0){const p=mgr.path[0],dx=p[0]+.5-mgr.x,dz=p[1]+.5-mgr.y;if(Math.hypot(dx,dz)>.01)managerAv.rotation.y=Math.atan2(dx,dz);walk(mgr,dt,1.6);const s=Math.sin(t*10);pose(u,{s,t});u.body.position.y=Math.abs(s)*.03}
+  else pose(u,{t});blink(u,dt);setFace(u,'happy');managerAv.position.set(mgr.x,0,mgr.y);
+  const k=mgr.path.length?'🚶':'👀';if(u.actK!==k){u.actK=k;u.act.material.map=emojiTex(k)}u.act.visible=true}
 function ensureStage(){if(!hired('musician').length||S.items.some(o=>o.type=='stage'))return;
   for(const[x,y]of[[0,7],[0,5],[7,6],[3,8],[1,8]])if(!at(x,y)&&!rugAt(x,y)){add('stage',x,y);return}}
 // ---- locked land in front (garden extension) ----
@@ -1003,6 +1040,7 @@ function tap(e){
     const th=ray.intersectObjects(tips.map(([id,v])=>v.g.userData.tip),true)[0];
     if(th){const id=tips.find(([i,v])=>{let o=th.object;while(o){if(o===v.g.userData.tip)return true;o=o.parent}return false});if(id){collectTip(S.items.find(o=>o.id==id[0]));return}}
     if(t){const o=S.items.find(o=>o.type=='chair'&&o.tip&&Math.abs(o.x-t[0])+Math.abs(o.y-t[1])<=1&&(tableOf(o)||{}).x==t[0]&&(tableOf(o)||{}).y==t[1]);if(o){collectTip(o);return}}
+    if(pickPerson(e))return;
     const ents=[...avMap.entries()].filter(([c,a])=>a.bs);const hits=ray.intersectObjects(ents.map(([c,a])=>a.g),true);
     for(const h of hits){let o=h.object;while(o&&!ents.some(([c,a])=>a.g===o))o=o.parent;const f=o&&ents.find(([c,a])=>a.g===o);
       if(f&&f[0].st=='wait'){f[0].pri=true;toast('Ưu tiên phục vụ khách này!');return}}
@@ -1151,7 +1189,7 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;clock+=dt;
   for(let i=0;i<S.speed;i++)tick(dt);
   for(const ev of events.splice(0)){if(ev.k=='coins')flyCoins(ev.x,ev.y,ev.n,ev.tip);if(ev.k=='level')levelUp();if(ev.k=='quest')refreshModal();if(ev.k=='unlock')onUnlock(ev.a);if(ev.k=='hot')toast('🔥 Món hot mới: '+DISHES[S.hot].e+' '+DISHES[S.hot].n)}
   if(TGT.distanceTo(goalT)>.01||Math.abs(rad-goalR)>.05){TGT.lerp(goalT,.12);rad+=(goalR-rad)*.12;placeCam()}
-  syncItems(clock,now);syncAvatars(clock,dt);syncCars(dt,clock);syncPeds(dt,clock);syncStaffExtras(clock,dt);syncLand();syncFx();syncPuffs(dt);syncPetals(dt,clock);updateHover();
+  syncItems(clock,now);syncAvatars(clock,dt);syncCars(dt,clock);syncPeds(dt,clock);syncStaffExtras(clock,dt);syncManager(clock,dt);syncInfo();syncLand();syncFx();syncPuffs(dt);syncPetals(dt,clock);updateHover();
   lanterns.forEach((l,i)=>l.rotation.z=Math.sin(clock*1.3+i)*.05);norens.forEach((n,i)=>n.children.forEach(c=>{if(c.userData.sway!=null)c.rotation.x=Math.sin(clock*2+c.userData.sway+i)*.06}));
   renderer.render(scene,cam);hud();
   if(now-boardAt>250){boardAt=now;updateBoard()}
@@ -1201,7 +1239,39 @@ function story(){
     'Tiệm hơi cũ, nhưng có Hana và Yuki phụ việc. Khách tới thì các cô ấy nhận order, ta nấu ở bếp và quầy sushi.',
     'Ăn xong khách để lại túi 💰 tiền tip trên bàn. Cháu nhớ chạm vào để nhặt nhé!',
     'Ra Chợ cá ghép nguyên liệu để món ngon hơn. Kiếm đủ tiền thì dọn kho ở phòng tatami và băng chuyền để mở rộng tiệm. Cố lên nào!'])}
-window.__game={S,view,unlockArea,get customers(){return customers},goalT,setR:r=>{goalR=r;zoomed=true},clearTalk:()=>{talkQ=[];$('talk').hidden=true},LOW};
+// ================= WHO IS WHO: tap a person for an info card, legend of role colours =================
+function people(){const L=[];
+  for(const[e,a]of avMap)L.push({g:a.g,kind:e.role=='c'?'guest':'staff',e,sid:e.sid});
+  if(greeterAv)L.push({g:greeterAv,kind:'staff',sid:greeterAv.userData.sid});
+  if(musicianAv)L.push({g:musicianAv,kind:'staff',sid:musicianAv.userData.sid});
+  if(managerAv)L.push({g:managerAv,kind:'staff',sid:managerAv.userData.sid});
+  for(const[id,v]of itemObj){const u=v.g.userData;if(u.chef)L.push({g:u.chef,kind:'staff',sid:u.chefId,chef:1,stove:S.items.find(o=>o.id==id)});if(u.vendor)L.push({g:u.vendor,kind:'staff',sid:u.vendorKey=='gen'?null:u.vendorKey,vendor:1})}
+  return L}
+let infoSel=null,infoT=0;
+function pickPerson(e){ray.setFromCamera(ndc(e),cam);const L=people();const hits=ray.intersectObjects(L.map(p=>p.g),true);
+  for(const h of hits){let o=h.object;while(o&&!L.some(p=>p.g===o))o=o.parent;const p=o&&L.find(p=>p.g===o);if(p){if(p.kind=='guest'&&p.e.st=='wait')p.e.pri=true;infoSel=p;infoT=6;renderInfo();return true}}
+  return false}
+function staffDoing(p){const st=STAFF.find(s=>s.id==p.sid);
+  if(p.chef){const o=p.stove;return o&&o.cook?'Đang nấu '+DISHES[o.cook.c.dish].e+' '+DISHES[o.cook.c.dish].n+' · còn '+Math.ceil((1-(o.prog||0))*dishCook(o.cook.c.dish))+'s':o&&o.hold?'Món đã xong, chờ phục vụ mang ra ✅':'Đang chờ đơn mới'}
+  if(p.vendor)return'Bán bánh taiyaki cho người đi đường · '+stallPrice()+' xu/phần';
+  if(!st)return'';
+  if(st.role=='waiter'){const t=p.e.task;return !t?'Đang rảnh, chờ việc':t.k=='take'?'Đi nhận order 📝':t.k=='pick'?'Vào bếp lấy món 🏃':t.k=='give'?'Bưng '+DISHES[t.c.dish].e+' ra cho khách':'Dọn bàn 🧹'}
+  return{greeter:'Đứng ở cổng chào đón khách 🙇',musician:'Chơi đàn shamisen cho khách nghe 🎵',manager:'Đi quanh quán nhặt tiền tip 💰'}[st.role]||''}
+function renderInfo(){const el=$('info');if(!infoSel){el.hidden=true;return}const p=infoSel;el.hidden=false;
+  if(p.kind=='guest'){const c=p.e;if(!customers.includes(c)){infoSel=null;el.hidden=true;return}
+    const[l]=stateOf(c);const sec=c.st=='wait'||c.st=='food'?' · kiên nhẫn còn '+Math.ceil(patSecs(c))+'s':'';
+    el.style.setProperty('--c','#8a6a48');
+    el.innerHTML=`<div class="por">${c.vip?'👑':'🙂'}</div><div><b>${c.vip?'Khách VIP':'Khách'}<span class="tag">KHÁCH</span></b><small>Gọi món: ${DISHES[c.dish].e} ${DISHES[c.dish].n}</small><small>${c.st=='out'?(c.angry?'Bỏ về vì chờ lâu 😠':'Ăn xong, ra về vui vẻ 😊'):l+sec}</small></div>`;return}
+  const st=STAFF.find(s=>s.id==p.sid),role=st?st.role:p.chef?'chef':'vendor',R=ROLE[role];
+  el.style.setProperty('--c',R.c);
+  el.innerHTML=`<div class="por">${st&&portrait(st)?`<img src="${portrait(st)}" alt="">`:R.e}</div><div><b>${st?st.name:R.n}<span class="tag">${R.e} ${R.n.toUpperCase()}</span></b><small>${st?'<span class="stars">'+'★'.repeat(st.stars)+'</span> · Lv '+S.staff[st.id].lv:'Nhân viên phụ'}</small><small>${staffDoing(p)}</small></div>`}
+let infoAt=0;
+function syncInfo(){if(!infoSel)return;infoT-=1/60;if(infoT<=0){infoSel=null;$('info').hidden=true;return}if(performance.now()-infoAt>300){infoAt=performance.now();renderInfo()}}
+$('info').addEventListener('pointerdown',()=>{infoSel=null;$('info').hidden=true});
+$('nLegend').onclick=()=>{const el=$('legend');el.hidden=!el.hidden;$('nLegend').classList.toggle('on',!el.hidden);if(el.hidden)return;
+  el.innerHTML='<b>Ai là ai?</b>'+Object.entries(ROLE).map(([k,r])=>`<div class="lr"><span class="dot" style="--c:${r.c}"></span><div>${r.e} ${r.n}<small>${{chef:'Áo trắng, mũ cao, đứng ở bếp',waiter:'Kimono xanh chàm, bưng món, dọn bàn',greeter:'Đứng ở cổng cúi chào',musician:'Ngồi trên bục chơi đàn',manager:'Áo vest, đi nhặt tiền tip',vendor:'Đứng ở quầy taiyaki ven đường'}[k]}</small></div></div>`).join('')+
+  '<div class="lr"><span class="dot" style="--c:transparent;border-style:dashed;border-color:#8a6a48"></span><div>Khách<small>Không có vòng màu và bảng tên. Có bong bóng món ăn và đồng hồ chờ.</small></div></div><div class="lr"><div><small>Chạm vào bất kỳ ai trong quán để xem chi tiết.</small></div></div>'};
+window.__game={proj:()=>{const r=cv.getBoundingClientRect();return people().filter(p=>p.kind=='staff'&&p.e).map(p=>{const v=new THREE.Vector3();p.g.getWorldPosition(v);v.y+=.6;v.project(cam);return[r.left+(v.x+1)/2*r.width,r.top+(1-v.y)/2*r.height]}).find(([x,y])=>x>60&&x<340&&y>320&&y<r.bottom-40)||null},S,view,unlockArea,get customers(){return customers},goalT,setR:r=>{goalR=r;zoomed=true},clearTalk:()=>{talkQ=[];$('talk').hidden=true},LOW};
 }
 // ================= BOOT: load three.js (with a second CDN as backup), show readable errors =================
 function bootFail(msg){const b=document.getElementById('boot');if(!b)return;b.hidden=false;document.getElementById('bootMsg').textContent='Ối, tiệm chưa mở được';
