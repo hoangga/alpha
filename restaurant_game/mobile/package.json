@@ -1,0 +1,19 @@
+{
+  "name": "nha-hang-trieu-phu",
+  "version": "0.7.0",
+  "private": true,
+  "description": "Nhà Hàng Triệu Phú - game quản lý tiệm sushi 3D cho iOS và Android",
+  "scripts": {
+    "sync": "cap sync",
+    "android": "cap open android",
+    "ios": "cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.2",
+    "@capacitor/core": "^6.2.2",
+    "@capacitor/ios": "^6.2.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.2"
+  }
+}

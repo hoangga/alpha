@@ -1,5 +1,8 @@
 # Nhà Hàng Triệu Phú
 
+> **Hướng hiện tại:** game 3D chạy bằng web (Three.js) trong `demo/index.html`, đóng gói thành app iOS/Android bằng Capacitor trong `mobile/` (xem `mobile/README.md`).
+> Phần Flutter bên dưới là bản mẫu 2D đầu tiên, giữ lại để tham khảo và không còn được phát triển tiếp.
+
 Game quản lý nhà hàng (Flutter + Flame) cho iOS và Google Play, kết hợp 3 lối chơi:
 
 - **Time-management**: chạm bàn để nhận order, chạm lại để phục vụ trước khi khách hết kiên nhẫn.

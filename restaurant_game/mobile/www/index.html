@@ -1,3 +1,10 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#5f381a">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box}html,body{margin:0}</style>
 <title>Nhà Hàng Triệu Phú</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap">
@@ -183,6 +190,8 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 .stars{color:#e0a000;letter-spacing:1px}
 @media (prefers-reduced-motion:reduce){.sheet,.lvup .card2{animation:none}.cf{display:none}}
 </style>
+</head>
+<body>
 <div id="app">
   <header class="top">
     <button class="lvl" id="lvlBtn" aria-label="Cấp độ"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="20" fill="none" stroke="#3e230f" stroke-width="5"/><circle id="xpRing" cx="23" cy="23" r="20" fill="none" stroke="#7ee081" stroke-width="5" stroke-linecap="round" transform="rotate(-90 23 23)" stroke-dasharray="125.7" stroke-dashoffset="125.7"/></svg><b id="lvn">1</b></button>
@@ -229,7 +238,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
   <div id="boot"><div class="bx"><div class="big">🍣</div><b id="bootMsg">Đang mở tiệm…</b><p id="bootErr" hidden></p><button class="btn o" id="bootBtn" hidden>Tải lại</button></div></div>
   <div id="talk" hidden><div class="who"><div class="face">👴</div><b id="talkName">Ono Ryota</b></div><p id="talkText"></p><span class="next">Chạm để tiếp ▸</span></div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="three.min.js"></script>
 <script>
 function startGame(){'use strict';
 // ================= DATA =================
@@ -1459,3 +1468,6 @@ if(window.THREE)bootRun();
 else{document.getElementById('bootMsg').textContent='Đang tải đồ họa 3D…';const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js';
   s.onload=bootRun;s.onerror=()=>bootFail('Không tải được thư viện đồ họa three.js từ cả cdnjs và jsdelivr. Hãy kiểm tra mạng rồi tải lại.');document.head.appendChild(s)}
 </script>
+
+</body>
+</html>

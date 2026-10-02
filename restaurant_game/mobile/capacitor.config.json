@@ -1,0 +1,8 @@
+{
+  "appId": "com.hoangga.nhahangtrieuphu",
+  "appName": "Nhà Hàng Triệu Phú",
+  "webDir": "www",
+  "backgroundColor": "#5f381a",
+  "android": { "allowMixedContent": false },
+  "ios": { "contentInset": "never" }
+}
