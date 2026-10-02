@@ -48,8 +48,9 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 .coin{position:absolute;font-size:20px;transition:transform .7s cubic-bezier(.5,-.3,.7,1),opacity .7s;will-change:transform}
 /* bottom nav */
 .nav{display:flex;gap:6px;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));background:linear-gradient(#7a4a26,#5f381a);border-top:3px solid #3e230f;position:relative;z-index:3}
-.nb{flex:1;min-width:0;border:0;border-radius:14px;background:var(--cream);box-shadow:0 4px 0 #c9a77a;padding:4px 0 2px;display:flex;flex-direction:column;align-items:center;font-weight:700;font-size:11px;position:relative;line-height:1.1}
-.nb span{font-size:22px;line-height:1.2}
+.nb{flex:1;min-width:0;padding-left:0;padding-right:0;border:0;border-radius:14px;background:var(--cream);box-shadow:0 4px 0 #c9a77a;padding:4px 0 2px;display:flex;flex-direction:column;align-items:center;font-weight:700;font-size:11px;position:relative;line-height:1.1}
+.nb span{font-size:21px;line-height:1.2}
+@media (max-width:400px){.nb{font-size:10px}.nav{gap:4px;padding-left:6px;padding-right:6px}}
 .nb:active{transform:translateY(3px);box-shadow:0 1px 0 #c9a77a}
 .nb.on{background:var(--orange);color:#fff;box-shadow:0 4px 0 var(--orange2)}
 .badge{position:absolute;top:-6px;right:4px;background:var(--red);color:#fff;border-radius:10px;font-size:11px;padding:0 6px;border:2px solid #fff}
@@ -80,6 +81,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 .sheet h2{margin:0;font-size:20px;flex:1;text-shadow:0 2px 0 rgba(0,0,0,.18);text-wrap:balance}
 .x{border:0;width:34px;height:34px;border-radius:50%;background:#fff;color:var(--orange2);font-weight:800;font-size:18px;box-shadow:0 2px 0 rgba(0,0,0,.2)}
 .mb{overflow:auto;padding:10px 14px 18px;display:flex;flex-direction:column;gap:8px}
+.mb>*{flex-shrink:0}
 .it{display:flex;gap:10px;align-items:center;background:#fff;border:2px solid #f0dcb8;border-radius:14px;padding:8px 10px}
 .it .e{font-size:30px;width:40px;text-align:center;flex:0 0 40px}
 .it .m{flex:1;min-width:0}
@@ -112,6 +114,36 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 #talk b{background:var(--red);color:#fff;border-radius:10px;padding:1px 10px;font-size:14px;margin-bottom:4px}
 #talk p{margin:14px 0 2px;font-size:15px;line-height:1.35;font-weight:600}
 #talk .next{display:block;text-align:right;font-size:12px;color:var(--brown2);font-weight:700}
+/* tabbed sheets, menu and staff cards */
+.tabs2{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px}
+.tabs2 button{border:0;border-radius:12px;padding:4px 11px;background:var(--cream2);font-weight:700;font-size:13px;white-space:nowrap}
+.tabs2 button.on{background:var(--brown);color:#fff}
+.hot{display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,#ffe0b8,#fff1d6);border:2px solid #ffb84d;border-radius:14px;padding:6px 10px;font-weight:700;font-size:13px}
+.hot .e{font-size:26px}
+.dgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dish{background:#fff;border:2px solid #f0dcb8;border-radius:16px;padding:8px;display:flex;flex-direction:column;gap:3px;position:relative;min-width:0}
+.dish .pic{height:62px;border-radius:12px;display:grid;place-items:center;font-size:40px;background:radial-gradient(circle at 50% 60%,#fff,#ffe9c9)}
+.dish b{font-size:14px;line-height:1.15}
+.dish small{font-size:11.5px;color:#7a5a3a;line-height:1.25}
+.dish .lvtag{position:absolute;top:6px;left:6px;margin:0}
+.dish.lock .pic{filter:grayscale(1);opacity:.5}
+.dish .fire{position:absolute;top:4px;right:6px;font-size:16px}
+.dish .btn{padding:4px 8px;font-size:13px;margin-top:2px}
+.staff{display:flex;gap:10px;align-items:center;background:#fff;border:2px solid #f0dcb8;border-radius:16px;padding:8px 10px}
+.staff .por{width:58px;height:58px;flex:0 0 58px;border-radius:14px;background:radial-gradient(circle at 50% 35%,#fff6e6,#ffd9a8);overflow:hidden;display:grid;place-items:center;font-size:30px}
+.staff .por img{width:100%;height:100%;object-fit:cover}
+.staff .m{flex:1;min-width:0}
+.staff .m b{font-size:15px}
+.staff .m small{display:block;font-size:12px;color:#7a5a3a;line-height:1.25}
+.staff.no{opacity:.6}
+.role{display:inline-block;font-size:11px;font-weight:700;border-radius:8px;padding:0 6px;background:#e3fbf8;color:#1f7d74;margin-left:4px}
+.area{background:#fff;border:2px solid #f0dcb8;border-radius:16px;overflow:hidden}
+.area .ban{height:70px;display:grid;place-items:center;font-size:44px;background:linear-gradient(135deg,#ffe0b8,#ffd0d8)}
+.area .tx{padding:8px 10px;display:flex;gap:8px;align-items:center}
+.area .tx div{flex:1;min-width:0}
+.area .tx b{display:block;font-size:15px}
+.area .tx small{display:block;font-size:12px;color:#7a5a3a;line-height:1.3}
+.area.done .ban{background:linear-gradient(135deg,#d6f5e3,#e3fbf8)}
 /* merge market */
 .mg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:#e8cfa2;padding:8px;border-radius:14px}
 .cell{aspect-ratio:1;border:0;border-radius:12px;background:#fff7e8;box-shadow:inset 0 -3px 0 #e3c99b;font-size:26px;display:grid;place-items:center;position:relative;padding:0}
@@ -143,6 +175,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
       <button class="rb" data-v="dining" aria-label="Phòng ăn">🍽️<small>Quán</small></button>
       <button class="rb" data-v="kitchen" aria-label="Bếp">🍣<small>Bếp</small></button>
       <button class="rb" data-v="patio" aria-label="Vườn">🌸<small>Vườn</small></button>
+      <button class="rb" data-v="street" aria-label="Đường phố">🚕<small>Phố</small></button>
       <button class="rb" id="nSpeed" aria-label="Tốc độ">⏩<small id="spd">x1</small></button>
     </div>
     <div id="fly"></div>
@@ -152,6 +185,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
     <button class="nb" id="nStaff"><span>🧑‍🍳</span>Nhân viên</button>
     <button class="nb" id="nDeco"><span>🛋️</span>Trang trí</button>
     <button class="nb" id="nQuest"><span>📜</span>Nhiệm vụ<em class="badge" id="qBadge" hidden>0</em></button>
+    <button class="nb" id="nExpand"><span>🏗️</span>Mở rộng</button>
     <button class="nb" id="nMarket"><span>🐟</span>Chợ cá</button>
   </nav>
   <div id="deco" hidden>
@@ -168,24 +202,57 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 <script>
 function startGame(){'use strict';
 // ================= DATA =================
-const W=12,H=14,DOOR=[11,11];
+const W=12,H=18,DOOR=[11,11];
+const landLocked=(x,y)=>y>=14&&!S.areas.garden2;
 const inKitchen=(x,y)=>x>=9&&x<=11&&y>=0&&y<=4;
 const inTatami=(x,y)=>x>=0&&x<=3&&y>=0&&y<=3;
 const CHAINS={
   fish:{n:'Hải sản',items:['🦐','🐟','🐠','🍣']},
   rice:{n:'Gạo',items:['🌾','🍚','🍙','🍘']},
   veg:{n:'Rau củ',items:['🌱','🥬','🥕','🥗']},
+  meat:{n:'Thịt',items:['🐔','🍗','🍖','🥩']},
+  sweet:{n:'Đồ ngọt',items:['🥛','🥚','🍯','🍮']},
   tea:{n:'Trà',items:['🍃','🌿','🍵']},
 };
+const MCATS=[['sushi','🍣 Sushi'],['bowl','🍜 Mì & cơm'],['fry','🍤 Chiên nướng'],['sweet','🍡 Tráng miệng'],['drink','🍵 Đồ uống']];
 const DISHES=[
-  {e:'🍙',n:'Cơm nắm',base:8,cook:3,unlock:1,ch:'rice'},
-  {e:'🍣',n:'Sushi cá hồi',base:14,cook:5,unlock:1,ch:'fish'},
-  {e:'🍵',n:'Trà xanh',base:6,cook:2,unlock:1,ch:'tea'},
-  {e:'🍜',n:'Mì ramen',base:18,cook:6,unlock:2,ch:'veg'},
-  {e:'🍡',n:'Bánh dango',base:10,cook:3,unlock:2,ch:'rice'},
-  {e:'🍤',n:'Tôm tempura',base:22,cook:6,unlock:3,ch:'fish'},
-  {e:'🍱',n:'Cơm hộp bento',base:32,cook:8,unlock:4,ch:'rice'},
+  {e:'🍣',n:'Sushi cá hồi',base:14,cook:5,unlock:1,ch:'fish',cat:'sushi'},
+  {e:'🍙',n:'Cơm nắm',base:8,cook:3,unlock:1,ch:'rice',cat:'sushi'},
+  {e:'🍵',n:'Trà xanh',base:6,cook:2,unlock:1,ch:'tea',cat:'drink'},
+  {e:'🍜',n:'Mì ramen',base:18,cook:6,unlock:2,ch:'veg',cat:'bowl'},
+  {e:'🍡',n:'Bánh dango',base:10,cook:3,unlock:2,ch:'sweet',cat:'sweet'},
+  {e:'🥤',n:'Soda chanh',base:7,cook:2,unlock:2,ch:'tea',cat:'drink'},
+  {e:'🍤',n:'Tôm tempura',base:22,cook:6,unlock:3,ch:'fish',cat:'fry'},
+  {e:'🥟',n:'Há cảo gyoza',base:16,cook:5,unlock:3,ch:'meat',cat:'fry'},
+  {e:'🍢',n:'Lẩu oden',base:15,cook:5,unlock:3,ch:'veg',cat:'bowl'},
+  {e:'🍱',n:'Cơm hộp bento',base:32,cook:8,unlock:4,ch:'rice',cat:'bowl'},
+  {e:'🐙',n:'Bánh takoyaki',base:20,cook:5,unlock:4,ch:'fish',cat:'fry'},
+  {e:'🍮',n:'Pudding trứng',base:14,cook:4,unlock:4,ch:'sweet',cat:'sweet'},
+  {e:'🍛',n:'Cơm cà ri Nhật',base:28,cook:7,unlock:5,ch:'meat',cat:'bowl'},
+  {e:'🍧',n:'Đá bào kakigori',base:16,cook:3,unlock:5,ch:'sweet',cat:'sweet'},
+  {e:'🦀',n:'Sushi cua hoàng đế',base:45,cook:8,unlock:6,ch:'fish',cat:'sushi'},
+  {e:'🍶',n:'Rượu sake',base:24,cook:2,unlock:6,ch:'rice',cat:'drink'},
+  {e:'🍗',n:'Gà karaage',base:26,cook:6,unlock:6,ch:'meat',cat:'fry'},
+  {e:'🥩',n:'Bò wagyu nướng',base:70,cook:10,unlock:7,ch:'meat',cat:'fry'},
+  {e:'🦞',n:'Sashimi tôm hùm',base:90,cook:10,unlock:8,ch:'fish',cat:'sushi'},
+  {e:'🍨',n:'Kem trà xanh',base:18,cook:3,unlock:8,ch:'tea',cat:'sweet'},
 ];
+// staff roster: role, stars (rarity), cost in coins (c) or gems (g), level required
+const STAFF=[
+  {id:'ono',name:'Ono Ryota',role:'chef',stars:4,start:1,look:{skin:'#f9d3b0',hair:'#d8d8d8',eye:'#4a2e1a',style:'short',outfit:'chef',beard:true}},
+  {id:'hana',name:'Hana',role:'waiter',stars:2,start:1,look:{skin:'#ffe3cc',hair:'#2b1b12',eye:'#4a2e1a',style:'bun',outfit:'kimono',kimono:'#c0392b',female:true}},
+  {id:'yuki',name:'Yuki',role:'waiter',stars:2,start:1,look:{skin:'#f9d3b0',hair:'#1a1a2e',eye:'#2d4a7a',style:'bun',outfit:'kimono',kimono:'#2c4a8a',female:true}},
+  {id:'takeshi',name:'Takeshi',role:'chef',stars:3,c:600,lv:2,look:{skin:'#e8b48a',hair:'#1a1a2e',eye:'#2a2a2a',style:'spiky',outfit:'chef'}},
+  {id:'mei',name:'Mei',role:'greeter',stars:3,c:500,lv:2,look:{skin:'#ffe3cc',hair:'#f08aa8',eye:'#6a3a2a',style:'twin',outfit:'kimono',kimono:'#ff8fc8',female:true}},
+  {id:'mai',name:'Mai',role:'waiter',stars:3,c:450,lv:2,look:{skin:'#f9d3b0',hair:'#5a3820',eye:'#3a6a3a',style:'bun',outfit:'kimono',kimono:'#2a8a6a',female:true}},
+  {id:'haru',name:'Haru',role:'musician',stars:4,c:900,lv:3,look:{skin:'#f9d3b0',hair:'#3d2a1e',eye:'#4a2e1a',style:'short',outfit:'kimonoV',color:'#2c4a8a'}},
+  {id:'sora',name:'Sora',role:'waiter',stars:3,c:900,lv:3,look:{skin:'#e8b48a',hair:'#e8c066',eye:'#2d4a7a',style:'pony',outfit:'kimono',kimono:'#8a3a8a',female:true}},
+  {id:'kenji',name:'Kenji',role:'manager',stars:4,g:12,lv:2,look:{skin:'#f9d3b0',hair:'#2b1b12',eye:'#2a2a2a',style:'short',outfit:'office',glasses:true}},
+  {id:'ren',name:'Ren',role:'vendor',stars:3,c:700,lv:4,look:{skin:'#ffe3cc',hair:'#c0392b',eye:'#6a3a2a',style:'spiky',outfit:'hoodie',color:'#ff9f1c'}},
+  {id:'aiko',name:'Aiko',role:'chef',stars:5,g:15,lv:4,look:{skin:'#ffe3cc',hair:'#6d4c9f',eye:'#6d4c9f',style:'long',outfit:'chef',female:true}},
+  {id:'kaito',name:'Kaito',role:'waiter',stars:5,g:15,lv:5,look:{skin:'#c48a60',hair:'#1a1a1a',eye:'#2a2a2a',style:'spiky',outfit:'kimono',kimono:'#1e1e24'}},
+];
+const ROLE={chef:{n:'Đầu bếp',e:'👨‍🍳'},waiter:{n:'Phục vụ',e:'👘'},greeter:{n:'Lễ tân',e:'🙇'},musician:{n:'Nhạc công',e:'🪕'},manager:{n:'Quản lý',e:'🕴️'},vendor:{n:'Bán mang về',e:'🏪'}};
 // catalogue: c = coins, g = gems, b = beauty; zone: kitchen | patio | inside
 const T={
   table:{n:'Bàn gỗ',e:'🪵',c:60,cat:'ban'},
@@ -202,14 +269,17 @@ const T={
   shishi:{n:'Máng tre',e:'🎋',g:15,cat:'vip',b:22,zone:'patio'},
   sakura:{n:'Cây anh đào',e:'🌸',g:20,cat:'vip',b:30,zone:'patio'},
   // building parts (not for sale)
-  wall:{fixed:1},fence:{fixed:1},counter:{fixed:1},fridge:{fixed:1},sink:{fixed:1},shoji:{fixed:1},bar:{fixed:1},belt:{fixed:1},crate:{fixed:1},pond:{fixed:1},bigsakura:{fixed:1},
+  wall:{fixed:1},fence:{fixed:1},counter:{fixed:1},fridge:{fixed:1},sink:{fixed:1},shoji:{fixed:1},bar:{fixed:1},belt:{fixed:1},crate:{fixed:1},pond:{fixed:1},bigsakura:{fixed:1},stall:{fixed:1},stage:{fixed:1},
   stool:{fixed:1,seat:1},cushion:{fixed:1,seat:1},lowtable:{fixed:1},
 };
 const TABLES={table:'table',lowtable:'table',bar:'bar',belt:'belt'};
-const CATS=[['ban','Bàn ghế'],['bep','Bếp'],['trang','Trang trí'],['vip','💎 Cao cấp'],['mo','🏗️ Mở rộng'],['sell','🗑️ Bán']];
+
+const CATS=[['ban','Bàn ghế'],['bep','Bếp'],['trang','Trang trí'],['vip','💎 Cao cấp'],['sell','🗑️ Bán']];
 const AREAS={
   tatami:{n:'Phòng chiếu tatami',e:'🎎',lv:2,c:600,d:'Phòng riêng kiểu Nhật. Khách VIP thích ngồi đây, trả thêm 50%.'},
   kaiten:{n:'Sushi băng chuyền',e:'🍣',lv:3,c:1500,d:'Khách tự lấy đĩa trên băng chuyền, không cần phục vụ.'},
+  stall:{n:'Quầy mang về ven đường',e:'🏪',lv:4,c:2000,d:'Người đi bộ ngoài phố ghé mua bánh taiyaki mang đi. Thuê Ren để bán nhanh hơn.'},
+  garden2:{n:'Vườn mở rộng',e:'🌳',lv:5,c:3500,d:'Thêm 4 hàng đất phía trước: 2 bàn ăn ngoài trời và chỗ trang trí rộng rãi.'},
 };
 const QUEST_T=[
   {k:'serve',n:'Phục vụ {n} khách',e:'🍽️',n0:6},
@@ -219,12 +289,13 @@ const QUEST_T=[
   {k:'vip',n:'Phục vụ {n} khách VIP',e:'👑',n0:1},
   {k:'decor',n:'Đặt {n} món trang trí',e:'🏮',n0:2},
   {k:'dish',n:'Bán {n} phần {d}',e:'🍣',n0:4},
+  {k:'stall',n:'Bán {n} phần mang về',e:'🏪',n0:5},
 ];
-const STAFF_NAMES=['Hana','Yuki','Mai','Sora'];
 // ================= STATE =================
 const S={coins:300,gems:5,xp:0,level:1,served:0,rSum:0,rN:0,speed:1,mode:'play',sel:null,cat:'ban',
-  items:[],menu:DISHES.map(()=>1),waiters:2,chefLv:0,manager:false,quests:[],areas:{tatami:false,kaiten:false},
-  grid:Array(20).fill(null),quality:{fish:0,rice:0,veg:0,tea:0},story:0};
+  items:[],menu:DISHES.map(()=>1),quests:[],areas:{tatami:false,kaiten:false,stall:false,garden2:false},
+  grid:Array(20).fill(null),quality:{fish:0,rice:0,veg:0,meat:0,sweet:0,tea:0},story:0,hot:0,hotT:120,
+  staff:Object.fromEntries(STAFF.map(s=>[s.id,{hired:!!s.start,lv:1}]))};
 let uid=1;
 const add=(type,x,y,extra)=>{const o=Object.assign({id:uid++,type,x,y,born:performance.now()},extra);S.items.push(o);return o};
 const at=(x,y)=>S.items.find(o=>o.x==x&&o.y==y&&!T[o.type].flat)||null;
@@ -242,7 +313,7 @@ function fixedLayout(){
   add('pond',8,12,{main:1});add('pond',9,12);add('pond',8,13);add('pond',9,13);
   add('bigsakura',1,11);
   for(const y of[0,1,2,3,4])add('shoji',4,y);for(const x of[0,1,3])add('shoji',x,4);
-  buildArea('tatami',S.areas.tatami);buildArea('kaiten',S.areas.kaiten);
+  for(const k in AREAS)buildArea(k,S.areas[k]);
 }
 function buildArea(k,open){
   if(k=='tatami'){
@@ -252,35 +323,43 @@ function buildArea(k,open){
     if(open){for(const x of[5,6])for(const y of[1,2,3])add('belt',x,y,{main:x==5&&y==1});
       [[7,1,[-1,0]],[7,2,[-1,0]],[7,3,[-1,0]],[5,4,[0,-1]],[6,4,[0,-1]],[5,0,[0,1]],[6,0,[0,1]]].forEach(([x,y,f])=>add('stool',x,y,{face:f}))}
     else [[5,1],[6,2],[5,3],[6,1]].forEach(([x,y])=>add('crate',x,y,{area:'kaiten'}))}
+  if(k=='stall'){if(open)add('stall',11,13);else add('crate',11,13,{area:'stall'})}
+  if(k=='garden2'&&open&&!S.items.some(o=>o.y>=14)){[['table',3,15],['chair',2,15],['chair',4,15],['table',8,15],['chair',7,15],['chair',9,15],['umbrella',6,16],['toro',0,17],['bonsai',11,17]].forEach(a=>add(...a))}
 }
 function unlockArea(k){S.items=S.items.filter(o=>o.area!==k);S.areas[k]=true;buildArea(k,true);events.push({k:'unlock',a:k})}
-const beauty=()=>S.items.reduce((s,o)=>s+(T[o.type].b||0),0)+(S.areas.tatami?10:0)+(S.areas.kaiten?15:0);
-const dishPrice=i=>Math.round(DISHES[i].base*(1+.25*(S.menu[i]-1))*(1+.12*S.quality[DISHES[i].ch]));
-const dishCook=i=>DISHES[i].cook/(1+S.chefLv*.25);
+const hired=r=>STAFF.filter(s=>s.role==r&&S.staff[s.id].hired);
+const staffPow=s=>s.stars*(1+.2*(S.staff[s.id].lv-1));
+const musicBonus=()=>hired('musician').reduce((a,s)=>a+Math.round(staffPow(s)*3),0);
+const beauty=()=>S.items.reduce((s,o)=>s+(T[o.type].b||0),0)+(S.areas.tatami?10:0)+(S.areas.kaiten?15:0)+(S.areas.garden2?12:0)+musicBonus();
+const greetBonus=()=>hired('greeter').reduce((a,s)=>a+.06*staffPow(s),0);
+const hasManager=()=>hired('manager').length>0;
+const trainCost=s=>Math.round((s.c||s.g*80||300)*.6*1.7**(S.staff[s.id].lv-1));
+const dishPrice=i=>Math.round(DISHES[i].base*(1+.25*(S.menu[i]-1))*(1+.12*(S.quality[DISHES[i].ch]||0)));
+const dishCook=i=>DISHES[i].cook*1.6/(1+hired('chef').reduce((a,s)=>a+.15*staffPow(s),0));
 const dishUpCost=i=>Math.round(DISHES[i].base*12*1.55**(S.menu[i]-1));
 const unlocked=()=>DISHES.map((d,i)=>i).filter(i=>DISHES[i].unlock<=S.level);
-const waiterCost=()=>250*2**(S.waiters-1),chefCost=()=>Math.round(150*1.8**S.chefLv);
 const xpNeed=()=>S.level*60;
 const rating=()=>S.rN?S.rSum/S.rN:5;
 
 // ================= SAVE (this browser only) =================
-const SAVE='nhtp_save_v5';
-function save(){try{localStorage.setItem(SAVE,JSON.stringify({coins:S.coins,gems:S.gems,xp:S.xp,level:S.level,served:S.served,rSum:S.rSum,rN:S.rN,menu:S.menu,waiters:S.waiters,chefLv:S.chefLv,manager:S.manager,quests:S.quests,areas:S.areas,grid:S.grid,quality:S.quality,story:S.story,
+const SAVE='nhtp_save_v6';
+function save(){try{localStorage.setItem(SAVE,JSON.stringify({coins:S.coins,gems:S.gems,xp:S.xp,level:S.level,served:S.served,rSum:S.rSum,rN:S.rN,menu:S.menu,staff:S.staff,hot:S.hot,quests:S.quests,areas:S.areas,grid:S.grid,quality:S.quality,story:S.story,
   items:S.items.filter(o=>!T[o.type].fixed).map(o=>[o.type,o.x,o.y])}))}catch(e){}}
 function load(){let d=null;try{d=JSON.parse(localStorage.getItem(SAVE)||'null')}catch(e){}
   if(d&&d.areas)S.areas=Object.assign(S.areas,d.areas);
   fixedLayout();
   if(!d||!Array.isArray(d.items)){defaultLayout();return}
-  for(const k of['coins','gems','xp','level','served','rSum','rN','waiters','chefLv','manager','story'])if(d[k]!=null)S[k]=d[k];
+  for(const k of['coins','gems','xp','level','served','rSum','rN','story','hot'])if(d[k]!=null)S[k]=d[k];
+  if(d.staff)for(const k in d.staff)if(S.staff[k])S.staff[k]=d.staff[k];
   if(Array.isArray(d.menu))S.menu=DISHES.map((_,i)=>Math.max(1,d.menu[i]|0||1));
   if(Array.isArray(d.quests))S.quests=d.quests;
   if(Array.isArray(d.grid)&&d.grid.length==20)S.grid=d.grid;
-  if(d.quality)Object.assign(S.quality,d.quality);
+  if(d.quality)Object.assign(S.quality,d.quality);if(S.hot>=DISHES.length)S.hot=0;
   d.items.forEach(([t,x,y])=>{if(T[t]&&!T[t].fixed&&!at(x,y))add(t,x,y)})}
 
 // ================= PATHFINDING =================
 // seats are walkable so rows of stools never wall anyone in
-function blocked(x,y){if(x<0||y<0||x>=W||y>=H)return true;const o=at(x,y);return !!(o&&!T[o.type].seat)}
+function blocked(x,y){if(x<0||y<0||x>=W||y>=H||landLocked(x,y))return true;const o=at(x,y);return !!(o&&!T[o.type].seat)}
 function bfs(from,goals){
   const fx=Math.floor(from[0]),fy=Math.floor(from[1]),key=(x,y)=>x*32+y;
   const seen=new Map([[key(fx,fy),-1]]),q=[[fx,fy]],gs=new Set(goals.map(g=>key(g[0],g[1])));
@@ -307,7 +386,8 @@ const HAIRC=['#2b1b12','#3d2a1e','#5a3820','#e8c066','#c0392b','#1a1a2e','#6d4c9
 const EYEC=['#4a2e1a','#2d4a7a','#3a6a3a','#6a3a2a','#2a2a2a'];
 const OUTFITS=['office','student','casual','casual','elder','hoodie'];
 const pick=a=>a[Math.random()*a.length|0];
-function mkWaiter(i){return{x:5.5+i*.4,y:8.4,path:[],task:null,carry:null,role:'w',name:STAFF_NAMES[i%4],look:{skin:pick(SKIN),hair:pick(['#2b1b12','#5a3820','#1a1a2e']),eye:pick(EYEC),style:'bun',outfit:'kimono',kimono:['#c0392b','#2c4a8a','#2a8a6a','#8a3a8a'][i%4],female:true}}}
+function mkWaiter(st){return{x:5.5+Math.random(),y:8.4,path:[],task:null,carry:null,role:'w',sid:st.id,name:st.name,speed:2.4*(1+.06*staffPow(st)),look:st.look}}
+function syncWaiters(){for(const st of hired('waiter'))if(!waiters.some(w=>w.sid==st.id))waiters.push(mkWaiter(st));for(const w of waiters){const st=STAFF.find(s=>s.id==w.sid);w.speed=2.4*(1+.06*staffPow(st))}}
 function freeChairs(){return S.items.filter(o=>T[o.type].seat&&!o.dirty&&!seatTaken(o.x,o.y)&&tableOf(o))}
 const kindOf=ch=>TABLES[(tableOf(ch)||{}).type]||'table';
 let spawnT=1.5;
@@ -316,37 +396,38 @@ function spawn(){
   const vip=S.level>=2&&Math.random()<.12,u=unlocked();
   let pool=ch;if(vip){const t=ch.filter(o=>o.type=='cushion');if(t.length)pool=t}
   const chair=pick(pool),path=bfs(DOOR,[[chair.x,chair.y]]);if(!path)return;
-  const female=Math.random()<.5,outfit=vip?'kimonoV':pick(OUTFITS);
-  customers.push({x:W+1.4,y:DOOR[1]+.5,path:[DOOR,...path],chair,table:tableOf(chair),kind:kindOf(chair),st:'in',dish:pick(u),pat:1,t:0,vip,pri:false,a:0,role:'c',
-    look:{skin:pick(SKIN),hair:outfit=='elder'?'#d8d8d8':pick(HAIRC),eye:pick(EYEC),female,style:female?pick(['long','twin','bob','bun','pony']):pick(['short','spiky','short','cap']),outfit,
-      color:pick(['#ff7b7b','#5fb8ff','#7ed67e','#ffb84d','#b58cff','#ff8fc8','#4fd1c5']),glasses:outfit=='elder'||Math.random()<.15,crown:vip}})}
-const PAT_WAIT=c=>c.vip?24:34, PAT_FOOD=c=>c.vip?38:52;
+  const z0=Math.random()<.5?-8:H+8;
+  customers.push({x:W+.5,y:z0+.5,path:[[W,DOOR[1]],DOOR,...path],chair,table:tableOf(chair),kind:kindOf(chair),st:'in',dish:Math.random()<.35&&u.includes(S.hot)?S.hot:pick(u),pat:1,t:0,vip,pri:false,a:0,role:'c',look:randomLook(vip)})}
+function randomLook(vip){const female=Math.random()<.5,outfit=vip?'kimonoV':pick(OUTFITS);
+  return{skin:pick(SKIN),hair:outfit=='elder'?'#d8d8d8':pick(HAIRC),eye:pick(EYEC),female,style:female?pick(['long','twin','bob','bun','pony']):pick(['short','spiky','short','cap']),outfit,
+    color:pick(['#ff7b7b','#5fb8ff','#7ed67e','#ffb84d','#b58cff','#ff8fc8','#4fd1c5']),glasses:outfit=='elder'||Math.random()<.15,crown:vip,kid:!vip&&Math.random()<.12}}
+const PAT_WAIT=c=>(c.vip?24:34)*(1+greetBonus()), PAT_FOOD=c=>(c.vip?38:52)*(1+greetBonus());
 const patSecs=c=>Math.max(0,c.pat*(c.st=='wait'?PAT_WAIT(c):PAT_FOOD(c)));
 function leave(c,angry){
   if(c.st=='out')return;c.st='out';c.angry=angry;c.sit=0;
-  c.path=(bfs([c.x,c.y],[DOOR])||[]).concat([[W+1,DOOR[1]]]);
+  c.path=(bfs([c.x,c.y],[DOOR])||[]).concat([[W,DOOR[1]],[W,Math.random()<.5?-8:H+8]]);
   if(angry){fx.push({x:c.x,y:c.y,t:'😠',k:'emo'});S.rSum+=1;S.rN++}
   orders=orders.filter(o=>{if(o.c!==c)return true;stoves().forEach(s=>{if(s.cook===o)s.cook=null;if(s.hold===o)s.hold=null});return false})}
 const stoves=()=>S.items.filter(o=>o.type=='stove');
 const claimedC=c=>waiters.some(w=>w.task&&w.task.c===c);
 function gainXP(n){S.xp+=n;while(S.xp>=xpNeed()){S.xp-=xpNeed();S.level++;S.gems+=2;events.push({k:'level'})}}
 function quest(k,n=1,extra){let ch=false;for(const q of S.quests){if(q.k==k&&!q.done&&(k!='dish'||q.d===extra)){q.p=Math.min(q.n,q.p+n);if(q.p>=q.n)q.done=true;ch=true}}if(ch)events.push({k:'quest'})}
-function newQuest(){const used=new Set(S.quests.map(q=>q.k));const pool=QUEST_T.filter(t=>!used.has(t.k)&&(t.k!='vip'||S.level>=2));const t=pick(pool.length?pool:QUEST_T);
+function newQuest(){const used=new Set(S.quests.map(q=>q.k));const pool=QUEST_T.filter(t=>!used.has(t.k)&&(t.k!='vip'||S.level>=2)&&(t.k!='stall'||S.areas.stall));const t=pick(pool.length?pool:QUEST_T);
   const sc=1+(S.level-1)*.35,n=Math.max(1,Math.round(t.n0*sc)),d=t.k=='dish'?pick(unlocked()):null;
   return{k:t.k,e:t.k=='dish'?DISHES[d].e:t.e,n,p:0,d,title:t.n.replace('{n}',n).replace('{d}',d!=null?DISHES[d].n:''),coins:Math.round(40*sc*(t.k=='earn'?1.5:1)),gems:Math.random()<.35?1:0,done:false}}
 function ensureQuests(){while(S.quests.length<3)S.quests.push(newQuest())}
 function pay(c,mult=1){
   const mood=Math.max(.2,c.minPat==null?1:c.minPat),stars=Math.round((3+2*mood)*2)/2;
   const room=c.chair&&c.chair.type=='cushion'?1.5:1;
-  const base=dishPrice(c.dish)*(c.vip?2.5:1)*room*mult*(1+beauty()/200),tip=Math.max(1,Math.round(base*.35*mood));
+  const base=dishPrice(c.dish)*(c.vip?2.5:1)*(c.dish==S.hot?1.5:1)*room*mult*(1+beauty()/200),tip=Math.max(1,Math.round(base*.35*mood));
   S.coins+=Math.round(base);S.served++;S.rSum+=stars;S.rN++;
   if(c.kind=='table'){const ch=c.chair;ch.dirty=true;ch.tip=(ch.tip||0)+tip;ch.tipT=0}else S.coins+=tip;
   fx.push({x:c.x,y:c.y,t:'+'+Math.round(base),k:'coin'},{x:c.x,y:c.y,t:mood>.6?'😍':'🙂',k:'emo'});
   events.push({k:'coins',x:c.x,y:c.y,n:Math.round(base)});
   gainXP(c.vip?25:10);quest('serve');quest('earn',Math.round(base));quest('dish',1,c.dish);if(c.vip)quest('vip')}
 function tick(dt){
-  spawnT-=dt;
-  if(spawnT<=0){spawnT=Math.max(2.2,9-S.level*.45-beauty()/25)*(.7+Math.random()*.6);if(customers.filter(c=>c.st!='out').length<14)spawn()}
+  spawnT-=dt;S.hotT-=dt;if(S.hotT<=0){S.hotT=120;const u=unlocked();S.hot=pick(u.length>1?u.filter(i=>i!=S.hot):u);events.push({k:'hot'})}
+  if(spawnT<=0){spawnT=Math.max(2.2,9-S.level*.45-beauty()/25)*(.7+Math.random()*.6);if(customers.filter(c=>c.st!='out').length<16)spawn()}
   for(const c of customers){
     if(c.st!='out'&&c.chair&&!S.items.includes(c.chair)){leave(c,true);continue}
     c.a=Math.min(1,c.a+dt*3);
@@ -361,7 +442,7 @@ function tick(dt){
     if(c.st=='wait'||c.st=='food')c.minPat=Math.min(c.minPat==null?1:c.minPat,c.pat)
   }
   customers=customers.filter(c=>!c.dead);
-  for(const o of S.items)if(o.tip){o.tipT=(o.tipT||0)+dt;if(S.manager&&o.tipT>1.5||o.tipT>25)collectTip(o)}
+  for(const o of S.items)if(o.tip){o.tipT=(o.tipT||0)+dt;if(hasManager()&&o.tipT>1.5||o.tipT>25)collectTip(o)}
   // kitchen
   for(const s of stoves()){
     if(s.cook){s.prog=(s.prog||0)+dt/dishCook(s.cook.c.dish);if(s.prog>=1){const o=s.cook;s.cook=null;
@@ -381,7 +462,7 @@ function tick(dt){
       if(done)continue;
       const dirty=S.items.find(o=>o.dirty&&!waiters.some(v=>v.task&&v.task.ch===o));
       if(dirty){const t=tableOf(dirty),g=t?freeN(t):freeN(dirty),p=g.length&&bfs([w.x,w.y],g);if(p){w.task={k:'clean',ch:dirty};w.path=p}else dirty.dirty=false}
-    } else if(walk(w,dt,2.6)){
+    } else if(walk(w,dt,w.speed||2.6)){
       if(tk.k=='take'){tk.c.st='food';tk.c.pri=false;orders.push({c:tk.c,st:'queued'});w.task=null;fx.push({x:w.x,y:w.y,t:'📝',k:'emo'})}
       else if(tk.k=='pick'){if(tk.s.hold===tk.o){tk.s.hold=null;w.carry=tk.o.c.dish;const g=freeN(tk.c.table),p=g.length&&bfs([w.x,w.y],g);
           if(p){w.task={k:'give',o:tk.o,c:tk.c};w.path=p}else{w.task=null;w.carry=null}}else w.task=null}
@@ -400,17 +481,17 @@ const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:!LOW,powerPreference
 renderer.setPixelRatio(Math.min(LOW?1.5:2,window.devicePixelRatio||1));
 cv.addEventListener('webglcontextlost',e=>{e.preventDefault();try{localStorage.setItem('nhtp_low','1')}catch(_){}bootFail('Đồ họa bị quá tải nên trình duyệt đã tắt khung 3D. Bấm Tải lại để chạy ở chế độ nhẹ hơn.')});
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-const scene=new THREE.Scene();scene.background=new THREE.Color('#ffd9c2');scene.fog=new THREE.Fog('#ffd9c2',70,170);
+const scene=new THREE.Scene();scene.background=new THREE.Color('#ffd9c2');scene.fog=new THREE.Fog('#ffd9c2',80,200);
 const cam=new THREE.PerspectiveCamera(32,1,.5,260);
 const TGT=new THREE.Vector3(W/2,.3,H/2-.5),goalT=TGT.clone();
 let az=Math.PI/4,pol=.92,rad=34,goalR=34,homeRad=34,zoomed=false,viewK='all';
 function placeCam(){cam.position.set(TGT.x+rad*Math.sin(pol)*Math.cos(az),TGT.y+rad*Math.cos(pol),TGT.z+rad*Math.sin(pol)*Math.sin(az));cam.lookAt(TGT)}
 function resize(){const r=cv.parentElement.getBoundingClientRect();if(!r.width)return;renderer.setSize(r.width,r.height,false);cam.aspect=r.width/r.height;cam.updateProjectionMatrix();
-  homeRad=Math.max(24,Math.min(66,32/Math.min(1.35,cam.aspect)));if(!zoomed)view(viewK,true)}
+  homeRad=Math.max(26,Math.min(72,36/Math.min(1.35,cam.aspect)));if(!zoomed)view(viewK,true)}
 new ResizeObserver(resize).observe(cv.parentElement);
 scene.add(new THREE.HemisphereLight('#fff0e0','#8a6448',.52));
 const sun=new THREE.DirectionalLight('#ffe6c8',.62);sun.position.set(W+8,20,H+2);sun.target.position.set(W/2,0,H/2);
-sun.castShadow=true;sun.shadow.mapSize.set(LOW?1024:2048,LOW?1024:2048);Object.assign(sun.shadow.camera,{left:-16,right:16,top:16,bottom:-16,near:1,far:70});sun.shadow.bias=-.0005;sun.shadow.radius=3;scene.add(sun,sun.target);
+sun.castShadow=true;sun.shadow.mapSize.set(LOW?1024:2048,LOW?1024:2048);Object.assign(sun.shadow.camera,{left:-20,right:20,top:20,bottom:-20,near:1,far:80});sun.shadow.bias=-.0005;sun.shadow.radius=3;scene.add(sun,sun.target);
 // 3-step toon ramp gives the cel-shaded cartoon look
 const ramp=(()=>{const c=document.createElement('canvas');c.width=4;c.height=1;const x=c.getContext('2d');['#7a7a7a','#b8b8b8','#dedede','#f2f2f2'].forEach((v,i)=>{x.fillStyle=v;x.fillRect(i,0,1,1)});
   const t=new THREE.CanvasTexture(c);t.minFilter=t.magFilter=THREE.NearestFilter;t.generateMipmaps=false;return t})();
@@ -474,8 +555,8 @@ function drawBubble(b,icon,frac,sec,vip,badge){
 // ================= WORLD: a little Japanese sushi house with a garden =================
 const room=new THREE.Group();scene.add(room);
 plane(220,220,texMat(TEX.grass(40,40)),W/2,-.21,H/2,room);
-plane(5,H+60,texMat(TEX.road(2,30)),W+3.6,-.18,H/2,room);
-for(let z=-24;z<H+26;z+=3)plane(.14,1.4,basic('#f6efb0'),W+3.6,-.17,z,room);
+plane(5,H+60,texMat(TEX.road(2,30)),W+4.15,-.18,H/2,room);
+for(let z=-30;z<H+30;z+=3)plane(.14,1.4,basic('#f6efb0'),W+4.15,-.17,z,room);
 rbox(1.6,.16,H+60,'#d9d2c4',W+.85,-.12,H/2,room,.05).castShadow=false;
 // foundation + floors per zone
 rbox(W+.3,.3,10.3,'#6b4a33',W/2,-.17,4.95,room,.08).castShadow=false;
@@ -525,7 +606,7 @@ const lanterns=[chochin(1.6,2.3,.35),chochin(4.6,2.3,.35),chochin(7.2,2.3,.35),c
 rbox(1.9,.35,.5,'#9aa6ae',10.9,2.45,.2,room,.06);
 {const s=sprite(textTex('BẾP','#ffe28a',56),1,4,true);s.scale.set(1.2,.45,1);s.position.set(8.6,2.55,4.5);room.add(s)}
 // garden: bamboo fence along the street side, string of lanterns, torii-like gate with noren
-for(let z=9.6;z<=13.9;z+=.17){if(Math.abs(z-(DOOR[1]+.5))<.6)continue;const m=cyl(.06,1.1+Math.sin(z*7)*.05,'#7ea84a',W-.05,.55,z,room,6);m.castShadow=false}
+for(let z=9.6;z<=13.95;z+=.17){if(Math.abs(z-(DOOR[1]+.5))<.6)continue;const m=cyl(.06,1.1+Math.sin(z*7)*.05,'#7ea84a',W-.05,.55,z,room,6);m.castShadow=false}
 [[0,9.6],[0,13.8]].forEach(([x,z])=>cyl(.06,2.4,'#4a2c17',x+.05,1.2,z,room,8));
 for(let i=0;i<=8;i++){const t=i/8,z=9.6+4.2*t;chochin(.05,2.25-Math.sin(t*Math.PI)*.3,z,i%2?'#ffb703':'#e63946',.45)}
 {const g=new THREE.Group();g.position.set(W+.1,0,DOOR[1]+.5);cyl(.1,2.5,'#c0392b',0,1.25,-.62,g,10);cyl(.1,2.5,'#c0392b',0,1.25,.62,g,10);
@@ -541,7 +622,6 @@ function tree(x,z,s=1,kind=0){cyl(.12*s,1.1*s,'#6a4a32',x,.5*s,z,room,8);
   if(kind){[[0,1.4,.75],[.2,2,.55],[-.1,2.45,.38]].forEach(([dx,y,r])=>M(new THREE.ConeGeometry(r*s*1.2,r*s*1.6,9),mat('#3f8a4a'),x+dx*.2,y*s,z,room))}
   else{ball(.7*s,'#4fa35a',x,1.5*s,z,room,12);ball(.5*s,'#5fb46a',x+.38*s,1.85*s,z+.15*s,room,10);ball(.45*s,'#43925a',x-.35*s,1.75*s,z-.1*s,room,10)}}
 [[-2.6,1,1,1],[-2.4,6,1.2,1],[-2.2,11,1,0],[2,H+1.6,1.1,1],[6.5,H+1.9,1,0],[10,H+1.5,1.2,1],[-3.4,15,1.3,0],[-4,-2,1.4,1],[4,-3,1.2,0],[9,-2.6,1.3,1]].forEach(a=>tree(...a));
-[[W+1.7,-1.5],[W+1.7,15.5]].forEach(([x,z])=>{cyl(.06,3,'#3a3f48',x,1.5,z,room,8);const b=ball(.18,basic('#fff3c4'),x-.2,3,z,room);b.castShadow=false});
 // sakura petals drifting over the garden
 const petals=[];const petalGeo=new THREE.PlaneGeometry(.09,.06),petalMat=new THREE.MeshBasicMaterial({color:'#ffb7c9',side:THREE.DoubleSide});
 for(let i=0;i<(LOW?25:60);i++){const p=new THREE.Mesh(petalGeo,petalMat);p.position.set(rnd(-1,W+1),rnd(0,4),rnd(8,H+2));p.userData={v:rnd(.25,.5),s:rnd(0,6)};scene.add(p);petals.push(p)}
@@ -573,9 +653,16 @@ function buildItem(o){
     const burn=cyl(.2,.03,'#222',-.18,.88,0,p,16);burn.castShadow=false;u.burn=burn;cyl(.17,.03,'#222',.22,.88,-.1,p,16).castShadow=false;
     const pan=new THREE.Group();pan.position.set(-.18,.93,0);cyl(.19,.08,'#33373c',0,0,0,pan,18,.16);box(.3,.03,.05,DARK,.32,.03,0,pan);p.add(pan);u.pan=pan;
     cyl(.12,.18,'#c7d0d6',.22,.98,-.1,p,14);
-    const chef=mkAvatar({role:'chef',skin:'#f9d3b0',hair:'#2b1b12',eye:'#4a2e1a',style:'short',outfit:'chef',beard:o.x==10});chef.position.set(-.05,0,.86);chef.rotation.y=Math.PI;g.add(chef);u.chef=chef;
-    if(o.x==10){const tag=sprite(textTex('Ono Ryota','#fff3c4',40),.9,6);tag.scale.set(1.1,.41,1);tag.position.set(-.05,1.55,.86);g.add(tag)}
+    const idx=stoves().indexOf(o),cs=hired('chef')[idx];u.chefId=cs?cs.id:'helper';
+    const chef=mkAvatar(Object.assign({role:'chef',name:cs?cs.name:'Phụ bếp'},cs?cs.look:{skin:'#f9d3b0',hair:'#5a3820',eye:'#4a2e1a',style:'short',outfit:'chef'}));chef.parent.remove(chef);chef.position.set(-.05,0,.86);chef.rotation.y=Math.PI;g.add(chef);u.chef=chef;
     const b=bubbleCanvas();const bs=sprite(b.tex,.95,7);bs.scale.set(.85,1.06,1);bs.position.set(0,2.1,.2);bs.visible=false;g.add(bs);u.b=b;u.bs=bs;u.steam=0;break}
+  case'stall':{g.rotation.y=Math.PI/2;rbox(.96,.8,.6,'#a0683c',0,.4,.15,p,.04);rbox(1,.06,.66,'#d8b07a',0,.82,.15,p,.02);
+    [-.45,.45].forEach(x=>cyl(.04,1.6,DARK,x,.8,-.25,p,6));const r=M(new THREE.BoxGeometry(1.2,.06,.9),mat('#c0392b'),0,1.65,.05,p);r.rotation.x=.25;
+    for(let i=0;i<4;i++)rbox(.24,.35,.02,i%2?'#ffffff':'#2c4a8a',-.36+i*.24,1.42,.42,p,.01);
+    const sg=sprite(textTex('TAIYAKI','#ffd166',48),1,4,true);sg.scale.set(1,.38,1);sg.position.set(0,1.95,.1);p.add(sg);
+    for(let i=0;i<3;i++){const t=sprite(emojiTex('🐟'),.24,4,true);t.position.set(-.25+i*.25,.95,.3);p.add(t)}
+    u.vendorKey='';u.vp=p;break}
+  case'stage':{rbox(.96,.12,.96,'#7a4a26',0,.06,0,p,.03);rbox(.5,.06,.5,'#7a3cc0',0,.15,0,p,.02);const sh=new THREE.Group();sh.position.set(.25,.4,.15);rbox(.12,.16,.04,'#f4ecd8',0,0,0,sh,.02);cyl(.012,.45,DARK,0,.28,0,sh,4);sh.rotation.z=-.6;p.add(sh);break}
   case'bar':{rbox(1.02,.95,.7,'#7a4a26',0,.48,0,p,.04);rbox(1.06,.07,.78,'#d8b07a',0,.98,0,p,.02);rbox(1.02,.05,.3,'#f4ecd8',0,1.03,-.15,p,.01);
     if(o.x%2){const c=cyl(.12,.03,'#2c4a8a',.2,1.06,-.15,p,12);const s=sprite(emojiTex('🍣'),.28,4,true);s.position.set(.2,1.15,-.15);p.add(s)}
     else{box(.22,.12,.22,basic('#bfe9f7'),-.2,1.1,-.15,p).castShadow=false}break}
@@ -638,7 +725,7 @@ function syncItems(time,now){
     const g=e.g,u=g.userData,age=(now-o.born)/1000;
     if(age<.6&&(!T[o.type].fixed||o.type=='belt'||o.type=='stool'||o.type=='cushion'||o.type=='lowtable'))u.inner.scale.setScalar(Math.max(.01,easeBack(Math.min(1,age/.5))));else u.inner.scale.setScalar(1);
     if(u.tip){u.tip.visible=!!o.tip;u.dirty.visible=!!o.dirty&&!o.tip;if(o.tip)u.tipS.position.y=.32+Math.abs(Math.sin(time*4))*.12}
-    if(o.type=='stove'){const hot=o.cook||o.hold;u.burn.material=hot?basic('#ff8a2a'):mat('#222');u.bs.visible=!!hot;
+    if(o.type=='stove'){const cs=hired('chef')[stoves().indexOf(o)];if((cs?cs.id:'helper')!==u.chefId){scene.remove(g);itemObj.delete(o.id);continue}const hot=o.cook||o.hold;u.burn.material=hot?basic('#ff8a2a'):mat('#222');u.bs.visible=!!hot;
       if(o.cook){const d=o.cook.c.dish,rem=(1-(o.prog||0))*dishCook(d);drawBubble(u.b,DISHES[d].e,o.prog||0,rem,false,'🍳');u.pan.rotation.z=Math.sin(time*9)*.12;u.pan.position.y=.93+Math.abs(Math.sin(time*9))*.04;
         if((u.steam-=1/60)<=0){u.steam=.25;puff(g.position.x-.18,1.05,g.position.z)}}
       else{u.pan.rotation.z=0;u.pan.position.y=.93}
@@ -648,6 +735,9 @@ function syncItems(time,now){
       while(u.plates.length<eaters.length){const pg=new THREE.Group();cyl(.13,.02,'#ffffff',0,0,0,pg,16);const s=sprite(emojiTex('🍣'),.32,4);s.position.y=.12;pg.add(s);pg.userData.s=s;g.add(pg);u.plates.push(pg)}
       while(u.plates.length>eaters.length)g.remove(u.plates.pop());
       const top=o.type=='lowtable'?.34:.55;eaters.forEach((c,i)=>{const pg=u.plates[i],dx=c.chair.x-o.x,dz=c.chair.y-o.y;pg.position.set(dx*.26,top,dz*.26);pg.userData.s.material.map=emojiTex(DISHES[c.dish].e)})}
+    else if(o.type=='stall'){const vh=hired('vendor')[0],key=vh?vh.id:'gen';if(u.vendorKey!==key){if(u.vendor)u.vp.remove(u.vendor);
+        const v=mkAvatar(Object.assign({role:'w',name:vh?vh.name:''},vh?vh.look:{skin:'#f9d3b0',hair:'#2b1b12',eye:'#4a2e1a',style:'short',outfit:'casual',color:'#ff9f1c'}));v.parent.remove(v);v.position.set(0,0,-.35);u.vp.add(v);u.vendor=v;u.vendorKey=key}
+      pose(u.vendor.userData,{t:time});blink(u.vendor.userData,1/60)}
     else if(o.type=='belt'&&u.plates)u.plates.forEach((pg,i)=>{const[x,z]=beltPos(time*.035+i/12);pg.position.set(x,.97,z)});
     else if(o.type=='pond'&&u.koi)u.koi.forEach((k,i)=>{const a=time*(.5+i*.15)+i*2.1;k.position.x=Math.cos(a)*.5;k.position.z=Math.sin(a)*.4;k.rotation.y=-a});
     else if(o.type=='maneki')u.arm.position.y=.62+Math.sin(time*4)*.05;
@@ -670,7 +760,7 @@ function mkAvatar(L){
   const leg=x=>{const hip=new THREE.Group();hip.position.set(x,.27,0);cyl(.06,.13,skirt?sk:legC,0,-.06,0,hip,8);const knee=new THREE.Group();knee.position.y=-.12;
     cyl(.055,.11,skirt?(O=='student'?'#ffffff':sk):legC,0,-.05,0,knee,8);const sh=ball(.07,O=='kimono'||O=='kimonoV'?'#f4ecd8':O=='student'?'#3a2a20':'#4a3020',0,-.12,.03,knee,10);sh.scale.set(1,.65,1.35);hip.add(knee);body.add(hip);return{hip,knee}};
   u.lL=leg(-.08);u.lR=leg(.08);
-  const torso=cyl(.15,.3,top,0,.42,0,body,16,.17);torso.scale.z=.85;outline(torso,1.07);
+  const torso=cyl(.15,.3,top,0,.42,0,body,16,.17);torso.scale.z=.85;if(!L.lite)outline(torso,1.07);
   if(skirt){const sk2=cyl(.14,.17,O=='student'?'#2c3e66':O=='casual'?'#ffffff':top,0,.25,0,body,16,.25);sk2.scale.z=.9}
   // outfit details
   if(O=='office'){rbox(.06,.2,.02,'#c0392b',0,.43,.15,body,.01);[-1,1].forEach(s=>{const l=box(.08,.22,.02,'#2a3346',s*.08,.44,.13,body);l.rotation.z=s*.25})}
@@ -687,7 +777,7 @@ function mkAvatar(L){
   u.aL=arm(-.19);u.aR=arm(.19);
   // head
   const head=new THREE.Group();head.position.y=.8;body.add(head);u.head=head;
-  const hd=ball(.26,sk,0,0,0,head,22);hd.scale.set(1,.93,.95);outline(hd,1.045);
+  const hd=ball(.26,sk,0,0,0,head,L.lite?14:22);hd.scale.set(1,.93,.95);if(!L.lite)outline(hd,1.045);
   [-.255,.255].forEach(x=>ball(.045,sk,x,-.03,0,head,8));
   // eyes: dark oval, coloured iris, two highlights; lashes for girls
   u.eyes=[-.09,.09].map(x=>{const e=new THREE.Group();e.position.set(x,-.01,.215);head.add(e);
@@ -704,7 +794,7 @@ function mkAvatar(L){
   const hc=L.hair,st=L.style;
   if(st=='cap'&&L.role=='c'){const c=ball(.27,col,0,.06,0,head,16);c.scale.set(1,.68,1);rbox(.26,.03,.2,col,0,.08,.25,head,.01);hairPiece(.07,hc,-.22,-.05,.0,.6,1.2,1,head);hairPiece(.07,hc,.22,-.05,0,.6,1.2,1,head)}
   else{
-    const cap=new THREE.Mesh(new THREE.SphereGeometry(.28,18,12,0,Math.PI*2,0,Math.PI*.52),mat(hc));cap.position.set(0,.02,-.02);cap.castShadow=true;head.add(cap);outline(cap,1.035);
+    const cap=new THREE.Mesh(new THREE.SphereGeometry(.28,18,12,0,Math.PI*2,0,Math.PI*.52),mat(hc));cap.position.set(0,.02,-.02);cap.castShadow=true;head.add(cap);if(!L.lite)outline(cap,1.035);
     const back=ball(.27,hc,0,-.02,-.06,head,14);back.scale.set(1,.95,.9);
     // bangs: overlapping flattened teardrops across the forehead
     [[-.16,.08,.17,-.3],[-.08,.1,.21,-.12],[0,.11,.22,0],[.08,.1,.21,.12],[.16,.08,.17,.3]].forEach(([x,y,z,rz])=>{const b=M(new THREE.ConeGeometry(.07,.16,6),mat(hc),x,y,z,head);b.rotation.set(Math.PI+.45,0,rz);b.scale.z=.45});
@@ -722,7 +812,8 @@ function mkAvatar(L){
   u.tray=new THREE.Group();cyl(.16,.02,'#4a2c17',0,0,0,u.tray,16);u.tray.position.set(0,.5,.3);u.tray.visible=false;body.add(u.tray);
   u.carry=sprite(emojiTex('🍣'),.36,6);u.carry.position.set(0,.66,.3);u.carry.visible=false;body.add(u.carry);
   if(L.name){const t=sprite(textTex(L.name,'#fff3c4',44),.7,6);t.scale.set(.8,.3,1);t.position.set(0,1.32,0);g.add(t)}
-  g.scale.setScalar(L.kid?.85:1.05);scene.add(g);return g}
+  if(L.lite)g.traverse(o=>{o.castShadow=false});
+  g.scale.setScalar(L.kid?.8:1.05);scene.add(g);return g}
 function setFace(u,m){if(u.face===m)return;u.face=m;
   u.mouth.rotation.z=m=='angry'?0:Math.PI;u.mouth.scale.set(m=='happy'?1.15:1,m=='ok'?.35:1,1);u.mouth.position.y=m=='angry'?-.12:-.1;
   u.brows[0].rotation.z=m=='angry'?-.45:m=='ok'?.15:0;u.brows[1].rotation.z=m=='angry'?.45:m=='ok'?-.15:0}
@@ -756,7 +847,7 @@ function syncAv(e,time,dt){
     setFace(u,e.st=='out'?(e.angry?'angry':'happy'):e.st=='eat'?'happy':e.pat<.3?'angry':e.pat<.6?'ok':'happy');
     const show=e.st=='wait'||e.st=='food';a.bs.visible=show;
     if(show){const icon=e.st=='wait'?(e.pri?'❗':e.kind=='belt'?'👀':'📋'):DISHES[e.dish].e;drawBubble(a.b,icon,e.pat,patSecs(e),e.vip,null);a.bs.position.y=1.66+Math.sin(time*4+u.seed)*.03}
-    g.scale.setScalar(1.05*(.5+.5*e.a))}
+    g.scale.setScalar((e.look.kid?.8:1.05)*(.5+.5*e.a))}
 }
 function syncAvatars(time,dt){
   for(const c of customers)syncAv(c,time,dt);for(const w of waiters)syncAv(w,time,dt);
@@ -766,9 +857,119 @@ function syncFx(){
   for(const f of fx){let s=fxMap.get(f);if(!s){s=f.k=='coin'?sprite(textTex(f.t,'#ffd34d'),1,9):sprite(emojiTex(f.t),.55,9);if(f.k=='coin')s.scale.set(1.2,.45,1);scene.add(s);fxMap.set(f,s)}
     const a=f.a||0;s.position.set(f.x,(f.k=='coin'?1.95:1.65)+a*.8,f.y);s.material.opacity=Math.max(0,1-a/1.3)}
   for(const[f,s]of fxMap)if(!fx.includes(f)){scene.remove(s);s.material.dispose();fxMap.delete(f)}}
+// ================= STREET: shops across the road, traffic, pedestrians, takeaway stall =================
+const SW_NEAR=W+.85,ROAD_C=W+4.15,LANES=[W+2.9,W+5.4],SW_FAR=W+7.45,Z_MIN=-26,Z_MAX=H+26;
+rbox(1.6,.16,H+60,'#d9d2c4',SW_FAR,-.12,H/2,room,.05).castShadow=false;
+for(let x=W+2;x<W+6.4;x+=.62)plane(.34,1.6,basic('#f4f4f4'),x,-.165,DOOR[1]+.5,room);
+for(let z=Z_MIN;z<Z_MAX;z+=1.2){const k=plane(.35,.5,basic('#c9c2b4'),SW_NEAR,-.035,z,room);const k2=plane(.35,.5,basic('#c9c2b4'),SW_FAR,-.035,z,room)}
+// shop fronts across the street
+function building(z0,len,o){ // cut-away shop fronts: ground floor only so they never hide the restaurant
+  const g=new THREE.Group();g.position.set(W+10.2,0,z0+len/2);const d=3.2,h=1.45;
+  rbox(d,h,len-.15,o.col,0,h/2,0,g,.06);rbox(d-.3,.05,len-.45,'#d9cfc0',0,h+.01,0,g,.02).castShadow=false;
+  const glass=box(.05,.75,len-1.1,new THREE.MeshBasicMaterial({color:o.glass||'#ffe6a8'}),-d/2-.03,.62,-.25,g);glass.castShadow=false;
+  rbox(.08,1.05,.65,'#5a3a28',-d/2-.04,.53,len/2-.6,g,.02);
+  for(let i=0;i<5;i++){const m=box(.5,.05,(len-.4)/5,i%2?'#ffffff':o.awn,-d/2-.22,1.22,-len/2+.2+(i+.5)*(len-.4)/5,g);m.rotation.z=-.35;m.castShadow=false}
+  [-len/2+.6,len/2-1.4].forEach(z=>cyl(.04,.5,'#3a3f48',-.8,h+.25,z,g,6));
+  rbox(.1,.5,Math.min(len*.7,2.8),o.sign||'#3a2412',-.8,h+.62,-.4,g,.04);
+  const t=sprite(textTex(o.label,'#fff3c4',o.label.length>10?30:42),1,4,true);const tw=Math.min(len*.7,2.8);t.scale.set(tw,tw*.375,1);t.position.set(-.9,h+.62,-.4);g.add(t);
+  if(o.emo){const e=sprite(emojiTex(o.emo),.7,4,true);e.position.set(-d/2-.4,1.0,len/2-1.25);g.add(e)}
+  [[.6,-len/4],[.6,len/4]].forEach(([x,z])=>{const pl=ball(.28,'#4fa35a',x,h+.25,z,g,8);pl.castShadow=false});
+  room.add(g)}
+[[-24,6,{col:'#f6d6c8',awn:'#e85d75',label:'Tiệm bánh',emo:'🥐',roof:'#b5524a'}],
+ [-18,5,{col:'#dfe9d4',awn:'#3cb371',label:'Hoa tươi',emo:'💐',roof:'#4a7a5a'}],
+ [-13,7,{col:'#f4f6fa',awn:'#2e86de',label:'Tiện lợi 24h',emo:'🏪',h:3.4,sign:'#2e86de'}],
+ [-6,5,{col:'#f2e3c4',awn:'#8a5a30',label:'Cà phê',emo:'☕',roof:'#6b4127'}],
+ [-1,6,{col:'#e6dcf4',awn:'#8a63d2',label:'Hiệu sách',emo:'📚',h:4.4,roof:'#5a4a7a'}],
+ [5,6,{col:'#fde4b8',awn:'#ff9f1c',label:'Kem & trà',emo:'🍦',roof:'#c0703a'}],
+ [11,7,{col:'#f6d6c8',awn:'#e63946',label:'Ramen Taro',emo:'🍜',roof:'#3d4a5c',glass:'#ffd08a'}],
+ [18,5,{col:'#d6eef6',awn:'#4fd1c5',label:'Giặt ủi',emo:'🧺',h:3.4}],
+ [23,6,{col:'#f4e8d0',awn:'#b58cff',label:'Đồ chơi',emo:'🧸',roof:'#8a3a3a'}]].forEach(a=>building(...a));
+// street furniture: lamps, trees in planters, bus stop, vending machines
+for(let z=-20;z<H+22;z+=8){cyl(.06,3,'#3a3f48',W+1.55,1.5,z,room,8);const b=ball(.17,basic('#fff3c4'),W+1.3,3,z,room);b.castShadow=false;cyl(.06,3,'#3a3f48',W+6.75,1.5,z+4,room,8);const b2=ball(.17,basic('#fff3c4'),W+7,3,z+4,room);b2.castShadow=false}
+for(let z=-22;z<H+22;z+=8){rbox(.7,.3,.7,'#8a857c',SW_FAR+.3,.05,z,room,.04);ball(.55,'#4fa35a',SW_FAR+.3,1.1,z,room,10);cyl(.06,.7,'#6a4a32',SW_FAR+.3,.45,z,room,6)}
+{const g=new THREE.Group();g.position.set(SW_FAR+.2,0,1.5);[-1,1].forEach(s=>cyl(.05,2.2,'#3a3f48',.4,1.1,s*1.1,g,8));const r=rbox(1.1,.08,2.5,'#2e86de',0,2.2,0,g,.03);
+ const gl=box(.05,1.5,2.2,new THREE.MeshBasicMaterial({color:'#bfe9f7',transparent:true,opacity:.4}),.5,1.3,0,g);gl.castShadow=false;rbox(.4,.08,1.8,'#8a5a30',.25,.45,0,g,.03);
+ const s=sprite(textTex('🚌 BUS','#ffffff',48),1,4,true);s.scale.set(1,.38,1);s.position.set(0,2.55,0);g.add(s);room.add(g)}
+[[SW_FAR+.35,7.2,'#e63946'],[SW_FAR+.35,8,'#2e86de']].forEach(([x,z,c])=>{rbox(.6,1.6,.7,c,x,.8,z,room,.05);const f=box(.02,.9,.5,basic('#e9f6ff'),x-.31,1,z,room);f.castShadow=false});
+// ---- traffic ----
+const CAR_COLS=['#e63946','#2e86de','#f4f4f4','#3a3f48','#3cb371','#ff9f1c','#b58cff'];
+function wheel(g,x,z,r=.2){const w=cyl(r,.16,'#222',x,r,z,g,12);w.rotation.z=Math.PI/2;cyl(r*.5,.17,'#cfd6dc',x,r,z,g,8).rotation.z=Math.PI/2;return w}
+function mkCar(kind){
+  const g=new THREE.Group(),inner=new THREE.Group();g.add(inner);const p=inner,c=kind=='taxi'?'#ffc93c':pick(CAR_COLS);let len=2.1;
+  const glass=mat('#9fd3ee');
+  if(kind=='bus'){len=4.8;rbox(1.3,1.5,4.6,'#2ec4b6',0,1.0,0,p,.12);box(1.32,.45,4.2,glass,0,1.35,-.1,p).castShadow=false;rbox(1.32,.12,4.62,'#ffffff',0,.62,0,p,.04);
+    [-1.6,1.6].forEach(z=>[-.58,.58].forEach(x=>wheel(p,x,z,.28)));const s=sprite(textTex('18','#ffffff',60),1,4,true);s.scale.set(.6,.22,1);s.position.set(0,1.62,2.32);p.add(s)}
+  else if(kind=='van'){len=2.5;rbox(1.15,1.2,2.4,c,0,.85,0,p,.1);box(1.0,.45,.06,glass,0,1.15,1.2,p).castShadow=false;[-.85,.85].forEach(z=>[-.55,.55].forEach(x=>wheel(p,x,z)))}
+  else if(kind=='scooter'){len=1.1;rbox(.3,.35,.9,c,0,.45,0,p,.08);rbox(.26,.08,.4,'#2a2a33',0,.66,-.12,p,.03);cyl(.03,.5,'#555',0,.75,.35,p,6).rotation.x=-.3;
+    [-.38,.38].forEach(z=>wheel(p,0,z,.17));const rider=new THREE.Group();rider.position.set(0,.68,-.08);cyl(.13,.32,pick(CAR_COLS),0,.2,0,rider,10);const hm=ball(.17,pick(CAR_COLS),0,.5,0,rider,12);ball(.15,'#f9d3b0',0,.47,.04,rider,10);p.add(rider)}
+  else{rbox(1.05,.5,2.05,c,0,.45,0,p,.12);rbox(.92,.42,1.1,glass,0,.86,-.12,p,.1);rbox(.94,.07,1.0,c,0,1.08,-.12,p,.03);
+    [-.68,.68].forEach(z=>[-.5,.5].forEach(x=>wheel(p,x,z)));
+    if(kind=='taxi'){rbox(.4,.16,.2,'#ffffff',0,1.2,-.12,p,.04);const s=sprite(textTex('TAXI','#3a2412',56),.5,4,true);s.scale.set(.5,.19,1);s.position.set(0,1.38,-.12);p.add(s)}}
+  if(kind!='scooter')[-.35,.35].forEach(x=>{const h=ball(.08,basic('#fff6c8'),x*(kind=='bus'?1.4:1),.55,len/2-.02,p,8);h.castShadow=false;const t=ball(.07,basic('#ff4d4d'),x*(kind=='bus'?1.4:1),.55,-len/2+.02,p,8);t.castShadow=false});
+  g.traverse(o=>{if(o.isMesh)o.castShadow=false});scene.add(g);return{g,len,kind}}
+const cars=[];
+const KINDS=['sedan','sedan','taxi','van','scooter','sedan','bus','scooter'];
+for(let i=0;i<(LOW?4:7);i++){const lane=i%2,c=mkCar(KINDS[i%KINDS.length]);c.lane=lane;c.dir=lane?-1:1;c.v0=rnd(3,4.6)*(c.kind=='bus'?.8:c.kind=='scooter'?1.15:1);c.v=c.v0;
+  c.z=Z_MIN+(Z_MAX-Z_MIN)*(i/((LOW?4:7)))+rnd(0,3);c.g.position.set(LANES[lane]+rnd(-.1,.1),0,c.z);c.g.rotation.y=lane?Math.PI:0;cars.push(c)}
+function syncCars(dt,t){
+  for(const c of cars){
+    const ahead=cars.filter(o=>o!==c&&o.lane==c.lane&&(o.z-c.z)*c.dir>0).sort((a,b)=>Math.abs(a.z-c.z)-Math.abs(b.z-c.z))[0];
+    const gap=ahead?Math.abs(ahead.z-c.z)-(ahead.len+c.len)/2:99;
+    // slow for traffic ahead and for people on the zebra crossing in front of the shop
+    const nearCross=Math.abs(c.z+c.dir*(c.len/2+1)-(DOOR[1]+.5))<1.2&&crossBusy;
+    const want=nearCross?0:gap<1.2?0:gap<3?Math.min(c.v0,ahead.v):c.v0;c.v+=(want-c.v)*Math.min(1,dt*3);
+    c.z+=c.dir*c.v*dt;
+    if(c.dir>0&&c.z>Z_MAX)c.z=Z_MIN;if(c.dir<0&&c.z<Z_MIN)c.z=Z_MAX;
+    c.g.position.z=c.z;c.g.children[0].position.y=Math.abs(Math.sin(t*14+c.z))*.012*(c.v>.3?1:0)}}
+// ---- pedestrians (lite avatars) ----
+let crossBusy=false;
+const peds=[];
+function mkPed(i){const look=randomLook(false);look.lite=true;const g=mkAvatar(Object.assign({role:'c'},look));
+  const far=i%2==1;const p={g,far,x:(far?SW_FAR:SW_NEAR)+rnd(-.35,.35),z:rnd(Z_MIN,Z_MAX),dir:Math.random()<.5?1:-1,v:rnd(.9,1.35),stop:0,seed:rnd(0,6),look};
+  g.userData.seed=p.seed;g.position.set(p.x,0,p.z);peds.push(p);return p}
+for(let i=0;i<(LOW?4:8);i++)mkPed(i);
+const STALL_Z=13.5;
+function stallPrice(){return Math.round((9+S.level*2)*(hired('vendor').length?1.6:1))}
+function syncPeds(dt,t){
+  crossBusy=false;
+  for(const p of peds){const u=p.g.userData;
+    if(p.stop>0){p.stop-=dt;pose(u,{t});p.g.rotation.y=-Math.PI/2;
+      if(p.stop<=0){const n=stallPrice();S.coins+=n;quest('stall');quest('earn',n);fx.push({x:p.x-.4,y:p.z,t:'+'+n,k:'coin'});events.push({k:'coins',x:p.x-.4,y:p.z,n,tip:0})}
+      continue}
+    if(p.cross){const tx=p.far?SW_NEAR:SW_FAR,d=tx-p.x;p.x+=Math.sign(d)*Math.min(Math.abs(d),p.v*dt);p.g.position.set(p.x,0,p.z);p.g.rotation.y=d>0?Math.PI/2:-Math.PI/2;
+      const s=Math.sin(t*9+p.seed);pose(u,{s,t});u.body.position.y=Math.abs(s)*.035;if(Math.abs(d)<.02){p.cross=false;p.far=!p.far}continue}
+    const pz=p.z;p.z+=p.dir*p.v*dt;
+    const CZ=DOOR[1]+.5;if((pz-CZ)*(p.z-CZ)<=0&&Math.random()<.3&&!cars.some(c=>Math.abs(c.z-CZ)<3)){p.z=CZ;p.cross=true;continue}
+    if(!p.far&&S.areas.stall&&(pz-STALL_Z)*(p.z-STALL_Z)<=0&&!p.bought&&Math.random()<(hired('vendor').length?.6:.35)){p.bought=true;p.stop=2.4;p.z=STALL_Z}
+    if(p.z>Z_MAX||p.z<Z_MIN){p.z=p.dir>0?Z_MIN:Z_MAX;p.bought=false}
+    p.g.position.set(p.x,0,p.z);p.g.rotation.y=p.dir>0?0:Math.PI;
+    const s=Math.sin(t*9+p.seed);pose(u,{s,t});u.body.position.y=Math.abs(s)*.035;blink(u,dt)}
+  // customers on the sidewalk use the crossing area in front of the gate
+  crossBusy=peds.some(p=>p.cross)}
+// ---- greeter and musician ----
+let greeterAv=null,musicianAv=null,musicKey='';
+function syncStaffExtras(t,dt){
+  const gr=hired('greeter')[0];
+  if(gr&&!greeterAv){greeterAv=mkAvatar(Object.assign({role:'w',name:gr.name},gr.look));greeterAv.position.set(11.45,0,10.35);greeterAv.rotation.y=-Math.PI*.75}
+  if(greeterAv){const u=greeterAv.userData;pose(u,{t});blink(u,dt);const near=customers.some(c=>c.st=='in'&&Math.hypot(c.x-11.5,c.y-11.5)<1.6);
+    u.bow=(u.bow||0)+((near?1:0)-(u.bow||0))*Math.min(1,dt*6);u.body.rotation.x=u.bow*.5;u.aL.s.rotation.x=u.aR.s.rotation.x=-.3*u.bow;setFace(u,'happy')}
+  const mu=hired('musician')[0];
+  if(mu&&!musicianAv){const st=S.items.find(o=>o.type=='stage');if(st){musicianAv=mkAvatar(Object.assign({role:'w',name:mu.name},mu.look));musicianAv.position.set(st.x+.5,.12,st.y+.5);musicianAv.rotation.y=Math.PI/2;musicianAv.userData.stage=st}}
+  if(musicianAv){const u=musicianAv.userData;pose(u,{sit:1,t});u.aR.s.rotation.x=-.9+Math.sin(t*10)*.25;u.aL.s.rotation.x=-1.1;u.aL.s.rotation.z=.5;u.head.rotation.z=Math.sin(t*2)*.12;blink(u,dt);setFace(u,'happy');
+    if(Math.random()<dt*1.2)fx.push({x:musicianAv.position.x+rnd(-.3,.3),y:musicianAv.position.z,t:pick(['🎵','🎶']),k:'emo'})}}
+function ensureStage(){if(!hired('musician').length||S.items.some(o=>o.type=='stage'))return;
+  for(const[x,y]of[[0,7],[0,5],[7,6],[3,8],[1,8]])if(!at(x,y)&&!rugAt(x,y)){add('stage',x,y);return}}
+// ---- locked land in front (garden extension) ----
+const g2=new THREE.Group();room.add(g2);
+rbox(W+.3,.3,4.3,'#a59c8c',W/2,-.17,15.85,g2,.08).castShadow=false;plane(W,4,texMat(TEX.gravel(3,1)),W/2,0,16,g2);
+for(let z=14.6;z<=17.9;z+=.17){const m=cyl(.06,1.1+Math.sin(z*7)*.05,'#7ea84a',W-.05,.55,z,g2,6);m.castShadow=false}
+const lockG=new THREE.Group();room.add(lockG);
+for(let x=.3;x<W;x+=1.4){cyl(.05,.6,'#8a5a30',x,.3,14.1,lockG,6);cyl(.05,.6,'#8a5a30',x,.3,17.9,lockG,6)}
+{const r=box(W,.02,.02,'#e0a030',W/2,.5,14.1,lockG);r.castShadow=false;const s=sprite(textTex('🔒 Đất trống · Cấp 5','#fff3c4',38),1,6,true);s.scale.set(2.6,.98,1);s.position.set(W/2,1.3,16);lockG.add(s)}
+function syncLand(){g2.visible=!!S.areas.garden2;lockG.visible=!S.areas.garden2}
 // ================= CAMERA VIEWS =================
 function view(k,instant){viewK=k;zoomed=k!=='all';
-  const V={all:[W/2,H/2-.5,1],dining:[4,4.8,.5],kitchen:[9.8,3,.42],patio:[6,11.5,.5],tatami:[2,2,.36],kaiten:[6,2.5,.38]}[k]||[W/2,H/2-.5,1];
+  const V={all:[W/2+1,H/2-1.5,1],dining:[4,4.8,.45],kitchen:[9.8,3,.38],patio:[6,12.5,.5],tatami:[2,2,.32],kaiten:[6,2.5,.34],street:[W+4,8,.62],stall:[11.5,13.5,.34],garden2:[6,16,.45]}[k]||[W/2,H/2-.5,1];
   goalT.set(V[0],.3,V[1]);goalR=homeRad*V[2];if(instant){TGT.copy(goalT);rad=goalR;placeCam()}
   document.querySelectorAll('#views .rb').forEach(b=>b.classList.toggle('on',b.dataset.v===k))}
 $('views').addEventListener('click',e=>{const b=e.target.closest('.rb');if(b&&b.dataset.v)view(b.dataset.v)});
@@ -776,11 +977,11 @@ $('views').addEventListener('click',e=>{const b=e.target.closest('.rb');if(b&&b.
 const ray=new THREE.Raycaster(),ptrs=new Map();let drag=null,pinch=0,hover=null;
 const ndc=e=>{const r=cv.getBoundingClientRect();return new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1)};
 function groundTile(e){ray.setFromCamera(ndc(e),cam);const p=new THREE.Vector3();return ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),0),p)?[Math.floor(p.x),Math.floor(p.z)]:null}
-function zoneOK(k,x,y){const z=T[k].zone;if(inTatami(x,y))return S.areas.tatami&&T[k].cat=='trang'&&!z;if(k=='stove')return inKitchen(x,y);if(inKitchen(x,y))return false;if(z=='patio')return y>=10;if(z=='inside')return y<9;return true}
+function zoneOK(k,x,y){const z=T[k].zone;if(landLocked(x,y))return false;if(inTatami(x,y))return S.areas.tatami&&T[k].cat=='trang'&&!z;if(k=='stove')return inKitchen(x,y);if(inKitchen(x,y))return false;if(z=='patio')return y>=10;if(z=='inside')return y<9;return true}
 function canPlace(k,x,y){if(x<0||y<0||x>=W||y>=H||isDoor(x,y)||!zoneOK(k,x,y))return false;
   if(T[k].flat)return !rugAt(x,y)&&!at(x,y)?.type?.match(/^(wall|fence)$/);
   return !at(x,y)&&!customers.some(c=>Math.floor(c.x)==x&&Math.floor(c.y)==y)&&!waiters.some(w=>Math.floor(w.x)==x&&Math.floor(w.y)==y)}
-function placeErr(k,x,y){if(inTatami(x,y))return S.areas.tatami?'Phòng tatami chỉ đặt đồ trang trí':'Phòng tatami chưa mở';if(k=='stove')return'Bếp chỉ đặt trong khu bếp';if(inKitchen(x,y))return'Khu bếp chỉ đặt bếp nấu';if(T[k].zone=='patio')return'Món này chỉ đặt ở sân ngoài';if(T[k].zone=='inside')return'Món này chỉ đặt trong nhà';return'Ô này đã có đồ'}
+function placeErr(k,x,y){if(landLocked(x,y))return'Khu đất này chưa mở, hãy Mở rộng vườn trước';if(inTatami(x,y))return S.areas.tatami?'Phòng tatami chỉ đặt đồ trang trí':'Phòng tatami chưa mở';if(k=='stove')return'Bếp chỉ đặt trong khu bếp';if(inKitchen(x,y))return'Khu bếp chỉ đặt bếp nấu';if(T[k].zone=='patio')return'Món này chỉ đặt ở sân ngoài';if(T[k].zone=='inside')return'Món này chỉ đặt trong nhà';return'Ô này đã có đồ'}
 cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,[e.clientX,e.clientY]);drag={x:e.clientX,y:e.clientY,moved:false,az,pol};
   if(ptrs.size==2){const[a,b]=[...ptrs.values()];pinch=Math.hypot(a[0]-b[0],a[1]-b[1])}});
 cv.addEventListener('pointermove',e=>{
@@ -848,7 +1049,7 @@ function stateOf(c){
   return['Chờ mang ra','✅','#2a8a55']}
 function updateBoard(){
   const list=customers.filter(c=>c.st!='out');
-  let h=`<div class="h"><span>🧾 Bảng đơn (${list.length})</span><span>${boardMin?'▸':'▾'}</span></div>`;
+  let h=`<div class="h"><span>🧾 Bảng đơn (${list.length})</span><span>${boardMin?'▸':'▾'}</span></div><div style="font-size:11px;color:#8a5a00;font-weight:700">🔥 Hot: ${DISHES[S.hot].e} ${DISHES[S.hot].n}</div>`;
   if(!list.length)h+='<div class="empty">Chưa có khách. Khách sẽ tới từ cổng sân.</div>';
   for(const c of list.slice(0,5)){const[l,x,xc]=stateOf(c),p=c.st=='wait'||c.st=='food',sec=p?Math.ceil(patSecs(c)):null,col=c.pat>.5?'#3cb371':c.pat>.25?'#ffb020':'#e63946';
     h+=`<div class="r" data-i="${customers.indexOf(c)}"><span class="d">${c.vip?'👑':''}${DISHES[c.dish].e}</span><span class="l">${l}</span><span class="s" style="color:${xc||col}">${x||(sec!=null?'⏳ '+sec+'s':'')}</span>${p?`<span class="t"><i style="width:${Math.max(0,c.pat)*100}%;background:${col}"></i></span>`:''}</div>`}
@@ -862,26 +1063,54 @@ function closeModal(){$('modal').hidden=true;openModal.render=null;document.quer
 $('mClose').onclick=closeModal;$('modal').addEventListener('pointerdown',e=>{if(e.target.id=='modal')closeModal()});
 function refreshModal(){if(openModal.render&&!$('modal').hidden)openModal.render()}
 function btn(label,ok,cls='',act=''){return`<button class="btn ${cls}" ${ok?'':'disabled'} data-act="${act}">${label}</button>`}
+let menuCat='sushi';
 function menuPanel(){
-  $('mBody').innerHTML=`<div class="sec">Nâng cấp món để tăng giá bán. Ghép nguyên liệu ở Chợ cá để tăng sao chất lượng (+12% giá mỗi sao).</div>`+DISHES.map((d,i)=>{
-    const lock=d.unlock>S.level,c=dishUpCost(i),max=S.menu[i]>=10;
-    return`<div class="it ${lock?'lock':''}"><span class="e">${d.e}</span><div class="m"><b>${d.n}<span class="lvtag">${lock?'🔒 Cấp '+d.unlock:'Lv '+S.menu[i]}</span></b><small>💰 ${dishPrice(i)} xu/phần · ⏱️ ${dishCook(i).toFixed(1)}s nấu</small><small>${CHAINS[d.ch].items.at(-1)} Nguyên liệu: <span class="stars">${'★'.repeat(Math.min(5,S.quality[d.ch]))}${'☆'.repeat(Math.max(0,5-S.quality[d.ch]))}</span>${S.quality[d.ch]>5?' +'+(S.quality[d.ch]-5):''}</small></div>
-    ${lock?'':max?'<b>Tối đa</b>':btn(c+' 🪙',S.coins>=c,'o','dish:'+i)}</div>`}).join('')}
+  const hot=DISHES[S.hot];
+  const list=DISHES.map((d,i)=>[d,i]).filter(([d])=>d.cat==menuCat);
+  $('mBody').innerHTML=`<div class="hot"><span class="e">${hot.e}</span><div style="flex:1">🔥 Món hot: ${hot.n}<br><small style="font-weight:600;color:#8a5a00">Khách gọi nhiều hơn, trả x1,5 · đổi sau ${Math.ceil(S.hotT)}s</small></div></div>
+  <div class="tabs2">${MCATS.map(([k,n])=>`<button class="${menuCat==k?'on':''}" data-mcat="${k}">${n}</button>`).join('')}</div>
+  <div class="dgrid">${list.map(([d,i])=>{const lock=d.unlock>S.level,c=dishUpCost(i),max=S.menu[i]>=10,q=S.quality[d.ch]||0;
+    return`<div class="dish ${lock?'lock':''}"><span class="lvtag">${lock?'🔒 Cấp '+d.unlock:'Lv '+S.menu[i]}</span>${i==S.hot&&!lock?'<span class="fire">🔥</span>':''}<div class="pic">${d.e}</div><b>${d.n}</b>
+    <small>💰 ${dishPrice(i)} xu · ⏱️ ${dishCook(i).toFixed(1)}s</small><small>${CHAINS[d.ch].items.at(-1)} <span class="stars">${'★'.repeat(Math.min(5,q))}${'☆'.repeat(Math.max(0,5-q))}</span></small>
+    ${lock?'':max?'<small><b>Đã tối đa</b></small>':btn('⬆ '+c+' 🪙',S.coins>=c,'o','dish:'+i)}</div>`}).join('')}</div>
+  <div class="sec">Ghép nguyên liệu ở Chợ cá để thêm ★ (+12% giá mỗi sao).</div>`}
+$('mBody').addEventListener('click',e=>{const b=e.target.closest('[data-mcat]');if(b){menuCat=b.dataset.mcat;menuPanel()}});
+const ROLE_DESC={chef:s=>`Nấu nhanh hơn ${Math.round(15*staffPow(s))}% · đứng bếp`,waiter:s=>`Tốc độ đi ${Math.round(6*staffPow(s))}% nhanh hơn`,greeter:s=>`Khách kiên nhẫn thêm ${Math.round(6*staffPow(s))}%`,
+  musician:s=>`+${Math.round(staffPow(s)*3)} ✨ độ đẹp nhờ tiếng đàn`,manager:s=>'Tự nhặt tiền tip trên bàn',vendor:s=>'Quầy mang về bán giá x1,6, khách ghé nhiều hơn'};
+let staffTab='all';
 function staffPanel(){
-  const wc=waiterCost(),cc=chefCost();
-  $('mBody').innerHTML=`<div class="it"><span class="e">👘</span><div class="m"><b>Phục vụ<span class="lvtag">${S.waiters}/4</span></b><small>${waiters.map(w=>w.name).join(', ')}. Nhận order, bưng món, dọn bàn.</small></div>${S.waiters>=4?'<b>Đủ người</b>':btn(wc+' 🪙',S.coins>=wc,'o','hire')}</div>
-  <div class="it"><span class="e">👴</span><div class="m"><b>Tay nghề bác Ono<span class="lvtag">Lv ${S.chefLv}</span></b><small>Mỗi cấp nấu nhanh hơn 25% cho mọi món.</small></div>${S.chefLv>=8?'<b>Tối đa</b>':btn(cc+' 🪙',S.coins>=cc,'o','chef')}</div>
-  <div class="it"><span class="e">🕴️</span><div class="m"><b>Quản lý</b><small>Tự nhặt tiền tip trên bàn giúp bạn.</small></div>${S.manager?'<b>Đã thuê</b>':btn('12 💎',S.gems>=12,'o','manager')}</div>
-  <div class="sec">Mẹo</div><div class="it"><span class="e">💰</span><div class="m"><small>Khách ăn xong để lại túi tiền tip trên bàn. Chạm vào để nhặt, nếu không sau 25 giây sẽ tự vào két.</small></div></div>`}
+  const roles=['all',...Object.keys(ROLE)];
+  const list=STAFF.filter(s=>staffTab=='all'||s.role==staffTab).sort((a,b)=>S.staff[b.id].hired-S.staff[a.id].hired);
+  $('mBody').innerHTML=`<div class="tabs2">${roles.map(r=>`<button class="${staffTab==r?'on':''}" data-stab="${r}">${r=='all'?'Tất cả':ROLE[r].e+' '+ROLE[r].n}</button>`).join('')}</div>`+
+  list.map(st=>{const h=S.staff[st.id],lock=(st.lv||1)>S.level,tc=trainCost(st),price=st.c?st.c+' 🪙':st.g+' 💎',can=st.c?S.coins>=st.c:S.gems>=st.g;
+    const por=portrait(st);
+    return`<div class="staff ${h.hired?'':'no'}"><div class="por">${por?`<img src="${por}" alt="">`:ROLE[st.role].e}</div><div class="m"><b>${st.name}</b><span class="role">${ROLE[st.role].e} ${ROLE[st.role].n}</span>
+      <small><span class="stars">${'★'.repeat(st.stars)}</span>${h.hired?' · Lv '+h.lv:''}</small><small>${ROLE_DESC[st.role](st)}</small></div>
+      ${h.hired?(h.lv>=5?'<b>Lv tối đa</b>':btn('Huấn luyện<br>'+tc+' 🪙',S.coins>=tc,'o','train:'+st.id)):lock?`<b style="font-size:12px">🔒 Cấp ${st.lv}</b>`:btn('Thuê<br>'+price,can,'','hire:'+st.id)}</div>`}).join('')}
+$('mBody').addEventListener('click',e=>{const b=e.target.closest('[data-stab]');if(b){staffTab=b.dataset.stab;staffPanel()}});
+// 3D portraits for the staff cards, rendered once into images with a small offscreen renderer
+const porCache={};let porR=null,porScene=null,porCam=null;
+function portrait(st){if(porCache[st.id]!==undefined)return porCache[st.id];
+  try{if(!porR){porR=new THREE.WebGLRenderer({alpha:true,antialias:true,preserveDrawingBuffer:true});porR.setSize(128,128);porScene=new THREE.Scene();porScene.add(new THREE.HemisphereLight('#fff6e6','#a07850',.9));const l=new THREE.DirectionalLight('#ffffff',.6);l.position.set(1,2,3);porScene.add(l);porCam=new THREE.PerspectiveCamera(30,1,.1,10);porCam.position.set(0,1.0,2.1);porCam.lookAt(0,.82,0)}
+    const g=mkAvatar(Object.assign({role:st.role=='chef'?'chef':'w'},st.look));g.parent.remove(g);g.scale.setScalar(1);porScene.add(g);const u=g.userData;pose(u,{});setFace(u,'happy');
+    porR.render(porScene,porCam);porCache[st.id]=porR.domElement.toDataURL();porScene.remove(g)}catch(e){porCache[st.id]=null}
+  return porCache[st.id]}
+// expansion panel
+function expandPanel(){
+  $('mBody').innerHTML=`<div class="sec">Mở rộng tiệm để có thêm chỗ ngồi, thêm khách và thêm cách kiếm tiền.</div>`+Object.entries(AREAS).map(([k,a])=>{const open=S.areas[k],lv=S.level>=a.lv,ok=lv&&S.coins>=a.c&&!open;
+    return`<div class="area ${open?'done':''}"><div class="ban">${a.e}</div><div class="tx"><div><b>${a.n}</b><small>${a.d}</small></div>${open?btn('Xem',true,'','look:'+k):lv?btn(a.c+' 🪙',ok,'o','area:'+k):`<b style="font-size:12px">🔒 Cấp ${a.lv}</b>`}</div></div>`}).join('')}
+$('nExpand').onclick=()=>{navOn('nExpand');openModal('Mở rộng cửa hàng',expandPanel)};
 function questPanel(){ensureQuests();
   $('mBody').innerHTML=`<div class="sec">Hoàn thành để nhận thưởng. Nhận xong sẽ có nhiệm vụ mới.</div>`+S.quests.map((q,i)=>`<div class="it"><span class="e">${q.e}</span><div class="m"><b>${q.title}</b><small>Thưởng: ${q.coins} 🪙${q.gems?' + '+q.gems+' 💎':''}</small><div class="prog"><i style="width:${q.p/q.n*100}%"></i></div><small>${q.p}/${q.n}</small></div>${btn('Nhận',q.done,'','claim:'+i)}</div>`).join('')+
   `<div class="sec">Cài đặt</div><div class="it"><span class="e">↺</span><div class="m"><b>Chơi lại từ đầu</b><small>Xoá tiến trình đã lưu trên trình duyệt này.</small></div>${btn(resetArm?'Chắc chắn?':'Chơi lại',true,'r','reset')}</div>`}
 let resetArm=false;
 $('mBody').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.disabled)return;const[a,v]=b.dataset.act.split(':');
   if(a=='dish'){const i=+v,c=dishUpCost(i);if(S.coins>=c){S.coins-=c;S.menu[i]++;toast(DISHES[i].n+' lên Lv '+S.menu[i]+'!')}}
-  if(a=='hire'&&S.coins>=waiterCost()){S.coins-=waiterCost();S.waiters++;waiters.push(mkWaiter(S.waiters-1));toast('Đã thuê thêm phục vụ!')}
-  if(a=='chef'&&S.coins>=chefCost()){S.coins-=chefCost();S.chefLv++;toast('Đầu bếp nấu nhanh hơn!')}
-  if(a=='manager'&&S.gems>=12){S.gems-=12;S.manager=true;toast('Quản lý sẽ tự nhặt tiền tip')}
+  if(a=='hire'){const st=STAFF.find(s=>s.id==v);if(st&&!S.staff[v].hired&&(st.c?S.coins>=st.c:S.gems>=st.g)){if(st.c)S.coins-=st.c;else S.gems-=st.g;S.staff[v].hired=true;syncWaiters();ensureStage();
+    toast(st.name+' đã vào làm! '+ROLE[st.role].e);if(st.role=='greeter')view('patio');if(st.role=='musician')view('dining');if(st.role=='chef')view('kitchen')}}
+  if(a=='train'){const st=STAFF.find(s=>s.id==v),c=trainCost(st);if(S.coins>=c&&S.staff[v].lv<5){S.coins-=c;S.staff[v].lv++;syncWaiters();toast(st.name+' lên Lv '+S.staff[v].lv+'!')}}
+  if(a=='area'){const ar=AREAS[v];if(S.coins>=ar.c&&S.level>=ar.lv&&!S.areas[v]){S.coins-=ar.c;unlockArea(v);closeModal()}}
+  if(a=='look'){closeModal();view(v);return}
   if(a=='claim'){const q=S.quests[+v];if(q&&q.done){S.coins+=q.coins;S.gems+=q.gems;S.quests.splice(+v,1);ensureQuests();toast('Nhận '+q.coins+' 🪙'+(q.gems?' + '+q.gems+' 💎':''));bump('pCoin')}}
   if(a=='reset'){if(!resetArm){resetArm=true;setTimeout(()=>{resetArm=false;refreshModal()},3000)}else{try{localStorage.removeItem(SAVE)}catch(_){}location.reload();return}}
   save();refreshModal()});
@@ -914,15 +1143,15 @@ function levelUp(){
   for(let i=0;i<60;i++){const c=document.createElement('div');c.className='cf';c.style.left=rnd(0,100)+'%';c.style.background=pick(cols);c.style.animationDuration=rnd(1.6,3)+'s';c.style.animationDelay=rnd(0,.5)+'s';$('app').appendChild(c);setTimeout(()=>c.remove(),3800)}}
 
 // ================= LOOP =================
-load();ensureQuests();for(let i=0;i<S.waiters;i++)waiters.push(mkWaiter(i));
+load();ensureQuests();syncWaiters();ensureStage();
 let last=performance.now(),clock=0,boardAt=0,saveAt=0;
 let loopErr=false,firstFrame=true;
 function loop(now){requestAnimationFrame(loop);try{frame(now)}catch(e){if(!loopErr){loopErr=true;console.error(e);toast('Có lỗi: '+(e&&e.message||e))}}}
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;clock+=dt;
   for(let i=0;i<S.speed;i++)tick(dt);
-  for(const ev of events.splice(0)){if(ev.k=='coins')flyCoins(ev.x,ev.y,ev.n,ev.tip);if(ev.k=='level')levelUp();if(ev.k=='quest')refreshModal();if(ev.k=='unlock')onUnlock(ev.a)}
+  for(const ev of events.splice(0)){if(ev.k=='coins')flyCoins(ev.x,ev.y,ev.n,ev.tip);if(ev.k=='level')levelUp();if(ev.k=='quest')refreshModal();if(ev.k=='unlock')onUnlock(ev.a);if(ev.k=='hot')toast('🔥 Món hot mới: '+DISHES[S.hot].e+' '+DISHES[S.hot].n)}
   if(TGT.distanceTo(goalT)>.01||Math.abs(rad-goalR)>.05){TGT.lerp(goalT,.12);rad+=(goalR-rad)*.12;placeCam()}
-  syncItems(clock,now);syncAvatars(clock,dt);syncFx();syncPuffs(dt);syncPetals(dt,clock);updateHover();
+  syncItems(clock,now);syncAvatars(clock,dt);syncCars(dt,clock);syncPeds(dt,clock);syncStaffExtras(clock,dt);syncLand();syncFx();syncPuffs(dt);syncPetals(dt,clock);updateHover();
   lanterns.forEach((l,i)=>l.rotation.z=Math.sin(clock*1.3+i)*.05);norens.forEach((n,i)=>n.children.forEach(c=>{if(c.userData.sway!=null)c.rotation.x=Math.sin(clock*2+c.userData.sway+i)*.06}));
   renderer.render(scene,cam);hud();
   if(now-boardAt>250){boardAt=now;updateBoard()}
@@ -932,9 +1161,11 @@ resize();view('all',true);requestAnimationFrame(loop);
 setTimeout(story,700);
 // ================= EXPANSION =================
 function onUnlock(k){const a=AREAS[k];toast('Đã mở '+a.n+'! 🎉');view(k);
-  const c=k=='tatami'?[2,2]:[6,2.5];for(let i=0;i<18;i++)puff(c[0]+rnd(-1.5,1.5),rnd(.2,1),c[1]+rnd(-1.5,1.5));
+  const c={tatami:[2,2],kaiten:[6,2.5],stall:[11.5,13.5],garden2:[6,16]}[k];for(let i=0;i<18;i++)puff(c[0]+rnd(-1.5,1.5),rnd(.2,1),c[1]+rnd(-1.5,1.5));
   if(k=='tatami')talk(['Ồ, căn phòng tatami của bà ngày xưa! Khách quý rất thích ngồi xếp bằng ở đây đấy.']);
-  if(k=='kaiten')talk(['Băng chuyền chạy rồi! Khách tự lấy đĩa nên mình đỡ vất vả hơn nhiều.'])}
+  if(k=='kaiten')talk(['Băng chuyền chạy rồi! Khách tự lấy đĩa nên mình đỡ vất vả hơn nhiều.']);
+  if(k=='stall')talk(['Quầy taiyaki ven đường mở rồi! Người đi bộ ngoài phố sẽ ghé mua. Thuê cậu Ren thì bán còn đắt hàng hơn.']);
+  if(k=='garden2')talk(['Khu vườn rộng thêm nhiều quá! Đặt thêm bàn ghế, ô và đèn đá cho đẹp nhé.'])}
 // ================= MERGE MARKET (ghép nguyên liệu) =================
 let mSel=-1,mPop=-1;
 const SPAWN_COST=4;
