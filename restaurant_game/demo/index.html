@@ -99,6 +99,12 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 .lvup .big{font-size:58px;line-height:1.1}
 .cf{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:fall linear forwards;z-index:11;pointer-events:none}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+/* loading + error screen */
+#boot{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#ffe9cf,#f2c79a)}
+#boot .bx{text-align:center;padding:20px;max-width:320px}
+#boot .big{font-size:64px;animation:pop 1s ease-in-out infinite alternate}
+#boot b{display:block;font-size:18px;color:var(--brown);margin:6px 0}
+#boot p{font-size:13px;color:#7a2a1a;background:#fff;border-radius:12px;padding:8px 10px;text-align:left;word-break:break-word;margin:8px 0}
 /* story dialogue, visual-novel style */
 #talk{position:absolute;left:10px;right:10px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:7;background:var(--cream);border:3px solid var(--brown);border-radius:18px;padding:12px 14px 10px;box-shadow:0 6px 0 rgba(0,0,0,.25);cursor:pointer;animation:up .25s ease-out}
 #talk .who{position:absolute;top:-30px;left:12px;display:flex;align-items:flex-end;gap:6px}
@@ -155,11 +161,12 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
   </div>
   <div class="modal" id="modal" hidden><div class="sheet" role="dialog" aria-modal="true"><header><h2 id="mTitle"></h2><button class="x" id="mClose" aria-label="Đóng">✕</button></header><div class="mb" id="mBody"></div></div></div>
   <div id="toast" role="status"></div>
+  <div id="boot"><div class="bx"><div class="big">🍣</div><b id="bootMsg">Đang mở tiệm…</b><p id="bootErr" hidden></p><button class="btn o" id="bootBtn" hidden>Tải lại</button></div></div>
   <div id="talk" hidden><div class="who"><div class="face">👴</div><b id="talkName">Ono Ryota</b></div><p id="talkText"></p><span class="next">Chạm để tiếp ▸</span></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-'use strict';
+function startGame(){'use strict';
 // ================= DATA =================
 const W=12,H=14,DOOR=[11,11];
 const inKitchen=(x,y)=>x>=9&&x<=11&&y>=0&&y<=4;
@@ -388,8 +395,10 @@ function collectTip(o){const n=o.tip;if(!n)return;o.tip=0;S.coins+=n;quest('tips
 // ================= 3D: renderer, toon materials, textures =================
 const $=id=>document.getElementById(id);
 const cv=$('c');
-const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});
-renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+const LOW=(()=>{try{if(localStorage.getItem('nhtp_low'))return true}catch(e){}return matchMedia('(pointer:coarse)').matches||Math.min(screen.width,screen.height)<700})();
+const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:!LOW,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(LOW?1.5:2,window.devicePixelRatio||1));
+cv.addEventListener('webglcontextlost',e=>{e.preventDefault();try{localStorage.setItem('nhtp_low','1')}catch(_){}bootFail('Đồ họa bị quá tải nên trình duyệt đã tắt khung 3D. Bấm Tải lại để chạy ở chế độ nhẹ hơn.')});
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 const scene=new THREE.Scene();scene.background=new THREE.Color('#ffd9c2');scene.fog=new THREE.Fog('#ffd9c2',70,170);
 const cam=new THREE.PerspectiveCamera(32,1,.5,260);
@@ -401,7 +410,7 @@ function resize(){const r=cv.parentElement.getBoundingClientRect();if(!r.width)r
 new ResizeObserver(resize).observe(cv.parentElement);
 scene.add(new THREE.HemisphereLight('#fff0e0','#8a6448',.52));
 const sun=new THREE.DirectionalLight('#ffe6c8',.62);sun.position.set(W+8,20,H+2);sun.target.position.set(W/2,0,H/2);
-sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-16,right:16,top:16,bottom:-16,near:1,far:70});sun.shadow.bias=-.0005;sun.shadow.radius=3;scene.add(sun,sun.target);
+sun.castShadow=true;sun.shadow.mapSize.set(LOW?1024:2048,LOW?1024:2048);Object.assign(sun.shadow.camera,{left:-16,right:16,top:16,bottom:-16,near:1,far:70});sun.shadow.bias=-.0005;sun.shadow.radius=3;scene.add(sun,sun.target);
 // 3-step toon ramp gives the cel-shaded cartoon look
 const ramp=(()=>{const c=document.createElement('canvas');c.width=4;c.height=1;const x=c.getContext('2d');['#7a7a7a','#b8b8b8','#dedede','#f2f2f2'].forEach((v,i)=>{x.fillStyle=v;x.fillRect(i,0,1,1)});
   const t=new THREE.CanvasTexture(c);t.minFilter=t.magFilter=THREE.NearestFilter;t.generateMipmaps=false;return t})();
@@ -509,7 +518,7 @@ const norens=[noren(8.5,4.5,Math.PI/2,1,'#2c4a8a'),noren(2.5,4.5,0,1,'#a8323e')]
 // red paper lanterns (chochin) along the beams + gate
 function chochin(x,y,z,c='#e63946',s=1){const g=new THREE.Group();g.position.set(x,y,z);cyl(.005,.25,'#222',0,.2,0,g,4);
   const b=ball(.2*s,basic(c),0,0,0,g,14);b.scale.y=1.25;b.castShadow=false;cyl(.12*s,.05,'#1a1a1a',0,.25*s,0,g,10);cyl(.12*s,.05,'#1a1a1a',0,-.25*s,0,g,10);
-  for(let k=-2;k<=2;k++){const r=new THREE.Mesh(new THREE.TorusGeometry(.2*s*Math.cos(k*.32),.006,4,18),basic('#7a1010'));r.rotation.x=Math.PI/2;r.position.y=k*.09*s;g.add(r)}
+  if(!LOW)for(let k=-2;k<=2;k++){const r=new THREE.Mesh(new THREE.TorusGeometry(.2*s*Math.cos(k*.32),.006,4,18),basic('#7a1010'));r.rotation.x=Math.PI/2;r.position.y=k*.09*s;g.add(r)}
   room.add(g);return g}
 const lanterns=[chochin(1.6,2.3,.35),chochin(4.6,2.3,.35),chochin(7.2,2.3,.35),chochin(.35,2.3,8),chochin(W-.1,2.1,DOOR[1]-.1,'#e63946',1.2),chochin(W-.1,2.1,DOOR[1]+1.1,'#e63946',1.2)];
 // kitchen hood
@@ -535,7 +544,7 @@ function tree(x,z,s=1,kind=0){cyl(.12*s,1.1*s,'#6a4a32',x,.5*s,z,room,8);
 [[W+1.7,-1.5],[W+1.7,15.5]].forEach(([x,z])=>{cyl(.06,3,'#3a3f48',x,1.5,z,room,8);const b=ball(.18,basic('#fff3c4'),x-.2,3,z,room);b.castShadow=false});
 // sakura petals drifting over the garden
 const petals=[];const petalGeo=new THREE.PlaneGeometry(.09,.06),petalMat=new THREE.MeshBasicMaterial({color:'#ffb7c9',side:THREE.DoubleSide});
-for(let i=0;i<60;i++){const p=new THREE.Mesh(petalGeo,petalMat);p.position.set(rnd(-1,W+1),rnd(0,4),rnd(8,H+2));p.userData={v:rnd(.25,.5),s:rnd(0,6)};scene.add(p);petals.push(p)}
+for(let i=0;i<(LOW?25:60);i++){const p=new THREE.Mesh(petalGeo,petalMat);p.position.set(rnd(-1,W+1),rnd(0,4),rnd(8,H+2));p.userData={v:rnd(.25,.5),s:rnd(0,6)};scene.add(p);petals.push(p)}
 function syncPetals(dt,t){for(const p of petals){const u=p.userData;p.position.y-=u.v*dt;p.position.x+=Math.sin(t+u.s)*dt*.4;p.position.z+=dt*.15;p.rotation.set(t*1.5+u.s,t+u.s,0);
   if(p.position.y<.02){p.position.set(rnd(-1,8),rnd(3,4.5),rnd(9,13))}}}
 // edit-mode grid overlay
@@ -907,7 +916,9 @@ function levelUp(){
 // ================= LOOP =================
 load();ensureQuests();for(let i=0;i<S.waiters;i++)waiters.push(mkWaiter(i));
 let last=performance.now(),clock=0,boardAt=0,saveAt=0;
-function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;clock+=dt;
+let loopErr=false,firstFrame=true;
+function loop(now){requestAnimationFrame(loop);try{frame(now)}catch(e){if(!loopErr){loopErr=true;console.error(e);toast('Có lỗi: '+(e&&e.message||e))}}}
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;clock+=dt;
   for(let i=0;i<S.speed;i++)tick(dt);
   for(const ev of events.splice(0)){if(ev.k=='coins')flyCoins(ev.x,ev.y,ev.n,ev.tip);if(ev.k=='level')levelUp();if(ev.k=='quest')refreshModal();if(ev.k=='unlock')onUnlock(ev.a)}
   if(TGT.distanceTo(goalT)>.01||Math.abs(rad-goalR)>.05){TGT.lerp(goalT,.12);rad+=(goalR-rad)*.12;placeCam()}
@@ -916,7 +927,7 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;clock+=dt;
   renderer.render(scene,cam);hud();
   if(now-boardAt>250){boardAt=now;updateBoard()}
   if(now-saveAt>5000){saveAt=now;save()}
-  requestAnimationFrame(loop)}
+  if(firstFrame){firstFrame=false;$('boot').hidden=true}}
 resize();view('all',true);requestAnimationFrame(loop);
 setTimeout(story,700);
 // ================= EXPANSION =================
@@ -959,4 +970,16 @@ function story(){
     'Tiệm hơi cũ, nhưng có Hana và Yuki phụ việc. Khách tới thì các cô ấy nhận order, ta nấu ở bếp và quầy sushi.',
     'Ăn xong khách để lại túi 💰 tiền tip trên bàn. Cháu nhớ chạm vào để nhặt nhé!',
     'Ra Chợ cá ghép nguyên liệu để món ngon hơn. Kiếm đủ tiền thì dọn kho ở phòng tatami và băng chuyền để mở rộng tiệm. Cố lên nào!'])}
+window.__game={S,view,unlockArea,get customers(){return customers},goalT,setR:r=>{goalR=r;zoomed=true},clearTalk:()=>{talkQ=[];$('talk').hidden=true},LOW};
+}
+// ================= BOOT: load three.js (with a second CDN as backup), show readable errors =================
+function bootFail(msg){const b=document.getElementById('boot');if(!b)return;b.hidden=false;document.getElementById('bootMsg').textContent='Ối, tiệm chưa mở được';
+  const p=document.getElementById('bootErr');p.hidden=false;p.textContent=String(msg&&msg.message||msg);const k=document.getElementById('bootBtn');k.hidden=false;k.onclick=()=>location.reload()}
+window.addEventListener('error',e=>{if(!document.getElementById('boot').hidden||!window.__game)bootFail(e.error||e.message)});
+function bootRun(){
+  const t=document.createElement('canvas');if(!(t.getContext('webgl')||t.getContext('experimental-webgl'))){bootFail('Trình duyệt hoặc thiết bị này không bật WebGL nên không vẽ được 3D.');return}
+  try{startGame()}catch(e){console.error(e);bootFail(e)}}
+if(window.THREE)bootRun();
+else{document.getElementById('bootMsg').textContent='Đang tải đồ họa 3D…';const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js';
+  s.onload=bootRun;s.onerror=()=>bootFail('Không tải được thư viện đồ họa three.js từ cả cdnjs và jsdelivr. Hãy kiểm tra mạng rồi tải lại.');document.head.appendChild(s)}
 </script>
