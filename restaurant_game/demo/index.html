@@ -182,6 +182,60 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 .chain b{display:block}
 .stars{color:#e0a000;letter-spacing:1px}
 @media (prefers-reduced-motion:reduce){.sheet,.lvup .card2{animation:none}.cf{display:none}}
+
+/* ===== UI v8: lighter chrome, more play area, one accent + traffic-light status colours ===== */
+:root{--ok:#2fa866;--warn:#e7a400;--bad:#d93a3a;--text2:#4f3826;--line:#e6d3b0;--card:#fffaf0}
+body{font-size:15px}
+#app{display:block}
+#stage{position:absolute;inset:0}
+.top{position:absolute;left:0;right:0;top:0;z-index:4;background:linear-gradient(rgba(40,24,10,.55),rgba(40,24,10,0));border:0;box-shadow:none;padding:6px 8px 14px;padding-top:calc(6px + env(safe-area-inset-top,0px))}
+.lvl{width:40px;height:40px;flex-basis:40px}.lvl b{font-size:16px}
+.pill{background:rgba(30,18,8,.72);font-size:14px;padding:1px 9px 1px 2px;box-shadow:none}
+.pill i{width:22px;height:22px}
+.nav{position:absolute;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:4;background:rgba(40,24,10,.78);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:0;border-radius:18px;padding:6px;gap:6px}
+.nb{background:transparent;box-shadow:none;color:#fff7e8;font-size:12px;font-weight:700;border-radius:12px;padding:3px 0}
+.nb span{font-size:22px}.nb:active{transform:none;background:rgba(255,255,255,.12);box-shadow:none}
+.nb.on{background:var(--orange);color:#fff;box-shadow:none}
+.nb.more{flex:.7}
+.morepop{position:absolute;right:6px;bottom:calc(100% + 8px);display:flex;gap:6px;background:rgba(40,24,10,.88);border-radius:16px;padding:6px}
+.morepop .nb{min-width:76px}
+#views{top:calc(60px + env(safe-area-inset-top,0px));right:8px;gap:6px;align-items:flex-end}
+.fab{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,250,240,.92);box-shadow:0 2px 6px rgba(0,0,0,.25);font-size:20px}
+.vmenu{display:flex;flex-direction:column;gap:4px;background:rgba(255,250,240,.96);border-radius:14px;padding:6px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.vmenu .rb{width:auto;height:auto;border-radius:10px;background:transparent;box-shadow:none;font-size:14px;font-weight:700;display:block;text-align:left;padding:6px 10px;color:var(--ink);white-space:nowrap}
+.vmenu .rb.on{background:var(--orange);color:#fff}
+#board{top:calc(60px + env(safe-area-inset-top,0px));left:8px;width:auto;max-width:min(300px,68%);max-height:none;background:rgba(255,250,240,.94);box-shadow:0 2px 8px rgba(0,0,0,.18);border-radius:14px;padding:6px 10px;font-size:13.5px}
+#board .h{font-size:14px;gap:8px;align-items:center;color:var(--ink)}
+#board .h .st{display:inline-flex;align-items:center;gap:4px;font-weight:800}
+#board .r{border-top:1px solid var(--line);grid-template-columns:24px 1fr auto;padding:5px 0}
+#board .r .d{position:relative}#board .r .d sup{position:absolute;top:-8px;left:-4px;font-size:11px}
+#board .r .l{font-weight:700;color:var(--ink)}#board .r .s{font-size:13px}
+#board .list{max-height:42vh;overflow:auto;margin-top:4px}
+#board .hotl{font-size:12.5px;color:var(--text2);font-weight:700;margin-top:2px}
+.dotc{width:10px;height:10px;border-radius:50%;display:inline-block}
+.warn{background:#fff1e6;color:#7a2410;font-size:13px;border-radius:10px}.warn small{color:#7a3a20;font-size:12px}
+#chap{left:8px;right:auto;max-width:min(330px,72%);bottom:calc(84px + env(safe-area-inset-bottom,0px));padding:6px 12px;background:rgba(255,250,240,.94);box-shadow:0 2px 8px rgba(0,0,0,.18)}
+#chap .ct{font-size:13.5px;color:var(--ink)}#chap small{font-size:12.5px;color:var(--text2)}
+#chap.ready{background:#fff1d6;animation:none;box-shadow:0 0 0 3px var(--orange)}
+#info{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;right:8px;border-left:0;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+#info small{font-size:13px;color:var(--text2)}#info .tag{background:var(--ink)}
+#legend{top:calc(60px + env(safe-area-inset-top,0px));right:60px;font-size:13.5px}
+#legend .lr small{font-size:12.5px;color:var(--text2)}
+#toast{top:calc(64px + env(safe-area-inset-top,0px));font-size:15px}
+#talk{bottom:calc(84px + env(safe-area-inset-bottom,0px))}#talk p{font-size:16px}
+#deco{bottom:0}
+.btn{background:var(--orange);box-shadow:0 3px 0 var(--orange2);font-size:14px}
+.btn:active{box-shadow:0 1px 0 var(--orange2)}
+.btn.r{background:var(--bad);box-shadow:0 3px 0 #9a2020}
+.it,.staff,.dish,.area,.chain,.day{border:1px solid var(--line);background:var(--card)}
+.it .m small,.staff .m small,.dish small,.area .tx small{color:var(--text2);font-size:13px}
+.dish b,.it .m b{font-size:15px}
+.lvtag,.role{background:#f1e4cc;color:var(--ink);font-size:11.5px}
+.sec{font-size:14px;color:var(--ink)}
+.sheet header{background:var(--orange)}
+#app.busy #board,#app.busy #views,#app.busy #chap,#app.busy .nav{opacity:.3;transition:opacity .2s}
+#board,#views,#chap,.nav{transition:opacity .5s}
+@media (max-width:380px){.pill{font-size:13px}.nb{font-size:11px}}
 </style>
 <div id="app">
   <header class="top">
@@ -198,13 +252,16 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
     <canvas id="c"></canvas>
     <div id="board"></div>
     <div id="views">
-      <button class="rb on" data-v="all" aria-label="Toàn cảnh">🗺️<small>Tất cả</small></button>
-      <button class="rb" data-v="dining" aria-label="Phòng ăn">🍽️<small>Quán</small></button>
-      <button class="rb" data-v="kitchen" aria-label="Bếp">🍣<small>Bếp</small></button>
-      <button class="rb" data-v="patio" aria-label="Vườn">🌸<small>Vườn</small></button>
-      <button class="rb" data-v="street" aria-label="Đường phố">🚕<small>Phố</small></button>
-      <button class="rb" id="nLegend" aria-label="Chú thích">👥<small>Ai là ai</small></button>
-      <button class="rb" id="nSpeed" aria-label="Tốc độ">⏩<small id="spd">x1</small></button>
+      <button class="fab" id="viewsBtn" aria-label="Góc nhìn và tuỳ chọn" aria-expanded="false">🎥</button>
+      <div class="vmenu" id="vmenu" hidden>
+        <button class="rb on" data-v="all">🗺️ Toàn cảnh</button>
+        <button class="rb" data-v="dining">🍽️ Phòng ăn</button>
+        <button class="rb" data-v="kitchen">🍣 Bếp</button>
+        <button class="rb" data-v="patio">🌸 Vườn</button>
+        <button class="rb" data-v="street">🚕 Đường phố</button>
+        <button class="rb" id="nLegend">👥 Ai là ai</button>
+        <button class="rb" id="nSpeed">⏩ Tốc độ <b id="spd">x1</b></button>
+      </div>
     </div>
     <div id="fly"></div>
     <div id="info" hidden></div>
@@ -216,8 +273,8 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
     <button class="nb" id="nStaff"><span>🧑‍🍳</span>Nhân viên</button>
     <button class="nb" id="nDeco"><span>🛋️</span>Trang trí</button>
     <button class="nb" id="nQuest"><span>📜</span>Nhiệm vụ<em class="badge" id="qBadge" hidden>0</em></button>
-    <button class="nb" id="nExpand"><span>🏗️</span>Mở rộng</button>
-    <button class="nb" id="nMarket"><span>🐟</span>Chợ cá</button>
+    <button class="nb more" id="nMore" aria-expanded="false"><span>⋯</span>Thêm</button>
+    <div class="morepop" id="morepop" hidden><button class="nb" id="nExpand"><span>🏗️</span>Mở rộng</button><button class="nb" id="nMarket"><span>🐟</span>Chợ cá</button></div>
   </nav>
   <div id="deco" hidden>
     <div class="row1"><div class="tabs" id="dTabs"></div><button class="btn" id="dDone">Xong</button></div>
@@ -341,7 +398,7 @@ const rugAt=(x,y)=>S.items.find(o=>o.x==x&&o.y==y&&T[o.type].flat)||null;
 const isDoor=(x,y)=>x==DOOR[0]&&y==DOOR[1];
 function defaultLayout(){
   [['table',2,6],['chair',1,6],['chair',3,6],['table',5,7],['chair',4,7],['chair',6,7],['table',3,12],['chair',2,12],['chair',4,12],
-   ['umbrella',5,12],['bonsai',0,8],['lantern',7,8],['ikebana',7,5],['toro',10,10],['stove',10,0],['stove',11,0]].forEach(a=>add(...a))}
+   ['umbrella',5,12],['bonsai',0,8],['lantern',7,8],['ikebana',3,8],['toro',10,10],['stove',10,0],['stove',11,0]].forEach(a=>add(...a))}
 function fixedLayout(){
   add('counter',9,0);add('sink',9,1);add('fridge',11,3);
   for(const y of[0,1,2,3])add('wall',8,y);
@@ -462,7 +519,7 @@ function pay(c,mult=1){
   const base=dishPrice(c.dish)*(c.vip?2.5:1)*(c.dish==S.hot?1.5:1)*room*mult*(1+beauty()/200),tip=Math.max(1,Math.round(base*.35*mood*(1+.12*S.upg.till)));
   S.coins+=Math.round(base);S.served++;S.dc[c.dish]=(S.dc[c.dish]||0)+1;earnRate(Math.round(base));S.rSum+=stars;S.rN++;
   if(c.kind=='table'){const ch=c.chair;ch.dirty=true;ch.tip=(ch.tip||0)+tip;ch.tipT=0}else S.coins+=tip;
-  fx.push({x:c.x,y:c.y,t:'+'+Math.round(base),k:'coin'},{x:c.x,y:c.y,t:mood>.6?'😍':'🙂',k:'emo'});
+  fx.push({x:c.x,y:c.y,t:'+'+Math.round(base),k:'coin'});
   events.push({k:'coins',x:c.x,y:c.y,n:Math.round(base)});
   gainXP(c.vip?12:5);quest('serve');quest('earn',Math.round(base));quest('dish',1,c.dish);if(c.vip)quest('vip')}
 let earnAcc=0,earnT=0;
@@ -478,8 +535,8 @@ function tick(dt){
     else if(c.st=='wait'||c.st=='food'){
       c.t+=dt;c.pat-=dt/(c.st=='wait'?PAT_WAIT(c):PAT_FOOD(c));if(c.pat<=0){leave(c,true);continue}
       // sushi bar: chef takes the order across the counter; conveyor: guest grabs a plate
-      if(c.kind=='bar'&&c.st=='wait'&&c.t>1.5){c.st='food';orders.push({c,st:'queued',direct:1});fx.push({x:c.x,y:c.y,t:'📝',k:'emo'})}
-      if(c.kind=='belt'&&c.st=='wait'&&c.t>1.2){c.st='eat';c.t=0;c.dish=pick(unlocked());fx.push({x:c.x,y:c.y,t:'🥢',k:'emo'})}}
+      if(c.kind=='bar'&&c.st=='wait'&&c.t>1.5){c.st='food';orders.push({c,st:'queued',direct:1});0}
+      if(c.kind=='belt'&&c.st=='wait'&&c.t>1.2){c.st='eat';c.t=0;c.dish=pick(unlocked());0}}
     else if(c.st=='eat'){c.t+=dt;if(c.t>=5){pay(c,c.kind=='belt'?.85:1);leave(c,false)}}
     else if(c.st=='out'){if(walk(c,dt,2.8))c.dead=1}
     if(c.st=='wait'||c.st=='food')c.minPat=Math.min(c.minPat==null?1:c.minPat,c.pat)
@@ -489,7 +546,7 @@ function tick(dt){
   // kitchen
   for(const s of stoves()){
     if(s.cook){s.prog=(s.prog||0)+dt/dishCook(s.cook.c.dish);if(s.prog>=1){const o=s.cook;s.cook=null;
-      if(o.direct){o.c.st='eat';o.c.t=0;orders=orders.filter(x=>x!==o);fx.push({x:o.c.x,y:o.c.y,t:'🙇',k:'emo'})}else{s.hold=o;o.st='ready'}}}
+      if(o.direct){o.c.st='eat';o.c.t=0;orders=orders.filter(x=>x!==o);0}else{s.hold=o;o.st='ready'}}}
     else if(!s.hold){const o=orders.find(o=>o.st=='queued');if(o){o.st='cooking';s.cook=o;s.prog=0;events.push({k:'sizzle'})}}
   }
   // waiters: deliver ready food > take orders (priority, VIP, impatient first) > clear dirty tables
@@ -506,11 +563,11 @@ function tick(dt){
       const dirty=S.items.find(o=>o.dirty&&!waiters.some(v=>v.task&&v.task.ch===o));
       if(dirty){const t=tableOf(dirty),g=t?freeN(t):freeN(dirty),p=g.length&&bfs([w.x,w.y],g);if(p){w.task={k:'clean',ch:dirty};w.path=p}else dirty.dirty=false}
     } else if(walk(w,dt,w.speed||2.6)){
-      if(tk.k=='take'){tk.c.st='food';tk.c.pri=false;orders.push({c:tk.c,st:'queued'});w.task=null;fx.push({x:w.x,y:w.y,t:'📝',k:'emo'})}
+      if(tk.k=='take'){tk.c.st='food';tk.c.pri=false;orders.push({c:tk.c,st:'queued'});w.task=null;0}
       else if(tk.k=='pick'){if(tk.s.hold===tk.o){tk.s.hold=null;w.carry=tk.o.c.dish;const g=freeN(tk.c.table),p=g.length&&bfs([w.x,w.y],g);
           if(p){w.task={k:'give',o:tk.o,c:tk.c};w.path=p}else{w.task=null;w.carry=null}}else w.task=null}
       else if(tk.k=='give'){tk.c.st='eat';tk.c.t=0;orders=orders.filter(o=>o!==tk.o);w.carry=null;w.task=null}
-      else if(tk.k=='clean'){tk.ch.dirty=false;w.task=null;fx.push({x:w.x,y:w.y,t:'✨',k:'emo'})}
+      else if(tk.k=='clean'){tk.ch.dirty=false;w.task=null;0}
     }
   }
   fx.forEach(f=>f.a=(f.a||0)+dt);fx=fx.filter(f=>f.a<1.3);
@@ -768,7 +825,7 @@ function syncItems(time,now){
     const g=e.g,u=g.userData,age=(now-o.born)/1000;
     if(age<.6&&(!T[o.type].fixed||o.type=='belt'||o.type=='stool'||o.type=='cushion'||o.type=='lowtable'))u.inner.scale.setScalar(Math.max(.01,easeBack(Math.min(1,age/.5))));else u.inner.scale.setScalar(1);
     if(u.tip){u.tip.visible=!!o.tip;u.dirty.visible=!!o.dirty&&!o.tip;if(o.tip)u.tipS.position.y=.32+Math.abs(Math.sin(time*4))*.12}
-    if(o.type=='stove'){const cs=hired('chef')[stoves().indexOf(o)];if((cs?cs.id:'helper')!==u.chefId){scene.remove(g);itemObj.delete(o.id);continue}const hot=o.cook||o.hold;u.burn.material=hot?basic('#ff8a2a'):mat('#222');u.bs.visible=!!hot;
+    if(o.type=='stove'){const cs=hired('chef')[stoves().indexOf(o)];if((cs?cs.id:'helper')!==u.chefId){scene.remove(g);itemObj.delete(o.id);continue}const hot=o.cook||o.hold;u.burn.material=hot?basic('#ff8a2a'):mat('#222');u.bs.visible=!!hot&&(viewK=='kitchen'||rad<homeRad*.45);
       if(o.cook){const d=o.cook.c.dish,rem=(1-(o.prog||0))*dishCook(d);drawBubble(u.b,DISHES[d].e,o.prog||0,rem,false,'🍳');u.pan.rotation.z=Math.sin(time*9)*.12;u.pan.position.y=.93+Math.abs(Math.sin(time*9))*.04;
         if((u.steam-=1/60)<=0){u.steam=.25;puff(g.position.x-.18,1.05,g.position.z)}}
       else{u.pan.rotation.z=0;u.pan.position.y=.93}
@@ -863,8 +920,8 @@ function mkAvatar(L){
   u.tray=new THREE.Group();cyl(.16,.02,'#4a2c17',0,0,0,u.tray,16);u.tray.position.set(0,.5,.3);u.tray.visible=false;body.add(u.tray);
   u.carry=sprite(emojiTex('🍣'),.36,6);u.carry.position.set(0,.66,.3);u.carry.visible=false;body.add(u.carry);
   if(L.staffRole){const R=ROLE[L.staffRole];
-    const ring=new THREE.Mesh(new THREE.RingGeometry(.27,.36,28),new THREE.MeshBasicMaterial({color:R.c,transparent:true,opacity:.9,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.y=.025;ring.renderOrder=2;g.add(ring);u.ring=ring;
-    const b=sprite(badgeTex(R.e+' '+(L.name||R.n),R.n,R.c),1,8);b.scale.set(1.15,.36,1);b.position.set(0,1.42,0);g.add(b);u.badge=b;
+    const ring=new THREE.Mesh(new THREE.RingGeometry(.28,.33,28),new THREE.MeshBasicMaterial({color:'#ffffff',transparent:true,opacity:.55,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.y=.025;ring.renderOrder=2;g.add(ring);u.ring=ring;
+    const b=sprite(badgeTex(R.e+' '+(L.name||R.n),R.n,R.c),1,8);b.scale.set(1.15,.36,1);b.position.set(0,1.42,0);b.visible=false;g.add(b);u.badge=b;
     const act=sprite(emojiTex('💬'),.34,9);act.position.set(.42,1.15,0);act.visible=false;g.add(act);u.act=act}
   if(L.lite)g.traverse(o=>{o.castShadow=false});
   g.scale.setScalar(L.kid?.8:1.05);scene.add(g);return g}
@@ -897,11 +954,14 @@ function syncAv(e,time,dt){
   else{pose(u,{carry:e.carry!=null,t:time});u.body.position.y=Math.sin(time*2+u.seed)*.008}
   blink(u,dt);
   if(e.role=='w'){const c=e.carry!=null;u.carry.visible=u.tray.visible=c;if(c)u.carry.material.map=emojiTex(DISHES[e.carry].e);setFace(u,'happy');
-    const k=e.task&&e.task.k,ic={take:'📝',pick:'🏃',give:'🍽️',clean:'🧹'}[k];u.act.visible=!!ic;if(ic&&u.actK!==ic){u.actK=ic;u.act.material.map=emojiTex(ic)}u.act.position.y=1.15+Math.sin(time*5)*.03}
+    const k=e.task&&e.task.k,ic={take:'📝',pick:'🏃',give:'🍽️',clean:'🧹'}[k];u.act.visible=false;u.act.position.y=1.15+Math.sin(time*5)*.03}
   if(e.role=='c'){
     setFace(u,e.st=='out'?(e.angry?'angry':'happy'):e.st=='eat'?'happy':e.pat<.3?'angry':e.pat<.6?'ok':'happy');
     const show=e.st=='wait'||e.st=='food';a.bs.visible=show;
-    if(show){const icon=e.st=='wait'?(e.pri?'❗':e.kind=='belt'?'👀':'📋'):DISHES[e.dish].e;drawBubble(a.b,icon,e.pat,patSecs(e),e.vip,null);a.bs.position.y=1.66+Math.sin(time*4+u.seed)*.03}
+    if(show){const icon=e.st=='wait'?(e.pri?'❗':e.kind=='belt'?'👀':'📋'):DISHES[e.dish].e,urgent=e.pat<.25,warn=e.pat<.5;
+      drawBubble(a.b,icon,e.pat,urgent?patSecs(e):null,e.vip,null);
+      // calm guests get a small faded bubble; only guests about to leave grow, pulse and show seconds
+      const k=urgent?.82+Math.sin(time*8)*.05:warn?.62:.48;a.bs.scale.set(.82*k/.82*1,1.03*k/.82,1);a.bs.material.opacity=urgent||warn?1:.8;a.bs.position.y=1.5+k*.2}
     g.scale.setScalar((e.look.kid?.8:1.05)*(.5+.5*e.a))}
 }
 function syncAvatars(time,dt){
@@ -1010,9 +1070,9 @@ function syncStaffExtras(t,dt){
     u.bow=(u.bow||0)+((near?1:0)-(u.bow||0))*Math.min(1,dt*6);u.body.rotation.x=u.bow*.5;u.aL.s.rotation.x=u.aR.s.rotation.x=-.3*u.bow;setFace(u,'happy')}
   const mu=hired('musician')[0];
   if(mu&&!musicianAv){const st=S.items.find(o=>o.type=='stage');if(st){musicianAv=mkAvatar(Object.assign({role:'w',staffRole:'musician',name:mu.name},mu.look));musicianAv.userData.sid=mu.id;musicianAv.position.set(st.x+.5,.12,st.y+.5);musicianAv.rotation.y=Math.PI/2;musicianAv.userData.stage=st}}
-  if(greeterAv){greeterAv.userData.act.visible=true;if(greeterAv.userData.actK!=='🙇'){greeterAv.userData.actK='🙇';greeterAv.userData.act.material.map=emojiTex('🙇')}}
-  if(musicianAv){const u=musicianAv.userData;u.act.visible=true;if(u.actK!=='🎵'){u.actK='🎵';u.act.material.map=emojiTex('🎵')}pose(u,{sit:1,t});u.aR.s.rotation.x=-.9+Math.sin(t*10)*.25;u.aL.s.rotation.x=-1.1;u.aL.s.rotation.z=.5;u.head.rotation.z=Math.sin(t*2)*.12;blink(u,dt);setFace(u,'happy');
-    if(Math.random()<dt*1.2)fx.push({x:musicianAv.position.x+rnd(-.3,.3),y:musicianAv.position.z,t:pick(['🎵','🎶']),k:'emo'})}}
+  if(greeterAv){greeterAv.userData.act.visible=false;if(greeterAv.userData.actK!=='🙇'){greeterAv.userData.actK='🙇';greeterAv.userData.act.material.map=emojiTex('🙇')}}
+  if(musicianAv){const u=musicianAv.userData;u.act.visible=false;pose(u,{sit:1,t});u.aR.s.rotation.x=-.9+Math.sin(t*10)*.25;u.aL.s.rotation.x=-1.1;u.aL.s.rotation.z=.5;u.head.rotation.z=Math.sin(t*2)*.12;blink(u,dt);setFace(u,'happy');
+    if(Math.random()<dt*.25)fx.push({x:musicianAv.position.x+rnd(-.3,.3),y:musicianAv.position.z,t:pick(['🎵','🎶']),k:'emo'})}}
 // manager walks between the tables, picking up tips
 let managerAv=null,mgr=null;
 function syncManager(t,dt){const m=hired('manager')[0];if(!m)return;
@@ -1022,7 +1082,7 @@ function syncManager(t,dt){const m=hired('manager')[0];if(!m)return;
     const p=tgt.length&&bfs([mgr.x,mgr.y],tgt);if(p)mgr.path=p;u.idle=rnd(1,3)}
   if(mgr.path.length&&(u.idle-=dt)<=0){const p=mgr.path[0],dx=p[0]+.5-mgr.x,dz=p[1]+.5-mgr.y;if(Math.hypot(dx,dz)>.01)managerAv.rotation.y=Math.atan2(dx,dz);walk(mgr,dt,1.6);const s=Math.sin(t*10);pose(u,{s,t});u.body.position.y=Math.abs(s)*.03}
   else pose(u,{t});blink(u,dt);setFace(u,'happy');managerAv.position.set(mgr.x,0,mgr.y);
-  const k=mgr.path.length?'🚶':'👀';if(u.actK!==k){u.actK=k;u.act.material.map=emojiTex(k)}u.act.visible=true}
+  u.act.visible=false}
 function ensureStage(){if(!hired('musician').length||S.items.some(o=>o.type=='stage'))return;
   for(const[x,y]of[[0,7],[0,5],[7,6],[3,8],[1,8]])if(!at(x,y)&&!rugAt(x,y)){add('stage',x,y);return}}
 // ---- locked land in front (garden extension) ----
@@ -1035,10 +1095,13 @@ for(let x=.3;x<W;x+=1.4){cyl(.05,.6,'#8a5a30',x,.3,14.1,lockG,6);cyl(.05,.6,'#8a
 function syncLand(){g2.visible=!!S.areas.garden2;lockG.visible=!S.areas.garden2}
 // ================= CAMERA VIEWS =================
 function view(k,instant){viewK=k;zoomed=k!=='all';
-  const V={all:[W/2+1,H/2-1.5,1],dining:[4,4.8,.45],kitchen:[9.8,3,.38],patio:[6,12.5,.5],tatami:[2,2,.32],kaiten:[6,2.5,.34],street:[W+4,8,.62],stall:[11.5,13.5,.34],garden2:[6,16,.45]}[k]||[W/2,H/2-.5,1];
+  const V={all:[W/2+.5,H/2-2,.82],dining:[4,4.8,.45],kitchen:[9.8,3,.38],patio:[6,12.5,.5],tatami:[2,2,.32],kaiten:[6,2.5,.34],street:[W+4,8,.62],stall:[11.5,13.5,.34],garden2:[6,16,.45]}[k]||[W/2,H/2-.5,1];
   goalT.set(V[0],.3,V[1]);goalR=homeRad*V[2];if(instant){TGT.copy(goalT);rad=goalR;placeCam()}
   document.querySelectorAll('#views .rb').forEach(b=>b.classList.toggle('on',b.dataset.v===k))}
-$('views').addEventListener('click',e=>{const b=e.target.closest('.rb');if(b&&b.dataset.v)view(b.dataset.v)});
+$('views').addEventListener('click',e=>{const b=e.target.closest('.rb');if(b&&b.dataset.v){view(b.dataset.v);$('vmenu').hidden=true;$('viewsBtn').setAttribute('aria-expanded','false')}});
+$('viewsBtn').onclick=()=>{const m=$('vmenu');m.hidden=!m.hidden;$('viewsBtn').setAttribute('aria-expanded',String(!m.hidden));if(m.hidden)$('legend').hidden=true};
+$('nMore').onclick=()=>{const m=$('morepop');m.hidden=!m.hidden;$('nMore').setAttribute('aria-expanded',String(!m.hidden))};
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('#nMore,#morepop'))$('morepop').hidden=true;if(!e.target.closest('#views,#legend')){$('vmenu').hidden=true;$('legend').hidden=true}},true);
 // ================= INPUT =================
 const ray=new THREE.Raycaster(),ptrs=new Map();let drag=null,pinch=0,hover=null;
 const ndc=e=>{const r=cv.getBoundingClientRect();return new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1)};
@@ -1048,7 +1111,8 @@ function canPlace(k,x,y){if(x<0||y<0||x>=W||y>=H||isDoor(x,y)||!zoneOK(k,x,y))re
   if(T[k].flat)return !rugAt(x,y)&&!at(x,y)?.type?.match(/^(wall|fence)$/);
   return !at(x,y)&&!customers.some(c=>Math.floor(c.x)==x&&Math.floor(c.y)==y)&&!waiters.some(w=>Math.floor(w.x)==x&&Math.floor(w.y)==y)}
 function placeErr(k,x,y){if(landLocked(x,y))return'Khu đất này chưa mở, hãy Mở rộng vườn trước';if(inTatami(x,y))return S.areas.tatami?'Phòng tatami chỉ đặt đồ trang trí':'Phòng tatami chưa mở';if(k=='stove')return'Bếp chỉ đặt trong khu bếp';if(inKitchen(x,y))return'Khu bếp chỉ đặt bếp nấu';if(T[k].zone=='patio')return'Món này chỉ đặt ở sân ngoài';if(T[k].zone=='inside')return'Món này chỉ đặt trong nhà';return'Ô này đã có đồ'}
-cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,[e.clientX,e.clientY]);drag={x:e.clientX,y:e.clientY,moved:false,az,pol};
+let busyT=0;
+cv.addEventListener('pointerdown',e=>{$('app').classList.add('busy');clearTimeout(busyT);cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,[e.clientX,e.clientY]);drag={x:e.clientX,y:e.clientY,moved:false,az,pol};
   if(ptrs.size==2){const[a,b]=[...ptrs.values()];pinch=Math.hypot(a[0]-b[0],a[1]-b[1])}});
 cv.addEventListener('pointermove',e=>{
   if(ptrs.has(e.pointerId))ptrs.set(e.pointerId,[e.clientX,e.clientY]);
@@ -1056,7 +1120,7 @@ cv.addEventListener('pointermove',e=>{
   if(drag&&ptrs.size==1){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.hypot(dx,dy)>7)drag.moved=true;
     if(drag.moved){az=Math.max(.12,Math.min(Math.PI/2-.12,drag.az-dx*.006));pol=Math.max(.38,Math.min(1.25,drag.pol-dy*.005));placeCam()}}
   if(!drag||!drag.moved)hover=groundTile(e)});
-cv.addEventListener('pointerup',e=>{const was=drag;ptrs.delete(e.pointerId);if(!ptrs.size)drag=null;if(!was||was.moved||ptrs.size)return;tap(e)});
+cv.addEventListener('pointerup',e=>{clearTimeout(busyT);busyT=setTimeout(()=>$('app').classList.remove('busy'),1200);const was=drag;ptrs.delete(e.pointerId);if(!ptrs.size)drag=null;if(!was||was.moved||ptrs.size)return;tap(e)});
 cv.addEventListener('pointercancel',e=>{ptrs.delete(e.pointerId);drag=null});
 cv.addEventListener('pointerleave',()=>hover=null);
 cv.addEventListener('wheel',e=>{e.preventDefault();rad=goalR=Math.max(9,Math.min(70,rad*(1+Math.sign(e.deltaY)*.08)));zoomed=true;placeCam()},{passive:false});
@@ -1114,17 +1178,25 @@ function stateOf(c){
   if(o.st=='queued')return['Chờ bếp',null];
   if(o.st=='cooking'){const s=stoves().find(s=>s.cook===o);return['Đang nấu','🍳 '+Math.ceil((1-(s&&s.prog||0))*dishCook(c.dish))+'s','#e07f00']}
   return['Chờ mang ra','✅','#2a8a55']}
+let boardOpen=false,boardOpenT=0;
+const pc=c=>c.pat>.5?'var(--ok)':c.pat>.25?'var(--warn)':'var(--bad)';
 function updateBoard(){
-  const list=customers.filter(c=>c.st!='out');
-  let h=`<div class="h"><span>🧾 Bảng đơn (${list.length})</span><span>${boardMin?'▸':'▾'}</span></div><div style="font-size:11px;color:#8a5a00;font-weight:700">🔥 Hot: ${DISHES[S.hot].e} ${DISHES[S.hot].n}</div>`;
-  for(const[e,t,sub,go]of hints())h+=`<div class="warn" data-go="${go}">⚠️ ${e}<div>${t}<small>${sub}</small></div></div>`;
-  if(!list.length)h+='<div class="empty">Chưa có khách. Khách sẽ tới từ cổng sân.</div>';
-  for(const c of list.slice(0,5)){const[l,x,xc]=stateOf(c),p=c.st=='wait'||c.st=='food',sec=p?Math.ceil(patSecs(c)):null,col=c.pat>.5?'#3cb371':c.pat>.25?'#ffb020':'#e63946';
-    h+=`<div class="r" data-i="${customers.indexOf(c)}"><span class="d">${c.vip?'👑':''}${DISHES[c.dish].e}</span><span class="l">${l}</span><span class="s" style="color:${xc||col}">${x||(sec!=null?'⏳ '+sec+'s':'')}</span>${p?`<span class="t"><i style="width:${Math.max(0,c.pat)*100}%;background:${col}"></i></span>`:''}</div>`}
-  if(list.length>5)h+=`<div class="empty">+${list.length-5} khách nữa</div>`;
-  $('board').innerHTML=h;$('board').classList.toggle('min',boardMin)}
-$('board').addEventListener('pointerdown',e=>{const w=e.target.closest('.warn');if(w){if(w.dataset.go=='staff')$('nStaff').click();else $('nDeco').click();return}if(e.target.closest('.h')){boardMin=!boardMin;updateBoard();return}
-  const r=e.target.closest('.r');if(!r)return;const c=customers[+r.dataset.i];if(c&&c.st=='wait'){c.pri=true;toast('Ưu tiên phục vụ khách này!')}});
+  const list=customers.filter(c=>c.st!='out'),waiting=list.filter(c=>c.st=='wait'||c.st=='food');
+  const urgent=waiting.filter(c=>c.pat<.25).length,warnN=waiting.filter(c=>c.pat>=.25&&c.pat<.5).length,H=hints();
+  if(boardOpen&&performance.now()-boardOpenT>9000)boardOpen=false;
+  let h=`<div class="h"><span>🧾 ${list.length} khách</span>`+
+    (urgent?`<span class="st" style="color:var(--bad)"><i class="dotc" style="background:var(--bad)"></i>${urgent} sắp bỏ về</span>`:warnN?`<span class="st" style="color:#9a6a00"><i class="dotc" style="background:var(--warn)"></i>${warnN} chờ lâu</span>`:list.length?`<span class="st" style="color:var(--ok)"><i class="dotc" style="background:var(--ok)"></i>ổn</span>`:'')+
+    (H.length?`<span class="st" style="color:#b0400f">⚠️ ${H.length}</span>`:'')+`<span>${boardOpen?'▴':'▾'}</span></div>`;
+  if(boardOpen){
+    h+=`<div class="hotl">🔥 Món hot: ${DISHES[S.hot].e} ${DISHES[S.hot].n}</div>`;
+    for(const[e,t,sub,go]of H)h+=`<div class="warn" data-go="${go}">${e}<div>${t}<small>${sub}</small></div></div>`;
+    h+='<div class="list">'+(list.length?'':'<div class="empty">Chưa có khách. Khách tới từ cổng vườn.</div>');
+    for(const c of [...list].sort((a,b)=>(a.st=='wait'||a.st=='food'?a.pat:2)-(b.st=='wait'||b.st=='food'?b.pat:2))){const[l,x]=stateOf(c),p=c.st=='wait'||c.st=='food',sec=p?Math.ceil(patSecs(c)):null;
+      h+=`<div class="r" data-i="${customers.indexOf(c)}"><span class="d">${c.vip?'<sup>👑</sup>':''}${DISHES[c.dish].e}</span><span class="l">${l}</span><span class="s" style="color:${p?pc(c):'var(--text2)'}">${x||(sec!=null?sec+'s':'')}</span>${p?`<span class="t"><i style="width:${Math.max(0,c.pat)*100}%;background:${pc(c)}"></i></span>`:''}</div>`}
+    h+='</div>'}
+  $('board').innerHTML=h}
+$('board').addEventListener('pointerdown',e=>{const w=e.target.closest('.warn');if(w){if(w.dataset.go=='staff')$('nStaff').click();else $('nDeco').click();return}if(e.target.closest('.h')){boardOpen=!boardOpen;boardOpenT=performance.now();updateBoard();return}
+  const r=e.target.closest('.r');if(!r)return;boardOpenT=performance.now();const c=customers[+r.dataset.i];if(c&&c.st=='wait'){c.pri=true;toast('Ưu tiên phục vụ khách này!')}});
 // modal sheets
 function openModal(title,render){$('mTitle').textContent=title;openModal.render=render;render();$('modal').hidden=false}
 function closeModal(){$('modal').hidden=true;openModal.render=null;document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));if(popQ.length)setTimeout(nextPop,250)}
@@ -1200,7 +1272,7 @@ function navOn(id){document.querySelectorAll('.nb').forEach(b=>b.classList.toggl
 $('nMenu').onclick=()=>{navOn('nMenu');openModal('Thực đơn',menuPanel)};
 $('nStaff').onclick=()=>{navOn('nStaff');openModal('Nhân viên',staffPanel)};
 $('nQuest').onclick=()=>{navOn('nQuest');openModal('Nhiệm vụ',questPanel)};
-$('nSpeed').onclick=()=>{S.speed=S.speed==1?2:S.speed==2?4:1;$('spd').textContent='x'+S.speed};
+$('nSpeed').onclick=e=>{e.stopPropagation();S.speed=S.speed==1?2:S.speed==2?4:1;$('spd').textContent='x'+S.speed};
 $('nMarket').onclick=()=>{navOn('nMarket');openModal('Chợ cá · Ghép nguyên liệu',marketPanel)};
 // decorate tray
 function renderDeco(){
@@ -1305,14 +1377,15 @@ function renderInfo(){const el=$('info');if(!infoSel){el.hidden=true;return}cons
     el.style.setProperty('--c','#8a6a48');
     el.innerHTML=`<div class="por">${c.vip?'👑':'🙂'}</div><div><b>${c.vip?'Khách VIP':'Khách'}<span class="tag">KHÁCH</span></b><small>Gọi món: ${DISHES[c.dish].e} ${DISHES[c.dish].n}</small><small>${c.st=='out'?(c.angry?'Bỏ về vì chờ lâu 😠':'Ăn xong, ra về vui vẻ 😊'):l+sec}</small></div>`;return}
   const st=STAFF.find(s=>s.id==p.sid),role=st?st.role:p.chef?'chef':'vendor',R=ROLE[role];
-  el.style.setProperty('--c',R.c);
+  el.style.setProperty('--c','var(--orange)');
   el.innerHTML=`<div class="por">${st&&portrait(st)?`<img src="${portrait(st)}" alt="">`:R.e}</div><div><b>${st?st.name:R.n}<span class="tag">${R.e} ${R.n.toUpperCase()}</span></b><small>${st?'<span class="stars">'+'★'.repeat(st.stars)+'</span> · Lv '+S.staff[st.id].lv:'Nhân viên phụ'}</small><small>${staffDoing(p)}</small></div>`}
 let infoAt=0;
-function syncInfo(){if(!infoSel)return;infoT-=1/60;if(infoT<=0){infoSel=null;$('info').hidden=true;return}if(performance.now()-infoAt>300){infoAt=performance.now();renderInfo()}}
+let badgeOn=null;
+function syncInfo(){const g=infoSel&&infoSel.g.userData.badge||null;if(g!==badgeOn){if(badgeOn)badgeOn.visible=false;if(g)g.visible=true;badgeOn=g}if(!infoSel)return;infoT-=1/60;if(infoT<=0){infoSel=null;$('info').hidden=true;return}if(performance.now()-infoAt>300){infoAt=performance.now();renderInfo()}}
 $('info').addEventListener('pointerdown',()=>{infoSel=null;$('info').hidden=true});
-$('nLegend').onclick=()=>{const el=$('legend');el.hidden=!el.hidden;$('nLegend').classList.toggle('on',!el.hidden);if(el.hidden)return;
-  el.innerHTML='<b>Ai là ai?</b>'+Object.entries(ROLE).map(([k,r])=>`<div class="lr"><span class="dot" style="--c:${r.c}"></span><div>${r.e} ${r.n}<small>${{chef:'Áo trắng, mũ cao, đứng ở bếp',waiter:'Kimono xanh chàm, bưng món, dọn bàn',greeter:'Đứng ở cổng cúi chào',musician:'Ngồi trên bục chơi đàn',manager:'Áo vest, đi nhặt tiền tip',vendor:'Đứng ở quầy taiyaki ven đường'}[k]}</small></div></div>`).join('')+
-  '<div class="lr"><span class="dot" style="--c:transparent;border-style:dashed;border-color:#8a6a48"></span><div>Khách<small>Không có vòng màu và bảng tên. Có bong bóng món ăn và đồng hồ chờ.</small></div></div><div class="lr"><div><small>Chạm vào bất kỳ ai trong quán để xem chi tiết.</small></div></div>'};
+$('nLegend').onclick=e=>{e.stopPropagation();const el=$('legend');el.hidden=!el.hidden;$('nLegend').classList.toggle('on',!el.hidden);if(el.hidden)return;
+  el.innerHTML='<b>Ai là ai?</b><div class="lr"><span class="dot" style="--c:#c9b48a"></span><div>Nhân viên<small>Có vòng trắng mờ dưới chân. Chạm vào để xem tên và việc đang làm.</small></div></div>'+Object.entries(ROLE).map(([k,r])=>`<div class="lr"><span style="font-size:18px;width:20px">${r.e}</span><div>${r.n}<small>${{chef:'Áo trắng, mũ cao, đứng ở bếp',waiter:'Kimono xanh chàm, bưng món, dọn bàn',greeter:'Đứng ở cổng cúi chào',musician:'Ngồi trên bục chơi đàn',manager:'Áo vest, đi nhặt tiền tip',vendor:'Đứng ở quầy taiyaki ven đường'}[k]}</small></div></div>`).join('')+
+  '<div class="lr"><span class="dot" style="--c:var(--ok)"></span><div>Khách<small>Không có vòng. Bong bóng món ăn: xanh = ổn, vàng = chờ lâu, đỏ = sắp bỏ về.</small></div></div><div class="lr"><div><small>Chạm vào bất kỳ ai trong quán để xem chi tiết.</small></div></div>'};
 // ================= STORY: chapters with clear goals, letters from grandma, staff intros =================
 const SPK={ono:{n:'Bác Ono Ryota',f:'👴',c:'#e63946',sid:'ono'},ba:{n:'Thư của bà Kiku',f:'👵',c:'#7a4fd0'},sys:{n:'Mẹo',f:'💡',c:'#1f9d92'}};
 const sumQ=()=>Object.values(S.quality).reduce((a,b)=>a+b,0);
@@ -1444,7 +1517,7 @@ function syncDay(dt){S.tod=((S.tod==null?10:S.tod)+dt*S.speed*24/480)%24;const h
   if(hemi){hemi.intensity=.52*(1-n*.3);hemi.color.set(n>.5?'#9fb0e0':'#fff0e0')}
   sun.position.set(W/2+Math.cos(h/24*Math.PI*2-Math.PI/2)*14+6,6+Math.max(0,Math.sin((h-6)/12*Math.PI))*16,H+2);
   for(const g of glows)g.material.opacity=n*.95;
-  const hh=Math.floor(h),mm=Math.floor((h-hh)*60);$('clock').textContent=(n>.5?'🌙 ':h<11?'🌅 ':h<17?'☀️ ':'🌇 ')+String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0')+(rush(h)>1?' · Giờ cao điểm':'')}
+  const hh=Math.floor(h),mm=Math.floor((h-hh)*60);$('clock').textContent=(n>.5?'🌙 ':h<11?'🌅 ':h<17?'☀️ ':'🌇 ')+String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0')+(rush(h)>1?' 🔥':'')}
 
 window.__game={sim:{tick,STAFF,AREAS,DISHES,dishUpCost,trainCost,unlockArea,syncWaiters,ensureStage,unlocked,ensureQuests,beauty,get orders(){return orders},clearEvents:()=>{events.length=0}},proj:()=>{const r=cv.getBoundingClientRect();return people().filter(p=>p.kind=='staff'&&p.e).map(p=>{const v=new THREE.Vector3();p.g.getWorldPosition(v);v.y+=.6;v.project(cam);return[r.left+(v.x+1)/2*r.width,r.top+(1-v.y)/2*r.height]}).find(([x,y])=>x>60&&x<340&&y>320&&y<r.bottom-40)||null},S,view,unlockArea,get customers(){return customers},goalT,setR:r=>{goalR=r;zoomed=true},clearTalk:()=>{talkQ=[];$('talk').hidden=true},LOW};
 }
