@@ -418,8 +418,9 @@ for(let z=-20;z<H+22;z+=8){glow(W+1.3,3,z,2.2);glow(W+7,3,z+4,2.2)}
 let hemi=null;scene.traverse(o=>{if(o.isHemisphereLight)hemi=o});
 function syncDay(dt){S.tod=((S.tod==null?10:S.tod)+dt*S.speed*24/480)%24;const h=S.tod,n=nightAt(h);dayNight.night=n;
   const sky=skyAt(h);scene.background.copy(sky);scene.fog.color.copy(sky);
-  const warm=h>16.5&&h<19.5||h>5&&h<7.5;sun.intensity=.62*(1-n*.6);sun.color.set(warm?'#ffb070':'#ffe6c8');
-  if(hemi){hemi.intensity=.52*(1-n*.3);hemi.color.set(n>.5?'#9fb0e0':'#fff0e0')}
+  const warm=h>16.5&&h<19.5||h>5&&h<7.5;sun.intensity=.78*(1-n*.62);sun.color.set(warm?'#ffad72':'#ffe0b0');
+  fillLight.intensity=.13+n*.08;fillLight.color.set(n>.5?'#7488c4':'#9ec7d8');
+  if(hemi){hemi.intensity=.55*(1-n*.32);hemi.color.set(n>.5?'#94a8dc':'#fff4df');hemi.groundColor.set(n>.5?'#303747':'#536453')}
   sun.position.set(W/2+Math.cos(h/24*Math.PI*2-Math.PI/2)*14+6,6+Math.max(0,Math.sin((h-6)/12*Math.PI))*16,H+2);
   for(const g of glows)g.material.opacity=n*.95;
   const hh=Math.floor(h),mm=Math.floor((h-hh)*60);$('clock').textContent=(n>.5?'🌙 ':h<11?'🌅 ':h<17?'☀️ ':'🌇 ')+String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0')+(rush(h)>1?' 🔥':'')}
@@ -437,3 +438,4 @@ if(window.THREE)bootRun();
 else{document.getElementById('bootMsg').textContent='Đang tải đồ họa 3D…';const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js';
   s.onload=bootRun;s.onerror=()=>bootFail('Không tải được thư viện đồ họa three.js từ cả cdnjs và jsdelivr. Hãy kiểm tra mạng rồi tải lại.');document.head.appendChild(s)}
 </script>
+

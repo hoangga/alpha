@@ -5,7 +5,7 @@ Ghi tên vào cột "Người làm" trước khi bắt đầu (Claude / ChatGPT 
 | # | Việc | Người làm | Trạng thái |
 |---|---|---|---|
 | 1 | Chủ dự án chốt hướng đi (A/B/C/D) và hướng đồ họa (G1/G2/G3) | hoangga | ⏳ |
-| 2 | Bộ style guide: ảnh chuẩn phong cách + bảng màu HEX (đặt trong `restaurant_game/art/`) | ChatGPT | ⏳ |
+| 2 | Bộ style guide: ảnh chuẩn phong cách + bảng màu HEX (đặt trong `restaurant_game/art/`) | ChatGPT/Codex | 🚧 đang làm |
 | 3 | Bộ icon món ăn PNG nền trong suốt 512×512, tên `dish_<ten>.png` | ChatGPT | ⏳ |
 | 4 | Chân dung nhân viên (3 biểu cảm), tên `char_<ten>_<bieucam>.png` | ChatGPT | ⏳ |
 | 5 | Biểu tượng app 1024×1024 + màn hình chờ | ChatGPT | ⏳ |
@@ -14,3 +14,5 @@ Ghi tên vào cột "Người làm" trước khi bắt đầu (Claude / ChatGPT 
 | 8 | Kịch bản khách quen (nếu chọn hướng A): 20 nhân vật × 4–6 đoạn | ChatGPT viết, Claude đưa vào game | chờ #1 |
 | 9 | Dựng thử APK trên Android Studio và báo lỗi | hoangga | ⏳ |
 | 10 | Chính sách quyền riêng tư cho App Store / Google Play | ChatGPT | ⏳ |
+| 11 | Nâng chất lượng hình ảnh nền: màu sắc, ánh sáng, vật liệu và UI trong `web/src/` (không đổi gameplay) | ChatGPT/Codex | ✅ |
+
