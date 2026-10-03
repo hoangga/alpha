@@ -1,3 +1,6 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#21160f">
 <title>Nhà Hàng Triệu Phú</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap">
@@ -236,6 +239,44 @@ body{font-size:15px}
 #app.busy #board,#app.busy #views,#app.busy #chap,#app.busy .nav{opacity:.3;transition:opacity .2s}
 #board,#views,#chap,.nav{transition:opacity .5s}
 @media (max-width:380px){.pill{font-size:13px}.nb{font-size:11px}}
+
+/* ===== Visual polish: premium warm Japanese toy-diorama ===== */
+:root{
+  --cream:#fffaf0;--cream2:#f5e7ce;--brown:#654225;--brown2:#8a6340;--ink:#2f2118;
+  --orange:#d9852f;--orange2:#ad5f1e;--teal:#338f83;--teal2:#226f67;--red:#cf4a4a;--red2:#9f3030;
+  --gold:#e8b43e;--gem:#65aee8;--green:#4d9a67;--green2:#34734c;
+  --ok:#3f9462;--warn:#d99a2b;--bad:#c94444;--text2:#5f4a38;--line:#dcc9a8;--card:#fffdf7;
+}
+body{background:#17100b}
+#app{background:#b9d6d8;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 80px rgba(0,0,0,.55)}
+#stage::before,#stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1}
+#stage::before{background:linear-gradient(180deg,rgba(255,238,203,.12),transparent 27%,transparent 72%,rgba(30,17,10,.12))}
+#stage::after{box-shadow:inset 0 0 52px rgba(45,27,15,.17)}
+canvas{filter:saturate(1.04) contrast(1.025)}
+.top{background:linear-gradient(180deg,rgba(28,19,13,.78),rgba(28,19,13,.3) 62%,transparent);padding-bottom:18px}
+.lvl b{background:radial-gradient(circle at 34% 28%,#fff0a8,#e5a937 58%,#b66a21);color:#51300f;box-shadow:inset 0 1px 0 rgba(255,255,255,.65),inset 0 -3px 0 rgba(80,40,8,.22),0 2px 8px rgba(0,0,0,.28)}
+.pill{background:rgba(37,27,20,.78);border:1px solid rgba(255,255,255,.13);box-shadow:0 3px 10px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.06);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px)}
+.nav{background:rgba(35,25,18,.88);border:1px solid rgba(255,255,255,.12);border-radius:20px;box-shadow:0 10px 28px rgba(25,14,8,.36),inset 0 1px 0 rgba(255,255,255,.07);-webkit-backdrop-filter:blur(12px) saturate(1.15);backdrop-filter:blur(12px) saturate(1.15)}
+.nb{color:#f4eadb;opacity:.82;transition:background .18s,opacity .18s,transform .18s}
+.nb:hover,.nb:focus-visible{opacity:1}.nb.on{opacity:1;background:linear-gradient(180deg,#e39a48,#c87325);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 9px rgba(120,58,13,.32)}
+.nb span{filter:drop-shadow(0 1px 1px rgba(0,0,0,.2))}
+.morepop{background:rgba(35,25,18,.94);border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 24px rgba(0,0,0,.32);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.fab{background:rgba(255,252,244,.94);border:1px solid rgba(87,56,30,.13);box-shadow:0 5px 16px rgba(44,25,12,.25),inset 0 1px 0 #fff;transition:transform .18s,box-shadow .18s}
+.fab:active{transform:scale(.94);box-shadow:0 2px 7px rgba(44,25,12,.25)}
+.vmenu{background:rgba(255,252,244,.97);border:1px solid rgba(91,60,34,.13);box-shadow:0 10px 28px rgba(44,25,12,.27);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+#board,#chap,#info,#legend{background:rgba(255,252,244,.95);border:1px solid rgba(107,73,42,.14);box-shadow:0 8px 24px rgba(47,27,13,.2),inset 0 1px 0 rgba(255,255,255,.9);-webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1)}
+#board .r{border-color:rgba(115,83,52,.17)}
+#board .r .t,#chap .cb,.prog{background:#eadfcb}
+#board .r .t i,#chap .cb i,.prog i{background:linear-gradient(90deg,#3c9a84,#5fbf8c)}
+.sheet{background:#fbf5e9;border:1px solid rgba(95,62,34,.16);box-shadow:0 -18px 54px rgba(38,22,12,.3)}
+.sheet header{background:linear-gradient(135deg,#d88a36,#b96727);box-shadow:inset 0 1px 0 rgba(255,255,255,.23)}
+.modal{background:rgba(27,18,12,.52);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.it,.staff,.dish,.area,.chain,.day{box-shadow:0 3px 10px rgba(61,39,21,.06),inset 0 1px 0 #fff}
+.dish .pic,.staff .por,#info .por{background:radial-gradient(circle at 42% 30%,#fffdf8,#ead7b7);box-shadow:inset 0 0 0 1px rgba(106,73,43,.08)}
+.btn{background:linear-gradient(180deg,#e29643,#c66e25);box-shadow:0 3px 0 #99501b,0 5px 10px rgba(97,49,18,.16)}
+.btn:active{box-shadow:0 1px 0 #99501b;transform:translateY(2px)}
+#toast{background:rgba(37,26,18,.94);border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 22px rgba(0,0,0,.25);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px)}
+@media (min-width:561px){#app{border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08)}}
 </style>
 <div id="app">
   <header class="top">
@@ -287,3 +328,4 @@ body{font-size:15px}
   <div id="talk" hidden><div class="who"><div class="face">👴</div><b id="talkName">Ono Ryota</b></div><p id="talkText"></p><span class="next">Chạm để tiếp ▸</span></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
